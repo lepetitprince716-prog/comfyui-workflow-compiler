@@ -1,0 +1,153 @@
+{
+  "_workflow": {
+    "format": 1,
+    "title": "Text to image with a high-res pass",
+    "locale": "en",
+    "layout": {
+      "preset": "bento"
+    }
+  },
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sdxl_base_1.0.safetensors"
+    }
+  },
+  "pos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        "CLIP"
+      ],
+      "text": "a quiet alpine lake at dawn, mist over pine forest, soft light"
+    },
+    "_meta": {
+      "title": "Positive prompt",
+      "ui_role": "cockpit",
+      "ui_expose": [
+        "text"
+      ]
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        "CLIP"
+      ],
+      "text": "blurry, lowres, watermark"
+    },
+    "_meta": {
+      "title": "Negative prompt",
+      "ui_role": "cockpit"
+    }
+  },
+  "latent": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "Canvas size",
+      "ui_role": "cockpit"
+    }
+  },
+  "sampler": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "ckpt",
+        "MODEL"
+      ],
+      "positive": [
+        "pos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent",
+        0
+      ],
+      "seed": 42,
+      "steps": 28,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "Base pass"
+    }
+  },
+  "up": {
+    "class_type": "LatentUpscaleBy",
+    "inputs": {
+      "samples": [
+        "sampler",
+        0
+      ],
+      "upscale_method": "nearest-exact",
+      "scale_by": 1.5
+    }
+  },
+  "sampler2": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "ckpt",
+        "MODEL"
+      ],
+      "positive": [
+        "pos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "up",
+        0
+      ],
+      "seed": 42,
+      "steps": 20,
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 0.45
+    },
+    "_meta": {
+      "title": "High-res pass"
+    }
+  },
+  "decode2": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "sampler2",
+        0
+      ],
+      "vae": [
+        "ckpt",
+        "VAE"
+      ]
+    }
+  },
+  "save": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "decode2",
+        0
+      ],
+      "filename_prefix": "hires"
+    }
+  }
+}
