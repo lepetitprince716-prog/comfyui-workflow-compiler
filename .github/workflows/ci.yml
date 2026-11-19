@@ -48,7 +48,7 @@ jobs:
       - name: Install ruff
         run: python -m pip install ruff==0.15.16
       - name: Ruff
-        run: ruff check src tests tools
+        run: ruff check src tests tools guard_tests
       - name: No node type names in src/cwc
         run: python -B tools/lint_no_node_names.py
 
@@ -100,9 +100,65 @@ jobs:
             # On a pull request the scanner and its rules come from the base branch, so a
             # change to them cannot weaken the check that judges it. A change to this
             # workflow file still can: review any pull request that touches it.
-            git show "origin/$BASE_REF:tools/privacy_scan.py" > "$RUNNER_TEMP/privacy_scan.py"
-            git show "origin/$BASE_REF:tools/privacy_rules.json" > "$RUNNER_TEMP/privacy_rules.json"
+            # The full ref name is used on purpose: a tag called origin/<base> would win over
+            # the short name origin/<base> and could stand in for the base branch.
+            if ! git show-ref --verify --quiet "refs/remotes/origin/$BASE_REF"; then
+              echo "base branch refs/remotes/origin/$BASE_REF not found: the scan has no trusted copy of its scanner" >&2
+              exit 1
+            fi
+            git show "refs/remotes/origin/$BASE_REF:tools/privacy_scan.py" > "$RUNNER_TEMP/privacy_scan.py"
+            git show "refs/remotes/origin/$BASE_REF:tools/privacy_rules.json" > "$RUNNER_TEMP/privacy_rules.json"
             scanner="$RUNNER_TEMP/privacy_scan.py"
             rules="$RUNNER_TEMP/privacy_rules.json"
           fi
-          python3 -B "$scanner" --rules "$rules" --tracked --history
+          python3 -I -B "$scanner" --rules "$rules" --tracked --history
+
+  betterleaks:
+    # The second scan, for keys and tokens: Betterleaks over the whole history. The same
+    # wrapper runs in the local hooks (PRIVACY.md, "Second scan: Betterleaks").
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      # Linux x64 asset of the v1.10.1 release. The digest is the one the GitHub release API
+      # lists for the asset; it matches the release's checksums.txt (read 2026-11-18).
+      BETTERLEAKS_VERSION: "1.10.1"
+      BETTERLEAKS_ARCHIVE: betterleaks_1.10.1_linux_x64.tar.gz
+      BETTERLEAKS_SHA256: c174b42d7aa60caf58c0c3e555c0e4bed01fe6b0d99a412bce777b5af4ce913e
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the scan reads the whole history
+          persist-credentials: false
+      - name: Take the scan wrapper from the base branch on a pull request
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/secret_scan"
+          if [ -n "$BASE_REF" ]; then
+            # Same reason as in the privacy job: a pull request cannot weaken the wrapper
+            # and the report template that judge it. Full ref name, so a tag cannot stand in.
+            if ! git show-ref --verify --quiet "refs/remotes/origin/$BASE_REF"; then
+              echo "base branch refs/remotes/origin/$BASE_REF not found: the scan has no trusted copy of its wrapper" >&2
+              exit 1
+            fi
+            git show "refs/remotes/origin/$BASE_REF:tools/secret_scan.sh" > "$RUNNER_TEMP/secret_scan/secret_scan.sh"
+            git show "refs/remotes/origin/$BASE_REF:tools/secret_scan.tmpl" > "$RUNNER_TEMP/secret_scan/secret_scan.tmpl"
+          else
+            cp tools/secret_scan.sh tools/secret_scan.tmpl "$RUNNER_TEMP/secret_scan/"
+          fi
+      - name: Install Betterleaks (pinned version, checked against the hash above)
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -fsSL -o "$RUNNER_TEMP/$BETTERLEAKS_ARCHIVE" \
+            "https://github.com/betterleaks/betterleaks/releases/download/v${BETTERLEAKS_VERSION}/${BETTERLEAKS_ARCHIVE}"
+          echo "${BETTERLEAKS_SHA256}  ${RUNNER_TEMP}/${BETTERLEAKS_ARCHIVE}" | sha256sum --check --strict -
+          mkdir -p "$RUNNER_TEMP/bin"
+          tar -xzf "$RUNNER_TEMP/$BETTERLEAKS_ARCHIVE" -C "$RUNNER_TEMP/bin" betterleaks
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - name: Show the installed version
+        run: betterleaks version
+      - name: Scan history for secrets
+        run: sh "$RUNNER_TEMP/secret_scan/secret_scan.sh" history
+      - name: Test the secret guard
+        run: python3 -I -B -m unittest discover -s guard_tests
