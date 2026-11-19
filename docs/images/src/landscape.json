@@ -44,10 +44,7 @@
     },
     "_meta": {
       "title": "Positive prompt",
-      "ui_role": "cockpit",
-      "ui_expose": [
-        "text"
-      ]
+      "ui_role": "cockpit"
     }
   },
   "neg": {

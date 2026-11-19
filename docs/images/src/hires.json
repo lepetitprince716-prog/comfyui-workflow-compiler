@@ -23,11 +23,7 @@
       "text": "a quiet alpine lake at dawn, mist over pine forest, soft light"
     },
     "_meta": {
-      "title": "Positive prompt",
-      "ui_role": "cockpit",
-      "ui_expose": [
-        "text"
-      ]
+      "title": "Positive prompt"
     }
   },
   "neg": {
@@ -40,8 +36,7 @@
       "text": "blurry, lowres, watermark"
     },
     "_meta": {
-      "title": "Negative prompt",
-      "ui_role": "cockpit"
+      "title": "Negative prompt"
     }
   },
   "latent": {
@@ -52,8 +47,7 @@
       "batch_size": 1
     },
     "_meta": {
-      "title": "Canvas size",
-      "ui_role": "cockpit"
+      "title": "Canvas size"
     }
   },
   "sampler": {

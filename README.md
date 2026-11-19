@@ -68,7 +68,7 @@ graph, as it did for `hires.json`. Two nodes from
     "text": "a quiet alpine lake at dawn, mist over pine forest, soft light"
   },
   "_meta": {
-    "title": "Positive prompt", "ui_role": "cockpit", "ui_expose": ["text"]
+    "title": "Positive prompt", "ui_role": "cockpit"
   }
 }
 ```
