@@ -1,0 +1,4302 @@
+{
+ "canvases": "reroutes.canvases.json",
+ "renderer": "classic",
+ "results": {
+  "main": {
+   "console": [],
+   "console_errors": [],
+   "draw": {
+    "call_count": 12,
+    "calls": [
+     {
+      "control_points": [
+       [
+        460.64211974292357,
+        234
+       ],
+       [
+        431.28976706812256,
+        397.46484463815733
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       453.7,
+       447.3
+      ],
+      "end_direction": "none",
+      "id": "1",
+      "start": [
+       406,
+       234
+      ],
+      "start_direction": "right"
+     },
+     {
+      "control_points": [
+       [
+        479.331115539333,
+        504.29765053236287
+       ],
+       [
+        538.3725114878956,
+        660.3797355308523
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       600,
+       650
+      ],
+      "end_direction": "none",
+      "id": "1",
+      "start": [
+       453.7,
+       447.3
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        678.8888781223436,
+        636.7129796945281
+       ],
+       [
+        691.4827245982691,
+        204.5502381255845
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       750,
+       150
+      ],
+      "end_direction": "none",
+      "id": "1",
+      "start": [
+       600,
+       650
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        779.9901036433871,
+        122.04300296063793
+       ],
+       [
+        869,
+        114
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       910,
+       114
+      ],
+      "end_direction": "left",
+      "id": "1",
+      "start": [
+       750,
+       150
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        434.71410803072246,
+        234
+       ],
+       [
+        478.7511764349497,
+        280.6871157746606
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       500,
+       300
+      ],
+      "end_direction": "none",
+      "id": "2",
+      "start": [
+       406,
+       234
+      ],
+      "start_direction": "right"
+     },
+     {
+      "control_points": [
+       [
+        543.1498230407494,
+        339.21852587173584
+       ],
+       [
+        642.2602377813976,
+        411.8685881337095
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       700,
+       420
+      ],
+      "end_direction": "none",
+      "id": "2",
+      "start": [
+       500,
+       300
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        753.8036945113672,
+        427.57710082600664
+       ],
+       [
+        855.6653885630899,
+        364
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       910,
+       364
+      ],
+      "end_direction": "left",
+      "id": "2",
+      "start": [
+       700,
+       420
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        559.2010688051051,
+        353.8073735870206
+       ],
+       [
+        625.1065652042661,
+        671.875750241168
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       700,
+       700
+      ],
+      "end_direction": "none",
+      "id": "3",
+      "start": [
+       500,
+       300
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        753.1105157214297,
+        719.9442502943522
+       ],
+       [
+        853.2681747164786,
+        614
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       910,
+       614
+      ],
+      "end_direction": "left",
+      "id": "3",
+      "start": [
+       700,
+       700
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        559.2010688051051,
+        353.8073735870206
+       ],
+       [
+        735.6806092254794,
+        864
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       910,
+       864
+      ],
+      "end_direction": "left",
+      "id": "4",
+      "start": [
+       500,
+       300
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        674.7531395165458,
+        254
+       ],
+       [
+        925.3899717942904,
+        1121.1323071385466
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       1000,
+       1150
+      ],
+      "end_direction": "none",
+      "id": "5",
+      "start": [
+       406,
+       254
+      ],
+      "start_direction": "right"
+     },
+     {
+      "control_points": [
+       [
+        1074.6100282057096,
+        1178.8676928614534
+       ],
+       [
+        1341.3998313660559,
+        1034
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       1460,
+       1034
+      ],
+      "end_direction": "left",
+      "id": "5",
+      "start": [
+       1000,
+       1150
+      ],
+      "start_direction": "none"
+     }
+    ],
+    "circles": [
+     {
+      "id": 1,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 2,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 3,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 4,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 5,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 6,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 7,
+      "radii": [
+       10,
+       8
+      ]
+     }
+    ],
+    "max_spline_offset": 80,
+    "predicted": [
+     {
+      "anchors": [
+       [
+        406,
+        234
+       ],
+       [
+        910,
+        114
+       ]
+      ],
+      "chain": [
+       1,
+       2,
+       3
+      ],
+      "link": 1,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -22.41023293187745,
+         -49.83515536184267
+        ],
+        "cos": 0.41012744449357996,
+        "sin": 0.9120282228490331
+       },
+       {
+        "control": [
+         -61.62748851210443,
+         10.379735530852255
+        ],
+        "cos": 0.9861109765292948,
+        "sin": -0.16608775381839774
+       },
+       {
+        "control": [
+         -58.51727540173094,
+         54.550238125584514
+        ],
+        "cos": 0.7314659425216368,
+        "sin": -0.6818779765698064
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         234
+        ],
+        "b": [
+         453.7,
+         447.3
+        ],
+        "c1": [
+         460.64211974292357,
+         234
+        ],
+        "c2": [
+         431.28976706812256,
+         397.46484463815733
+        ],
+        "has_path": true,
+        "key": "reroute:1",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         453.7,
+         447.3
+        ],
+        "b": [
+         600,
+         650
+        ],
+        "c1": [
+         479.331115539333,
+         504.29765053236287
+        ],
+        "c2": [
+         538.3725114878956,
+         660.3797355308523
+        ],
+        "has_path": true,
+        "key": "reroute:2",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         600,
+         650
+        ],
+        "b": [
+         750,
+         150
+        ],
+        "c1": [
+         678.8888781223436,
+         636.7129796945281
+        ],
+        "c2": [
+         691.4827245982691,
+         204.5502381255845
+        ],
+        "has_path": true,
+        "key": "reroute:3",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         750,
+         150
+        ],
+        "b": [
+         910,
+         114
+        ],
+        "c1": [
+         779.9901036433871,
+         122.04300296063793
+        ],
+        "c2": [
+         869,
+         114
+        ],
+        "has_path": true,
+        "key": "link:1",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     },
+     {
+      "anchors": [
+       [
+        406,
+        234
+       ],
+       [
+        910,
+        364
+       ]
+      ],
+      "chain": [
+       4,
+       5
+      ],
+      "link": 2,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -21.248823565050298,
+         -19.3128842253394
+        ],
+        "cos": 0.7400133600638148,
+        "sin": 0.6725921698377575
+       },
+       {
+        "control": [
+         -57.739762218602436,
+         -8.131411866290486
+        ],
+        "cos": 0.9902287526955206,
+        "sin": 0.1394525630279826
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         234
+        ],
+        "b": [
+         500,
+         300
+        ],
+        "c1": [
+         434.71410803072246,
+         234
+        ],
+        "c2": [
+         478.7511764349497,
+         280.6871157746606
+        ],
+        "has_path": true,
+        "key": "reroute:4",
+        "link": 2,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         500,
+         300
+        ],
+        "b": [
+         700,
+         420
+        ],
+        "c1": [
+         543.1498230407494,
+         339.21852587173584
+        ],
+        "c2": [
+         642.2602377813976,
+         411.8685881337095
+        ],
+        "has_path": true,
+        "key": "reroute:5",
+        "link": 2,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         700,
+         420
+        ],
+        "b": [
+         910,
+         364
+        ],
+        "c1": [
+         753.8036945113672,
+         427.57710082600664
+        ],
+        "c2": [
+         855.6653885630899,
+         364
+        ],
+        "has_path": true,
+        "key": "link:2",
+        "link": 2,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     },
+     {
+      "anchors": [
+       [
+        406,
+        234
+       ],
+       [
+        910,
+        614
+       ]
+      ],
+      "chain": [
+       4,
+       6
+      ],
+      "link": 3,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -21.248823565050298,
+         -19.3128842253394
+        ],
+        "cos": 0.7400133600638148,
+        "sin": 0.6725921698377575
+       },
+       {
+        "control": [
+         -74.89343479573388,
+         -28.124249758831926
+        ],
+        "cos": 0.9361679349466735,
+        "sin": 0.35155312198539906
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         234
+        ],
+        "b": [
+         500,
+         300
+        ],
+        "c1": [
+         434.71410803072246,
+         234
+        ],
+        "c2": [
+         478.7511764349497,
+         280.6871157746606
+        ],
+        "has_path": true,
+        "key": "reroute:4",
+        "link": 3,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         500,
+         300
+        ],
+        "b": [
+         700,
+         700
+        ],
+        "c1": [
+         559.2010688051051,
+         353.8073735870206
+        ],
+        "c2": [
+         625.1065652042661,
+         671.875750241168
+        ],
+        "has_path": true,
+        "key": "reroute:6",
+        "link": 3,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         700,
+         700
+        ],
+        "b": [
+         910,
+         614
+        ],
+        "c1": [
+         753.1105157214297,
+         719.9442502943522
+        ],
+        "c2": [
+         853.2681747164786,
+         614
+        ],
+        "has_path": true,
+        "key": "link:3",
+        "link": 3,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     },
+     {
+      "anchors": [
+       [
+        406,
+        234
+       ],
+       [
+        910,
+        864
+       ]
+      ],
+      "chain": [
+       4
+      ],
+      "link": 4,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -21.248823565050298,
+         -19.3128842253394
+        ],
+        "cos": 0.7400133600638148,
+        "sin": 0.6725921698377575
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         234
+        ],
+        "b": [
+         500,
+         300
+        ],
+        "c1": [
+         434.71410803072246,
+         234
+        ],
+        "c2": [
+         478.7511764349497,
+         280.6871157746606
+        ],
+        "has_path": true,
+        "key": "reroute:4",
+        "link": 4,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         500,
+         300
+        ],
+        "b": [
+         910,
+         864
+        ],
+        "c1": [
+         559.2010688051051,
+         353.8073735870206
+        ],
+        "c2": [
+         735.6806092254794,
+         864
+        ],
+        "has_path": true,
+        "key": "link:4",
+        "link": 4,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     },
+     {
+      "anchors": [
+       [
+        406,
+        254
+       ],
+       [
+        1460,
+        1034
+       ]
+      ],
+      "chain": [
+       7
+      ],
+      "link": 5,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -74.61002820570963,
+         -28.867692861453506
+        ],
+        "cos": 0.9326253525713704,
+        "sin": 0.36084616076816883
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         254
+        ],
+        "b": [
+         1000,
+         1150
+        ],
+        "c1": [
+         674.753139516546,
+         254
+        ],
+        "c2": [
+         925.3899717942904,
+         1121.1323071385466
+        ],
+        "has_path": true,
+        "key": "reroute:7",
+        "link": 5,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         1000,
+         1150
+        ],
+        "b": [
+         1460,
+         1034
+        ],
+        "c1": [
+         1074.6100282057096,
+         1178.8676928614534
+        ],
+        "c2": [
+         1341.3998313660559,
+         1034
+        ],
+        "has_path": true,
+        "key": "link:5",
+        "link": 5,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     }
+    ],
+    "reroute_radius": 10,
+    "reroutes_after_draw": [
+     {
+      "control_point": [
+       -22.41023293187745,
+       -49.83515536184267
+      ],
+      "cos": 0.41012744449357996,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 1,
+      "link_ids": [
+       1
+      ],
+      "parent_id": null,
+      "pos": [
+       453.7,
+       447.3
+      ],
+      "sin": 0.9120282228490331
+     },
+     {
+      "control_point": [
+       -61.62748851210443,
+       10.379735530852255
+      ],
+      "cos": 0.9861109765292948,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 2,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 1,
+      "pos": [
+       600,
+       650
+      ],
+      "sin": -0.16608775381839774
+     },
+     {
+      "control_point": [
+       -58.51727540173094,
+       54.550238125584514
+      ],
+      "cos": 0.7314659425216368,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 3,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 2,
+      "pos": [
+       750,
+       150
+      ],
+      "sin": -0.6818779765698064
+     },
+     {
+      "control_point": [
+       -21.248823565050298,
+       -19.3128842253394
+      ],
+      "cos": 0.7400133600638148,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 4,
+      "link_ids": [
+       2,
+       3,
+       4
+      ],
+      "parent_id": null,
+      "pos": [
+       500,
+       300
+      ],
+      "sin": 0.6725921698377575
+     },
+     {
+      "control_point": [
+       -57.73976221860244,
+       -8.131411866290488
+      ],
+      "cos": 0.9902287526955206,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 5,
+      "link_ids": [
+       2
+      ],
+      "parent_id": 4,
+      "pos": [
+       700,
+       420
+      ],
+      "sin": 0.1394525630279826
+     },
+     {
+      "control_point": [
+       -74.89343479573388,
+       -28.124249758831926
+      ],
+      "cos": 0.9361679349466735,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 6,
+      "link_ids": [
+       3
+      ],
+      "parent_id": 4,
+      "pos": [
+       700,
+       700
+      ],
+      "sin": 0.35155312198539906
+     },
+     {
+      "control_point": [
+       -74.61002820570963,
+       -28.867692861453506
+      ],
+      "cos": 0.9326253525713704,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 7,
+      "link_ids": [
+       5
+      ],
+      "parent_id": null,
+      "pos": [
+       1000,
+       1150
+      ],
+      "sin": 0.36084616076816883
+     }
+    ]
+   },
+   "live": {
+    "floating_links": [],
+    "last_node_id": 6,
+    "last_reroute_id": 7,
+    "links": [
+     {
+      "id": 1,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 3,
+      "target": [
+       "2",
+       0
+      ]
+     },
+     {
+      "id": 2,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 5,
+      "target": [
+       "3",
+       0
+      ]
+     },
+     {
+      "id": 3,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 6,
+      "target": [
+       "4",
+       0
+      ]
+     },
+     {
+      "id": 4,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 4,
+      "target": [
+       "5",
+       0
+      ]
+     },
+     {
+      "id": 5,
+      "origin": [
+       "1",
+       2
+      ],
+      "parent_id": 7,
+      "target": [
+       "6",
+       1
+      ]
+     }
+    ],
+    "reroutes": [
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 1,
+      "link_ids": [
+       1
+      ],
+      "parent_id": null,
+      "pos": [
+       453.7,
+       447.3
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 2,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 1,
+      "pos": [
+       600,
+       650
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 3,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 2,
+      "pos": [
+       750,
+       150
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 4,
+      "link_ids": [
+       2,
+       3,
+       4
+      ],
+      "parent_id": null,
+      "pos": [
+       500,
+       300
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 5,
+      "link_ids": [
+       2
+      ],
+      "parent_id": 4,
+      "pos": [
+       700,
+       420
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 6,
+      "link_ids": [
+       3
+      ],
+      "parent_id": 4,
+      "pos": [
+       700,
+       700
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 7,
+      "link_ids": [
+       5
+      ],
+      "parent_id": null,
+      "pos": [
+       1000,
+       1150
+      ],
+      "sin": 0
+     }
+    ]
+   },
+   "live_again": {
+    "floating_links": [],
+    "last_node_id": 6,
+    "last_reroute_id": 7,
+    "links": [
+     {
+      "id": 1,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 3,
+      "target": [
+       "2",
+       0
+      ]
+     },
+     {
+      "id": 2,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 5,
+      "target": [
+       "3",
+       0
+      ]
+     },
+     {
+      "id": 3,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 6,
+      "target": [
+       "4",
+       0
+      ]
+     },
+     {
+      "id": 4,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 4,
+      "target": [
+       "5",
+       0
+      ]
+     },
+     {
+      "id": 5,
+      "origin": [
+       "1",
+       2
+      ],
+      "parent_id": 7,
+      "target": [
+       "6",
+       1
+      ]
+     }
+    ],
+    "reroutes": [
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 1,
+      "link_ids": [
+       1
+      ],
+      "parent_id": null,
+      "pos": [
+       453.7,
+       447.3
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 2,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 1,
+      "pos": [
+       600,
+       650
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 3,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 2,
+      "pos": [
+       750,
+       150
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 4,
+      "link_ids": [
+       2,
+       3,
+       4
+      ],
+      "parent_id": null,
+      "pos": [
+       500,
+       300
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 5,
+      "link_ids": [
+       2
+      ],
+      "parent_id": 4,
+      "pos": [
+       700,
+       420
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 6,
+      "link_ids": [
+       3
+      ],
+      "parent_id": 4,
+      "pos": [
+       700,
+       700
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 7,
+      "link_ids": [
+       5
+      ],
+      "parent_id": null,
+      "pos": [
+       1000,
+       1150
+      ],
+      "sin": 0
+     }
+    ]
+   },
+   "load_error": null,
+   "reload": {
+    "console_errors": [],
+    "load_error": null
+   },
+   "serialized": {
+    "config": {},
+    "extra": {
+     "ds": {
+      "offset": [
+       416,
+       110
+      ],
+      "scale": 0.9
+     },
+     "linkExtensions": [
+      {
+       "id": 1,
+       "parentId": 3
+      },
+      {
+       "id": 2,
+       "parentId": 5
+      },
+      {
+       "id": 3,
+       "parentId": 6
+      },
+      {
+       "id": 4,
+       "parentId": 4
+      },
+      {
+       "id": 5,
+       "parentId": 7
+      }
+     ],
+     "reroutes": [
+      {
+       "id": 1,
+       "linkIds": [
+        1
+       ],
+       "pos": [
+        453.7,
+        447.3
+       ]
+      },
+      {
+       "id": 2,
+       "linkIds": [
+        1
+       ],
+       "parentId": 1,
+       "pos": [
+        600,
+        650
+       ]
+      },
+      {
+       "id": 3,
+       "linkIds": [
+        1
+       ],
+       "parentId": 2,
+       "pos": [
+        750,
+        150
+       ]
+      },
+      {
+       "id": 4,
+       "linkIds": [
+        2,
+        3,
+        4
+       ],
+       "pos": [
+        500,
+        300
+       ]
+      },
+      {
+       "id": 5,
+       "linkIds": [
+        2
+       ],
+       "parentId": 4,
+       "pos": [
+        700,
+        420
+       ]
+      },
+      {
+       "id": 6,
+       "linkIds": [
+        3
+       ],
+       "parentId": 4,
+       "pos": [
+        700,
+        700
+       ]
+      },
+      {
+       "id": 7,
+       "linkIds": [
+        5
+       ],
+       "pos": [
+        1000,
+        1150
+       ]
+      }
+     ]
+    },
+    "groups": [],
+    "id": "7eed2917-c3eb-45ca-bac1-e00a8ea05880",
+    "last_link_id": 5,
+    "last_node_id": 6,
+    "links": [
+     [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+     ],
+     [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+     ],
+     [
+      3,
+      1,
+      1,
+      4,
+      0,
+      "CLIP"
+     ],
+     [
+      4,
+      1,
+      1,
+      5,
+      0,
+      "CLIP"
+     ],
+     [
+      5,
+      1,
+      2,
+      6,
+      1,
+      "VAE"
+     ]
+    ],
+    "nodes": [
+     {
+      "flags": {},
+      "id": 1,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "ckpt_name",
+        "name": "ckpt_name",
+        "type": "COMBO",
+        "widget": {
+         "name": "ckpt_name"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 0,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "MODEL",
+        "name": "MODEL",
+        "type": "MODEL"
+       },
+       {
+        "links": [
+         1,
+         2,
+         3,
+         4
+        ],
+        "localized_name": "CLIP",
+        "name": "CLIP",
+        "type": "CLIP"
+       },
+       {
+        "links": [
+         5
+        ],
+        "localized_name": "VAE",
+        "name": "VAE",
+        "type": "VAE"
+       }
+      ],
+      "pos": [
+       100,
+       200
+      ],
+      "properties": {
+       "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "size": [
+       315,
+       98
+      ],
+      "type": "CheckpointLoaderSimple",
+      "widgets_values": [
+       "model.safetensors"
+      ],
+      "widgets_values_named": {
+       "ckpt_name": "model.safetensors"
+      }
+     },
+     {
+      "flags": {},
+      "id": 2,
+      "inputs": [
+       {
+        "link": 1,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 1,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       100
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 3,
+      "inputs": [
+       {
+        "link": 2,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 2,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       350
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 4,
+      "inputs": [
+       {
+        "link": 3,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 3,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       600
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 5,
+      "inputs": [
+       {
+        "link": 4,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 4,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       850
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 6,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "samples",
+        "name": "samples",
+        "type": "LATENT"
+       },
+       {
+        "link": 5,
+        "localized_name": "vae",
+        "name": "vae",
+        "type": "VAE"
+       }
+      ],
+      "mode": 0,
+      "order": 5,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "IMAGE",
+        "name": "IMAGE",
+        "type": "IMAGE"
+       }
+      ],
+      "pos": [
+       1450,
+       1000
+      ],
+      "properties": {
+       "Node name for S&R": "VAEDecode"
+      },
+      "size": [
+       210,
+       46
+      ],
+      "type": "VAEDecode"
+     }
+    ],
+    "revision": 0,
+    "version": 0.4
+   },
+   "serialized_after_draw": {
+    "config": {},
+    "extra": {
+     "ds": {
+      "offset": [
+       46.400000000000006,
+       46.400000000000006
+      ],
+      "scale": 0.8620689655172413
+     },
+     "linkExtensions": [
+      {
+       "id": 1,
+       "parentId": 3
+      },
+      {
+       "id": 2,
+       "parentId": 5
+      },
+      {
+       "id": 3,
+       "parentId": 6
+      },
+      {
+       "id": 4,
+       "parentId": 4
+      },
+      {
+       "id": 5,
+       "parentId": 7
+      }
+     ],
+     "reroutes": [
+      {
+       "id": 1,
+       "linkIds": [
+        1
+       ],
+       "pos": [
+        453.7,
+        447.3
+       ]
+      },
+      {
+       "id": 2,
+       "linkIds": [
+        1
+       ],
+       "parentId": 1,
+       "pos": [
+        600,
+        650
+       ]
+      },
+      {
+       "id": 3,
+       "linkIds": [
+        1
+       ],
+       "parentId": 2,
+       "pos": [
+        750,
+        150
+       ]
+      },
+      {
+       "id": 4,
+       "linkIds": [
+        2,
+        3,
+        4
+       ],
+       "pos": [
+        500,
+        300
+       ]
+      },
+      {
+       "id": 5,
+       "linkIds": [
+        2
+       ],
+       "parentId": 4,
+       "pos": [
+        700,
+        420
+       ]
+      },
+      {
+       "id": 6,
+       "linkIds": [
+        3
+       ],
+       "parentId": 4,
+       "pos": [
+        700,
+        700
+       ]
+      },
+      {
+       "id": 7,
+       "linkIds": [
+        5
+       ],
+       "pos": [
+        1000,
+        1150
+       ]
+      }
+     ]
+    },
+    "groups": [],
+    "id": "7eed2917-c3eb-45ca-bac1-e00a8ea05880",
+    "last_link_id": 5,
+    "last_node_id": 6,
+    "links": [
+     [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+     ],
+     [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+     ],
+     [
+      3,
+      1,
+      1,
+      4,
+      0,
+      "CLIP"
+     ],
+     [
+      4,
+      1,
+      1,
+      5,
+      0,
+      "CLIP"
+     ],
+     [
+      5,
+      1,
+      2,
+      6,
+      1,
+      "VAE"
+     ]
+    ],
+    "nodes": [
+     {
+      "flags": {},
+      "id": 1,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "ckpt_name",
+        "name": "ckpt_name",
+        "type": "COMBO",
+        "widget": {
+         "name": "ckpt_name"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 0,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "MODEL",
+        "name": "MODEL",
+        "type": "MODEL"
+       },
+       {
+        "links": [
+         1,
+         2,
+         3,
+         4
+        ],
+        "localized_name": "CLIP",
+        "name": "CLIP",
+        "type": "CLIP"
+       },
+       {
+        "links": [
+         5
+        ],
+        "localized_name": "VAE",
+        "name": "VAE",
+        "type": "VAE"
+       }
+      ],
+      "pos": [
+       100,
+       200
+      ],
+      "properties": {
+       "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "size": [
+       315,
+       98
+      ],
+      "type": "CheckpointLoaderSimple",
+      "widgets_values": [
+       "model.safetensors"
+      ],
+      "widgets_values_named": {
+       "ckpt_name": "model.safetensors"
+      }
+     },
+     {
+      "flags": {},
+      "id": 2,
+      "inputs": [
+       {
+        "link": 1,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 1,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       100
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 3,
+      "inputs": [
+       {
+        "link": 2,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 2,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       350
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 4,
+      "inputs": [
+       {
+        "link": 3,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 3,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       600
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 5,
+      "inputs": [
+       {
+        "link": 4,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 4,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       850
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 6,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "samples",
+        "name": "samples",
+        "type": "LATENT"
+       },
+       {
+        "link": 5,
+        "localized_name": "vae",
+        "name": "vae",
+        "type": "VAE"
+       }
+      ],
+      "mode": 0,
+      "order": 5,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "IMAGE",
+        "name": "IMAGE",
+        "type": "IMAGE"
+       }
+      ],
+      "pos": [
+       1450,
+       1000
+      ],
+      "properties": {
+       "Node name for S&R": "VAEDecode"
+      },
+      "size": [
+       210,
+       46
+      ],
+      "type": "VAEDecode"
+     }
+    ],
+    "revision": 0,
+    "version": 0.4
+   },
+   "serialized_again": {
+    "config": {},
+    "extra": {
+     "ds": {
+      "offset": [
+       46.400000000000006,
+       46.400000000000006
+      ],
+      "scale": 0.8620689655172413
+     },
+     "linkExtensions": [
+      {
+       "id": 1,
+       "parentId": 3
+      },
+      {
+       "id": 2,
+       "parentId": 5
+      },
+      {
+       "id": 3,
+       "parentId": 6
+      },
+      {
+       "id": 4,
+       "parentId": 4
+      },
+      {
+       "id": 5,
+       "parentId": 7
+      }
+     ],
+     "reroutes": [
+      {
+       "id": 1,
+       "linkIds": [
+        1
+       ],
+       "pos": [
+        453.7,
+        447.3
+       ]
+      },
+      {
+       "id": 2,
+       "linkIds": [
+        1
+       ],
+       "parentId": 1,
+       "pos": [
+        600,
+        650
+       ]
+      },
+      {
+       "id": 3,
+       "linkIds": [
+        1
+       ],
+       "parentId": 2,
+       "pos": [
+        750,
+        150
+       ]
+      },
+      {
+       "id": 4,
+       "linkIds": [
+        2,
+        3,
+        4
+       ],
+       "pos": [
+        500,
+        300
+       ]
+      },
+      {
+       "id": 5,
+       "linkIds": [
+        2
+       ],
+       "parentId": 4,
+       "pos": [
+        700,
+        420
+       ]
+      },
+      {
+       "id": 6,
+       "linkIds": [
+        3
+       ],
+       "parentId": 4,
+       "pos": [
+        700,
+        700
+       ]
+      },
+      {
+       "id": 7,
+       "linkIds": [
+        5
+       ],
+       "pos": [
+        1000,
+        1150
+       ]
+      }
+     ]
+    },
+    "groups": [],
+    "id": "7eed2917-c3eb-45ca-bac1-e00a8ea05880",
+    "last_link_id": 5,
+    "last_node_id": 6,
+    "links": [
+     [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+     ],
+     [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+     ],
+     [
+      3,
+      1,
+      1,
+      4,
+      0,
+      "CLIP"
+     ],
+     [
+      4,
+      1,
+      1,
+      5,
+      0,
+      "CLIP"
+     ],
+     [
+      5,
+      1,
+      2,
+      6,
+      1,
+      "VAE"
+     ]
+    ],
+    "nodes": [
+     {
+      "flags": {},
+      "id": 1,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "ckpt_name",
+        "name": "ckpt_name",
+        "type": "COMBO",
+        "widget": {
+         "name": "ckpt_name"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 0,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "MODEL",
+        "name": "MODEL",
+        "type": "MODEL"
+       },
+       {
+        "links": [
+         1,
+         2,
+         3,
+         4
+        ],
+        "localized_name": "CLIP",
+        "name": "CLIP",
+        "type": "CLIP"
+       },
+       {
+        "links": [
+         5
+        ],
+        "localized_name": "VAE",
+        "name": "VAE",
+        "type": "VAE"
+       }
+      ],
+      "pos": [
+       100,
+       200
+      ],
+      "properties": {
+       "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "size": [
+       315,
+       98
+      ],
+      "type": "CheckpointLoaderSimple",
+      "widgets_values": [
+       "model.safetensors"
+      ],
+      "widgets_values_named": {
+       "ckpt_name": "model.safetensors"
+      }
+     },
+     {
+      "flags": {},
+      "id": 2,
+      "inputs": [
+       {
+        "link": 1,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 1,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       100
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 3,
+      "inputs": [
+       {
+        "link": 2,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 2,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       350
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 4,
+      "inputs": [
+       {
+        "link": 3,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 3,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       600
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 5,
+      "inputs": [
+       {
+        "link": 4,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 4,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       900,
+       850
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 6,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "samples",
+        "name": "samples",
+        "type": "LATENT"
+       },
+       {
+        "link": 5,
+        "localized_name": "vae",
+        "name": "vae",
+        "type": "VAE"
+       }
+      ],
+      "mode": 0,
+      "order": 5,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "IMAGE",
+        "name": "IMAGE",
+        "type": "IMAGE"
+       }
+      ],
+      "pos": [
+       1450,
+       1000
+      ],
+      "properties": {
+       "Node name for S&R": "VAEDecode"
+      },
+      "size": [
+       210,
+       46
+      ],
+      "type": "VAEDecode"
+     }
+    ],
+    "revision": 0,
+    "version": 0.4
+   }
+  },
+  "short": {
+   "console": [],
+   "console_errors": [],
+   "draw": {
+    "call_count": 6,
+    "calls": [
+     {
+      "control_points": [
+       [
+        415.394147114028,
+        234
+       ],
+       [
+        431.0728647533587,
+        247.07489208948203
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       440,
+       250
+      ],
+      "end_direction": "none",
+      "id": "1",
+      "start": [
+       406,
+       234
+      ],
+      "start_direction": "right"
+     },
+     {
+      "control_points": [
+       [
+        453.8526934776796,
+        254.5390399219936
+       ],
+       [
+        457.314765512054,
+        292.8177422779585
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       470,
+       300
+      ],
+      "end_direction": "none",
+      "id": "1",
+      "start": [
+       440,
+       250
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        480.8774988344185,
+        306.1587351872949
+       ],
+       [
+        507.50692329898084,
+        300.4159742088789
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       520,
+       300
+      ],
+      "end_direction": "none",
+      "id": "1",
+      "start": [
+       470,
+       300
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        542.5374549669,
+        299.2495843718597
+       ],
+       [
+        587.4500554324406,
+        294
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       610,
+       294
+      ],
+      "end_direction": "left",
+      "id": "1",
+      "start": [
+       520,
+       300
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        451.8785866591746,
+        253.89219462263634
+       ],
+       [
+        470.7978767206363,
+        228.45996023344037
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       480,
+       220
+      ],
+      "end_direction": "none",
+      "id": "2",
+      "start": [
+       440,
+       250
+      ],
+      "start_direction": "none"
+     },
+     {
+      "control_points": [
+       [
+        515.9783015051149,
+        186.9233946601674
+       ],
+       [
+        561.1277174668504,
+        74
+       ]
+      ],
+      "disabled": false,
+      "end": [
+       610,
+       74
+      ],
+      "end_direction": "left",
+      "id": "2",
+      "start": [
+       480,
+       220
+      ],
+      "start_direction": "none"
+     }
+    ],
+    "circles": [
+     {
+      "id": 1,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 2,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 3,
+      "radii": [
+       10,
+       8
+      ]
+     },
+     {
+      "id": 4,
+      "radii": [
+       10,
+       8
+      ]
+     }
+    ],
+    "max_spline_offset": 80,
+    "predicted": [
+     {
+      "anchors": [
+       [
+        406,
+        234
+       ],
+       [
+        610,
+        294
+       ]
+      ],
+      "chain": [
+       1,
+       2,
+       3
+      ],
+      "link": 1,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -8.927135246641292,
+         -2.9251079105179536
+        ],
+        "cos": 0.9502869327339677,
+        "sin": 0.3113755698109078
+       },
+       {
+        "control": [
+         -12.685234487946001,
+         -7.182257722041538
+        ],
+        "cos": 0.8701999067534788,
+        "sin": 0.49269881498359297
+       },
+       {
+        "control": [
+         -12.49307670101915,
+         0.4159742088788983
+        ],
+        "cos": 0.9994461360815321,
+        "sin": -0.033277936710311866
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         234
+        ],
+        "b": [
+         440,
+         250
+        ],
+        "c1": [
+         415.394147114028,
+         234
+        ],
+        "c2": [
+         431.0728647533587,
+         247.07489208948203
+        ],
+        "has_path": true,
+        "key": "reroute:1",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         440,
+         250
+        ],
+        "b": [
+         470,
+         300
+        ],
+        "c1": [
+         453.8526934776796,
+         254.5390399219936
+        ],
+        "c2": [
+         457.314765512054,
+         292.8177422779585
+        ],
+        "has_path": true,
+        "key": "reroute:2",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         470,
+         300
+        ],
+        "b": [
+         520,
+         300
+        ],
+        "c1": [
+         480.8774988344185,
+         306.1587351872949
+        ],
+        "c2": [
+         507.50692329898084,
+         300.4159742088789
+        ],
+        "has_path": true,
+        "key": "reroute:3",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         520,
+         300
+        ],
+        "b": [
+         610,
+         294
+        ],
+        "c1": [
+         542.5374549669,
+         299.2495843718597
+        ],
+        "c2": [
+         587.4500554324406,
+         294
+        ],
+        "has_path": true,
+        "key": "link:1",
+        "link": 1,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     },
+     {
+      "anchors": [
+       [
+        406,
+        234
+       ],
+       [
+        610,
+        74
+       ]
+      ],
+      "chain": [
+       1,
+       4
+      ],
+      "link": 2,
+      "rerouted_dirs": [
+       {
+        "control": [
+         -8.927135246641292,
+         -2.9251079105179536
+        ],
+        "cos": 0.9502869327339677,
+        "sin": 0.3113755698109078
+       },
+       {
+        "control": [
+         -9.20212327936372,
+         8.459960233440363
+        ],
+        "cos": 0.7361698623490975,
+        "sin": -0.676796818675229
+       }
+      ],
+      "segments": [
+       {
+        "a": [
+         406,
+         234
+        ],
+        "b": [
+         440,
+         250
+        ],
+        "c1": [
+         415.394147114028,
+         234
+        ],
+        "c2": [
+         431.0728647533587,
+         247.07489208948203
+        ],
+        "has_path": true,
+        "key": "reroute:1",
+        "link": 2,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         440,
+         250
+        ],
+        "b": [
+         480,
+         220
+        ],
+        "c1": [
+         451.8785866591746,
+         253.89219462263634
+        ],
+        "c2": [
+         470.7978767206363,
+         228.45996023344037
+        ],
+        "has_path": true,
+        "key": "reroute:4",
+        "link": 2,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       },
+       {
+        "a": [
+         480,
+         220
+        ],
+        "b": [
+         610,
+         74
+        ],
+        "c1": [
+         515.9783015051149,
+         186.9233946601674
+        ],
+        "c2": [
+         561.1277174668504,
+         74
+        ],
+        "has_path": true,
+        "key": "link:2",
+        "link": 2,
+        "matched_call": true,
+        "on_path": 21,
+        "samples": 21
+       }
+      ]
+     }
+    ],
+    "reroute_radius": 10,
+    "reroutes_after_draw": [
+     {
+      "control_point": [
+       -8.927135246641292,
+       -2.9251079105179536
+      ],
+      "cos": 0.9502869327339677,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 1,
+      "link_ids": [
+       1,
+       2
+      ],
+      "parent_id": null,
+      "pos": [
+       440,
+       250
+      ],
+      "sin": 0.3113755698109078
+     },
+     {
+      "control_point": [
+       -12.685234487946003,
+       -7.1822577220415385
+      ],
+      "cos": 0.8701999067534788,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 2,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 1,
+      "pos": [
+       470,
+       300
+      ],
+      "sin": 0.49269881498359297
+     },
+     {
+      "control_point": [
+       -12.49307670101915,
+       0.4159742088788983
+      ],
+      "cos": 0.9994461360815321,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 3,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 2,
+      "pos": [
+       520,
+       300
+      ],
+      "sin": -0.033277936710311866
+     },
+     {
+      "control_point": [
+       -9.20212327936372,
+       8.459960233440363
+      ],
+      "cos": 0.7361698623490975,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 4,
+      "link_ids": [
+       2
+      ],
+      "parent_id": 1,
+      "pos": [
+       480,
+       220
+      ],
+      "sin": -0.676796818675229
+     }
+    ]
+   },
+   "live": {
+    "floating_links": [],
+    "last_node_id": 3,
+    "last_reroute_id": 4,
+    "links": [
+     {
+      "id": 1,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 3,
+      "target": [
+       "2",
+       0
+      ]
+     },
+     {
+      "id": 2,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 4,
+      "target": [
+       "3",
+       0
+      ]
+     }
+    ],
+    "reroutes": [
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 1,
+      "link_ids": [
+       1,
+       2
+      ],
+      "parent_id": null,
+      "pos": [
+       440,
+       250
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 2,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 1,
+      "pos": [
+       470,
+       300
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 3,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 2,
+      "pos": [
+       520,
+       300
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 4,
+      "link_ids": [
+       2
+      ],
+      "parent_id": 1,
+      "pos": [
+       480,
+       220
+      ],
+      "sin": 0
+     }
+    ]
+   },
+   "live_again": {
+    "floating_links": [],
+    "last_node_id": 3,
+    "last_reroute_id": 4,
+    "links": [
+     {
+      "id": 1,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 3,
+      "target": [
+       "2",
+       0
+      ]
+     },
+     {
+      "id": 2,
+      "origin": [
+       "1",
+       1
+      ],
+      "parent_id": 4,
+      "target": [
+       "3",
+       0
+      ]
+     }
+    ],
+    "reroutes": [
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 1,
+      "link_ids": [
+       1,
+       2
+      ],
+      "parent_id": null,
+      "pos": [
+       440,
+       250
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 2,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 1,
+      "pos": [
+       470,
+       300
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 3,
+      "link_ids": [
+       1
+      ],
+      "parent_id": 2,
+      "pos": [
+       520,
+       300
+      ],
+      "sin": 0
+     },
+     {
+      "control_point": [
+       0,
+       0
+      ],
+      "cos": 0,
+      "floating": null,
+      "floating_link_ids": [],
+      "id": 4,
+      "link_ids": [
+       2
+      ],
+      "parent_id": 1,
+      "pos": [
+       480,
+       220
+      ],
+      "sin": 0
+     }
+    ]
+   },
+   "load_error": null,
+   "reload": {
+    "console_errors": [],
+    "load_error": null
+   },
+   "serialized": {
+    "config": {},
+    "extra": {
+     "ds": {
+      "offset": [
+       46.400000000000006,
+       46.400000000000006
+      ],
+      "scale": 0.8620689655172413
+     },
+     "linkExtensions": [
+      {
+       "id": 1,
+       "parentId": 3
+      },
+      {
+       "id": 2,
+       "parentId": 4
+      }
+     ],
+     "reroutes": [
+      {
+       "id": 1,
+       "linkIds": [
+        1,
+        2
+       ],
+       "pos": [
+        440,
+        250
+       ]
+      },
+      {
+       "id": 2,
+       "linkIds": [
+        1
+       ],
+       "parentId": 1,
+       "pos": [
+        470,
+        300
+       ]
+      },
+      {
+       "id": 3,
+       "linkIds": [
+        1
+       ],
+       "parentId": 2,
+       "pos": [
+        520,
+        300
+       ]
+      },
+      {
+       "id": 4,
+       "linkIds": [
+        2
+       ],
+       "parentId": 1,
+       "pos": [
+        480,
+        220
+       ]
+      }
+     ]
+    },
+    "groups": [],
+    "id": "f971ee4a-a1bc-4aed-94e9-e5ba9b4b1279",
+    "last_link_id": 2,
+    "last_node_id": 3,
+    "links": [
+     [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+     ],
+     [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+     ]
+    ],
+    "nodes": [
+     {
+      "flags": {},
+      "id": 1,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "ckpt_name",
+        "name": "ckpt_name",
+        "type": "COMBO",
+        "widget": {
+         "name": "ckpt_name"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 0,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "MODEL",
+        "name": "MODEL",
+        "type": "MODEL"
+       },
+       {
+        "links": [
+         1,
+         2
+        ],
+        "localized_name": "CLIP",
+        "name": "CLIP",
+        "type": "CLIP"
+       },
+       {
+        "links": [],
+        "localized_name": "VAE",
+        "name": "VAE",
+        "type": "VAE"
+       }
+      ],
+      "pos": [
+       100,
+       200
+      ],
+      "properties": {
+       "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "size": [
+       315,
+       98
+      ],
+      "type": "CheckpointLoaderSimple",
+      "widgets_values": [
+       "model.safetensors"
+      ],
+      "widgets_values_named": {
+       "ckpt_name": "model.safetensors"
+      }
+     },
+     {
+      "flags": {},
+      "id": 2,
+      "inputs": [
+       {
+        "link": 1,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 1,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       600,
+       280
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 3,
+      "inputs": [
+       {
+        "link": 2,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 2,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       600,
+       60
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     }
+    ],
+    "revision": 0,
+    "version": 0.4
+   },
+   "serialized_after_draw": {
+    "config": {},
+    "extra": {
+     "ds": {
+      "offset": [
+       40,
+       40
+      ],
+      "scale": 1
+     },
+     "linkExtensions": [
+      {
+       "id": 1,
+       "parentId": 3
+      },
+      {
+       "id": 2,
+       "parentId": 4
+      }
+     ],
+     "reroutes": [
+      {
+       "id": 1,
+       "linkIds": [
+        1,
+        2
+       ],
+       "pos": [
+        440,
+        250
+       ]
+      },
+      {
+       "id": 2,
+       "linkIds": [
+        1
+       ],
+       "parentId": 1,
+       "pos": [
+        470,
+        300
+       ]
+      },
+      {
+       "id": 3,
+       "linkIds": [
+        1
+       ],
+       "parentId": 2,
+       "pos": [
+        520,
+        300
+       ]
+      },
+      {
+       "id": 4,
+       "linkIds": [
+        2
+       ],
+       "parentId": 1,
+       "pos": [
+        480,
+        220
+       ]
+      }
+     ]
+    },
+    "groups": [],
+    "id": "f971ee4a-a1bc-4aed-94e9-e5ba9b4b1279",
+    "last_link_id": 2,
+    "last_node_id": 3,
+    "links": [
+     [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+     ],
+     [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+     ]
+    ],
+    "nodes": [
+     {
+      "flags": {},
+      "id": 1,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "ckpt_name",
+        "name": "ckpt_name",
+        "type": "COMBO",
+        "widget": {
+         "name": "ckpt_name"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 0,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "MODEL",
+        "name": "MODEL",
+        "type": "MODEL"
+       },
+       {
+        "links": [
+         1,
+         2
+        ],
+        "localized_name": "CLIP",
+        "name": "CLIP",
+        "type": "CLIP"
+       },
+       {
+        "links": [],
+        "localized_name": "VAE",
+        "name": "VAE",
+        "type": "VAE"
+       }
+      ],
+      "pos": [
+       100,
+       200
+      ],
+      "properties": {
+       "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "size": [
+       315,
+       98
+      ],
+      "type": "CheckpointLoaderSimple",
+      "widgets_values": [
+       "model.safetensors"
+      ],
+      "widgets_values_named": {
+       "ckpt_name": "model.safetensors"
+      }
+     },
+     {
+      "flags": {},
+      "id": 2,
+      "inputs": [
+       {
+        "link": 1,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 1,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       600,
+       280
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 3,
+      "inputs": [
+       {
+        "link": 2,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 2,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       600,
+       60
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     }
+    ],
+    "revision": 0,
+    "version": 0.4
+   },
+   "serialized_again": {
+    "config": {},
+    "extra": {
+     "ds": {
+      "offset": [
+       40,
+       40
+      ],
+      "scale": 1
+     },
+     "linkExtensions": [
+      {
+       "id": 1,
+       "parentId": 3
+      },
+      {
+       "id": 2,
+       "parentId": 4
+      }
+     ],
+     "reroutes": [
+      {
+       "id": 1,
+       "linkIds": [
+        1,
+        2
+       ],
+       "pos": [
+        440,
+        250
+       ]
+      },
+      {
+       "id": 2,
+       "linkIds": [
+        1
+       ],
+       "parentId": 1,
+       "pos": [
+        470,
+        300
+       ]
+      },
+      {
+       "id": 3,
+       "linkIds": [
+        1
+       ],
+       "parentId": 2,
+       "pos": [
+        520,
+        300
+       ]
+      },
+      {
+       "id": 4,
+       "linkIds": [
+        2
+       ],
+       "parentId": 1,
+       "pos": [
+        480,
+        220
+       ]
+      }
+     ]
+    },
+    "groups": [],
+    "id": "f971ee4a-a1bc-4aed-94e9-e5ba9b4b1279",
+    "last_link_id": 2,
+    "last_node_id": 3,
+    "links": [
+     [
+      1,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+     ],
+     [
+      2,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+     ]
+    ],
+    "nodes": [
+     {
+      "flags": {},
+      "id": 1,
+      "inputs": [
+       {
+        "link": null,
+        "localized_name": "ckpt_name",
+        "name": "ckpt_name",
+        "type": "COMBO",
+        "widget": {
+         "name": "ckpt_name"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 0,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "MODEL",
+        "name": "MODEL",
+        "type": "MODEL"
+       },
+       {
+        "links": [
+         1,
+         2
+        ],
+        "localized_name": "CLIP",
+        "name": "CLIP",
+        "type": "CLIP"
+       },
+       {
+        "links": [],
+        "localized_name": "VAE",
+        "name": "VAE",
+        "type": "VAE"
+       }
+      ],
+      "pos": [
+       100,
+       200
+      ],
+      "properties": {
+       "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "size": [
+       315,
+       98
+      ],
+      "type": "CheckpointLoaderSimple",
+      "widgets_values": [
+       "model.safetensors"
+      ],
+      "widgets_values_named": {
+       "ckpt_name": "model.safetensors"
+      }
+     },
+     {
+      "flags": {},
+      "id": 2,
+      "inputs": [
+       {
+        "link": 1,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 1,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       600,
+       280
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     },
+     {
+      "flags": {},
+      "id": 3,
+      "inputs": [
+       {
+        "link": 2,
+        "localized_name": "clip",
+        "name": "clip",
+        "type": "CLIP"
+       },
+       {
+        "link": null,
+        "localized_name": "text",
+        "name": "text",
+        "type": "STRING",
+        "widget": {
+         "name": "text"
+        }
+       }
+      ],
+      "mode": 0,
+      "order": 2,
+      "outputs": [
+       {
+        "links": [],
+        "localized_name": "CONDITIONING",
+        "name": "CONDITIONING",
+        "type": "CONDITIONING"
+       }
+      ],
+      "pos": [
+       600,
+       60
+      ],
+      "properties": {
+       "Node name for S&R": "CLIPTextEncode"
+      },
+      "size": [
+       400,
+       200
+      ],
+      "type": "CLIPTextEncode",
+      "widgets_values": [
+       "x"
+      ],
+      "widgets_values_named": {
+       "text": "x"
+      }
+     }
+    ],
+    "revision": 0,
+    "version": 0.4
+   }
+  }
+ },
+ "run": "classic_offset80",
+ "settings_forced": {
+  "LiteGraph.Reroute.SplineOffset": 80
+ },
+ "versions": {
+  "comfyui": "0.45.0",
+  "frontend": "1.59.1",
+  "named_values_restore": false,
+  "vue_nodes": false
+ }
+}

@@ -1,0 +1,18 @@
+{
+  "Mu Sampler": {
+    "input": {"required": {"model": ["MODEL", {}], "seed": ["INT", {"default": 0}], "steps": ["INT", {"default": 20}]}},
+    "output": ["LATENT"], "output_name": ["LATENT"], "display_name": "Mu Sampler", "category": "testing", "python_module": "custom_nodes.mu"
+  },
+  "Nu Loader": {
+    "input": {"required": {"image": [["a.png", "b.png"], {"image_upload": true}]}},
+    "output": ["IMAGE"], "output_name": ["IMAGE"], "display_name": "Nu Loader", "category": "testing", "python_module": "custom_nodes.nu"
+  },
+  "Xi Stack": {
+    "input": {"required": {"clip": ["CLIP", {}], "text": ["STRING", {"default": ""}], "strength": ["FLOAT", {"default": 1.0}]}},
+    "output": ["CLIP"], "output_name": ["CLIP"], "display_name": "Xi Stack", "category": "testing", "python_module": "custom_nodes.xi"
+  },
+  "Pi Viewer": {
+    "input": {"required": {"image": ["IMAGE", {}]}},
+    "output": [], "output_name": [], "display_name": "Pi Viewer", "category": "testing", "python_module": "custom_nodes.pi", "output_node": true
+  }
+}

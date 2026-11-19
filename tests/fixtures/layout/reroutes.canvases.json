@@ -1,0 +1,2838 @@
+{
+ "cross_output": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 1
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1,
+      2
+     ],
+     "pos": [
+      600,
+      300
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    2,
+    3,
+    1,
+    "VAE"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [
+       2
+      ],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": null,
+      "name": "samples",
+      "type": "LATENT"
+     },
+     {
+      "link": 2,
+      "name": "vae",
+      "type": "VAE"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "IMAGE",
+      "type": "IMAGE"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "VAEDecode"
+    },
+    "size": [
+     210,
+     46
+    ],
+    "type": "VAEDecode",
+    "widgets_values": []
+   }
+  ],
+  "version": 0.4
+ },
+ "cycle": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 2
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1,
+      2
+     ],
+     "parentId": 2,
+     "pos": [
+      500,
+      150
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      1,
+      2
+     ],
+     "parentId": 1,
+     "pos": [
+      500,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "duplicate_id": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 1
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    },
+    {
+     "id": 1,
+     "linkIds": [
+      2
+     ],
+     "pos": [
+      800,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "extension_link_missing": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 55,
+     "parentId": 1
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "extension_reroute_missing": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 77
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "floating": {
+  "config": {},
+  "extra": {
+   "reroutes": [
+    {
+     "floating": {
+      "slotType": "output"
+     },
+     "id": 1,
+     "linkIds": [],
+     "pos": [
+      500,
+      350
+     ]
+    },
+    {
+     "floating": {
+      "slotType": "input"
+     },
+     "id": 2,
+     "linkIds": [],
+     "pos": [
+      600,
+      450
+     ]
+    },
+    {
+     "floating": {
+      "slotType": "output"
+     },
+     "id": 3,
+     "linkIds": [],
+     "pos": [
+      600,
+      700
+     ]
+    }
+   ]
+  },
+  "floatingLinks": [
+   {
+    "id": 3,
+    "origin_id": 1,
+    "origin_slot": 1,
+    "parentId": 1,
+    "target_id": -1,
+    "target_slot": -1,
+    "type": "CLIP"
+   },
+   {
+    "id": 4,
+    "origin_id": -1,
+    "origin_slot": -1,
+    "parentId": 2,
+    "target_id": 3,
+    "target_slot": 0,
+    "type": "CLIP"
+   }
+  ],
+  "groups": [],
+  "last_link_id": 1,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": null,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     450
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "groups": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 9
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      350,
+      400
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      1
+     ],
+     "parentId": 1,
+     "pos": [
+      500,
+      350
+     ]
+    },
+    {
+     "id": 3,
+     "linkIds": [
+      1
+     ],
+     "parentId": 2,
+     "pos": [
+      300,
+      300
+     ]
+    },
+    {
+     "id": 4,
+     "linkIds": [
+      1
+     ],
+     "parentId": 3,
+     "pos": [
+      1100,
+      300
+     ]
+    },
+    {
+     "id": 5,
+     "linkIds": [
+      1
+     ],
+     "parentId": 4,
+     "pos": [
+      600,
+      100
+     ]
+    },
+    {
+     "id": 6,
+     "linkIds": [
+      1
+     ],
+     "parentId": 5,
+     "pos": [
+      600,
+      700
+     ]
+    },
+    {
+     "id": 7,
+     "linkIds": [
+      1
+     ],
+     "parentId": 6,
+     "pos": [
+      600,
+      120
+     ]
+    },
+    {
+     "id": 8,
+     "linkIds": [
+      1
+     ],
+     "parentId": 7,
+     "pos": [
+      1200,
+      400
+     ]
+    },
+    {
+     "id": 9,
+     "linkIds": [
+      1
+     ],
+     "parentId": 8,
+     "pos": [
+      400,
+      250
+     ]
+    }
+   ]
+  },
+  "groups": [
+   {
+    "bounding": [
+     300,
+     100,
+     800,
+     600
+    ],
+    "color": "#3f789e",
+    "flags": {},
+    "id": 1,
+    "title": "Outer"
+   },
+   {
+    "bounding": [
+     400,
+     200,
+     300,
+     300
+    ],
+    "color": "#3f789e",
+    "flags": {},
+    "id": 2,
+    "title": "Inner"
+   }
+  ],
+  "last_link_id": 1,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1300,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": null,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     450,
+     260
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "linkids_disagree": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 2
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      2
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [],
+     "pos": [
+      500,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "linkids_only": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      2
+     ],
+     "pos": [
+      500,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "main": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 3
+    },
+    {
+     "id": 2,
+     "parentId": 5
+    },
+    {
+     "id": 3,
+     "parentId": 6
+    },
+    {
+     "id": 4,
+     "parentId": 4
+    },
+    {
+     "id": 5,
+     "parentId": 7
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      453.7,
+      447.3
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      1
+     ],
+     "parentId": 1,
+     "pos": [
+      600,
+      650
+     ]
+    },
+    {
+     "id": 3,
+     "linkIds": [
+      1
+     ],
+     "parentId": 2,
+     "pos": [
+      750,
+      150
+     ]
+    },
+    {
+     "id": 4,
+     "linkIds": [
+      2,
+      3,
+      4
+     ],
+     "pos": [
+      500,
+      300
+     ]
+    },
+    {
+     "id": 5,
+     "linkIds": [
+      2
+     ],
+     "parentId": 4,
+     "pos": [
+      700,
+      420
+     ]
+    },
+    {
+     "id": 6,
+     "linkIds": [
+      3
+     ],
+     "parentId": 4,
+     "pos": [
+      700,
+      700
+     ]
+    },
+    {
+     "id": 7,
+     "linkIds": [
+      5
+     ],
+     "pos": [
+      1000,
+      1150
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 5,
+  "last_node_id": 6,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ],
+   [
+    3,
+    1,
+    1,
+    4,
+    0,
+    "CLIP"
+   ],
+   [
+    4,
+    1,
+    1,
+    5,
+    0,
+    "CLIP"
+   ],
+   [
+    5,
+    1,
+    2,
+    6,
+    1,
+    "VAE"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2,
+       3,
+       4
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [
+       5
+      ],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     350
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 4,
+    "inputs": [
+     {
+      "link": 3,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 3,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     600
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 5,
+    "inputs": [
+     {
+      "link": 4,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 4,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     850
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 6,
+    "inputs": [
+     {
+      "link": null,
+      "name": "samples",
+      "type": "LATENT"
+     },
+     {
+      "link": 5,
+      "name": "vae",
+      "type": "VAE"
+     }
+    ],
+    "mode": 0,
+    "order": 5,
+    "outputs": [
+     {
+      "links": [],
+      "name": "IMAGE",
+      "type": "IMAGE"
+     }
+    ],
+    "pos": [
+     1450,
+     1000
+    ],
+    "properties": {
+     "Node name for S&R": "VAEDecode"
+    },
+    "size": [
+     210,
+     46
+    ],
+    "type": "VAEDecode",
+    "widgets_values": []
+   }
+  ],
+  "version": 0.4
+ },
+ "orphan": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [],
+     "pos": [
+      500,
+      450
+     ]
+    },
+    {
+     "id": 3,
+     "linkIds": [
+      2
+     ],
+     "pos": [
+      600,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "parent_missing": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 2
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ],
+     "pos": [
+      500,
+      150
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      2
+     ],
+     "parentId": 99,
+     "pos": [
+      500,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "pos_missing": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 1
+    },
+    {
+     "id": 2,
+     "parentId": 2
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      2
+     ],
+     "pos": [
+      500,
+      450
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     400
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ },
+ "schema_v1": {
+  "config": {},
+  "extra": {},
+  "groups": [],
+  "links": [
+   {
+    "id": 1,
+    "origin_id": 1,
+    "origin_slot": 1,
+    "parentId": 1,
+    "target_id": 2,
+    "target_slot": 0,
+    "type": "CLIP"
+   }
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     900,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "reroutes": [
+   {
+    "id": 1,
+    "linkIds": [
+     1
+    ],
+    "pos": [
+     500,
+     300
+    ]
+   }
+  ],
+  "state": {
+   "lastGroupId": 0,
+   "lastLinkId": 1,
+   "lastNodeId": 2,
+   "lastRerouteId": 1
+  },
+  "version": 1
+ },
+ "short": {
+  "config": {},
+  "extra": {
+   "linkExtensions": [
+    {
+     "id": 1,
+     "parentId": 3
+    },
+    {
+     "id": 2,
+     "parentId": 4
+    }
+   ],
+   "reroutes": [
+    {
+     "id": 1,
+     "linkIds": [
+      1,
+      2
+     ],
+     "pos": [
+      440,
+      250
+     ]
+    },
+    {
+     "id": 2,
+     "linkIds": [
+      1
+     ],
+     "parentId": 1,
+     "pos": [
+      470,
+      300
+     ]
+    },
+    {
+     "id": 3,
+     "linkIds": [
+      1
+     ],
+     "parentId": 2,
+     "pos": [
+      520,
+      300
+     ]
+    },
+    {
+     "id": 4,
+     "linkIds": [
+      2
+     ],
+     "parentId": 1,
+     "pos": [
+      480,
+      220
+     ]
+    }
+   ]
+  },
+  "groups": [],
+  "last_link_id": 2,
+  "last_node_id": 3,
+  "links": [
+   [
+    1,
+    1,
+    1,
+    2,
+    0,
+    "CLIP"
+   ],
+   [
+    2,
+    1,
+    1,
+    3,
+    0,
+    "CLIP"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "name": "MODEL",
+      "type": "MODEL"
+     },
+     {
+      "links": [
+       1,
+       2
+      ],
+      "name": "CLIP",
+      "type": "CLIP"
+     },
+     {
+      "links": [],
+      "name": "VAE",
+      "type": "VAE"
+     }
+    ],
+    "pos": [
+     100,
+     200
+    ],
+    "properties": {
+     "Node name for S&R": "CheckpointLoaderSimple"
+    },
+    "size": [
+     315,
+     98
+    ],
+    "type": "CheckpointLoaderSimple",
+    "widgets_values": [
+     "model.safetensors"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": 1,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     600,
+     280
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": 2,
+      "name": "clip",
+      "type": "CLIP"
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     600,
+     60
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "x"
+    ]
+   }
+  ],
+  "version": 0.4
+ }
+}

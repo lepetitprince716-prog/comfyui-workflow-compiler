@@ -1,0 +1,3967 @@
+{
+ "canvas": "multiline.canvas.json",
+ "console": [
+  {
+   "kind": "console",
+   "level": "warning",
+   "phase": "canvas0",
+   "text": "output.links is deprecated. Read connectivity via node.isOutputConnected(slot) / node.getOutputNodes(slot); mutate via node.connect() / node.disconnectOutput(). undefined"
+  }
+ ],
+ "groups": [],
+ "links": [
+  {
+   "c1": [
+    1421.2541319492066,
+    3114
+   ],
+   "c2": [
+    1479.7458680507934,
+    3136
+   ],
+   "end": [
+    1510,
+    3136
+   ],
+   "id": 2,
+   "on_path": 0,
+   "origin": [
+    "23",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    1391,
+    3114
+   ],
+   "target": [
+    "24",
+    1
+   ]
+  },
+  {
+   "c1": [
+    1545.8477074418604,
+    3114
+   ],
+   "c2": [
+    1855.1522925581396,
+    3136
+   ],
+   "end": [
+    2010,
+    3136
+   ],
+   "id": 3,
+   "on_path": 0,
+   "origin": [
+    "23",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    1391,
+    3114
+   ],
+   "target": [
+    "25",
+    0
+   ]
+  },
+  {
+   "c1": [
+    549.3202845500223,
+    3114
+   ],
+   "c2": [
+    351.6797154499778,
+    3736
+   ],
+   "end": [
+    510,
+    3736
+   ],
+   "id": 4,
+   "on_path": 0,
+   "origin": [
+    "21",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    391,
+    3114
+   ],
+   "target": [
+    "26",
+    0
+   ]
+  },
+  {
+   "c1": [
+    555.217272234074,
+    3114
+   ],
+   "c2": [
+    345.7827277659259,
+    3760
+   ],
+   "end": [
+    510,
+    3760
+   ],
+   "id": 5,
+   "on_path": 0,
+   "origin": [
+    "21",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    391,
+    3114
+   ],
+   "target": [
+    "26",
+    1
+   ]
+  },
+  {
+   "c1": [
+    561.1214639603128,
+    3114
+   ],
+   "c2": [
+    339.8785360396872,
+    3784
+   ],
+   "end": [
+    510,
+    3784
+   ],
+   "id": 6,
+   "on_path": 0,
+   "origin": [
+    "21",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    391,
+    3114
+   ],
+   "target": [
+    "26",
+    2
+   ]
+  },
+  {
+   "c1": [
+    621.2559716923754,
+    3114
+   ],
+   "c2": [
+    779.7440283076246,
+    3796
+   ],
+   "end": [
+    1010,
+    3796
+   ],
+   "id": 7,
+   "on_path": 0,
+   "origin": [
+    "21",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    391,
+    3114
+   ],
+   "target": [
+    "27",
+    4
+   ]
+  },
+  {
+   "c1": [
+    425.515395115803,
+    3114
+   ],
+   "c2": [
+    475.484604884197,
+    3184
+   ],
+   "end": [
+    510,
+    3184
+   ],
+   "id": 1,
+   "on_path": 0,
+   "origin": [
+    "21",
+    0
+   ],
+   "rendered": false,
+   "samples": 0,
+   "start": [
+    391,
+    3114
+   ],
+   "target": [
+    "22",
+    3
+   ]
+  }
+ ],
+ "load_error": null,
+ "nodes": [
+  {
+   "bounding": [
+    100,
+    70,
+    400,
+    118
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "1",
+   "inputs": [
+    {
+     "anchor": [
+      110,
+      114
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      110,
+      136
+     ],
+     "link": null,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      491,
+      114
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    100,
+    100
+   ],
+   "size": [
+    400,
+    88
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    600,
+    70,
+    400,
+    132
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "2",
+   "inputs": [
+    {
+     "anchor": [
+      610,
+      114
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      610,
+      136
+     ],
+     "link": null,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      991,
+      114
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    600,
+    100
+   ],
+   "size": [
+    400,
+    102
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1100,
+    70,
+    400,
+    330
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "3",
+   "inputs": [
+    {
+     "anchor": [
+      1110,
+      114
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1110,
+      136
+     ],
+     "link": null,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1491,
+      114
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1100,
+    100
+   ],
+   "size": [
+    400,
+    300
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1600,
+    70,
+    400,
+    480
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "4",
+   "inputs": [
+    {
+     "anchor": [
+      1610,
+      114
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1610,
+      136
+     ],
+     "link": null,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1991,
+      114
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1600,
+    100
+   ],
+   "size": [
+    400,
+    450
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    100,
+    670,
+    400,
+    142
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "5",
+   "inputs": [
+    {
+     "anchor": [
+      110,
+      736
+     ],
+     "link": null,
+     "name": "string",
+     "widget": "string"
+    },
+    {
+     "anchor": [
+      110,
+      798
+     ],
+     "link": null,
+     "name": "mode",
+     "widget": "mode"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      491,
+      714
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    100,
+    700
+   ],
+   "size": [
+    400,
+    112
+   ],
+   "title": "Trim Text",
+   "type": "StringTrim",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    600,
+    670,
+    400,
+    230
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "6",
+   "inputs": [
+    {
+     "anchor": [
+      610,
+      736
+     ],
+     "link": null,
+     "name": "string",
+     "widget": "string"
+    },
+    {
+     "anchor": [
+      610,
+      886
+     ],
+     "link": null,
+     "name": "mode",
+     "widget": "mode"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      991,
+      714
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    600,
+    700
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "Trim Text",
+   "type": "StringTrim",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1100,
+    670,
+    400,
+    430
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "7",
+   "inputs": [
+    {
+     "anchor": [
+      1110,
+      736
+     ],
+     "link": null,
+     "name": "string",
+     "widget": "string"
+    },
+    {
+     "anchor": [
+      1110,
+      1086
+     ],
+     "link": null,
+     "name": "mode",
+     "widget": "mode"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1491,
+      714
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    1100,
+    700
+   ],
+   "size": [
+    400,
+    400
+   ],
+   "title": "Trim Text",
+   "type": "StringTrim",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1600,
+    670,
+    400,
+    230
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "8",
+   "inputs": [
+    {
+     "anchor": [
+      1610,
+      714
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1610,
+      736
+     ],
+     "link": null,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1991,
+      714
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1600,
+    700
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    100,
+    1270,
+    400,
+    196
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "9",
+   "inputs": [
+    {
+     "anchor": [
+      110,
+      1336
+     ],
+     "link": null,
+     "name": "string_a",
+     "widget": "string_a"
+    },
+    {
+     "anchor": [
+      110,
+      1394
+     ],
+     "link": null,
+     "name": "string_b",
+     "widget": "string_b"
+    },
+    {
+     "anchor": [
+      110,
+      1452
+     ],
+     "link": null,
+     "name": "delimiter",
+     "widget": "delimiter"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      491,
+      1314
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    100,
+    1300
+   ],
+   "size": [
+    400,
+    166
+   ],
+   "title": "Concatenate Text",
+   "type": "StringConcatenate",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    600,
+    1270,
+    400,
+    230
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "10",
+   "inputs": [
+    {
+     "anchor": [
+      610,
+      1336
+     ],
+     "link": null,
+     "name": "string_a",
+     "widget": "string_a"
+    },
+    {
+     "anchor": [
+      610,
+      1411
+     ],
+     "link": null,
+     "name": "string_b",
+     "widget": "string_b"
+    },
+    {
+     "anchor": [
+      610,
+      1486
+     ],
+     "link": null,
+     "name": "delimiter",
+     "widget": "delimiter"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      991,
+      1314
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    600,
+    1300
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "Concatenate Text",
+   "type": "StringConcatenate",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1100,
+    1270,
+    400,
+    430
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "11",
+   "inputs": [
+    {
+     "anchor": [
+      1110,
+      1336
+     ],
+     "link": null,
+     "name": "string_a",
+     "widget": "string_a"
+    },
+    {
+     "anchor": [
+      1110,
+      1511
+     ],
+     "link": null,
+     "name": "string_b",
+     "widget": "string_b"
+    },
+    {
+     "anchor": [
+      1110,
+      1686
+     ],
+     "link": null,
+     "name": "delimiter",
+     "widget": "delimiter"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1491,
+      1314
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    1100,
+    1300
+   ],
+   "size": [
+    400,
+    400
+   ],
+   "title": "Concatenate Text",
+   "type": "StringConcatenate",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1600,
+    1270,
+    400,
+    196
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "12",
+   "inputs": [
+    {
+     "anchor": [
+      1610,
+      1314
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1610,
+      1336
+     ],
+     "link": null,
+     "name": "clip_l",
+     "widget": "clip_l"
+    },
+    {
+     "anchor": [
+      1610,
+      1394
+     ],
+     "link": null,
+     "name": "t5xxl",
+     "widget": "t5xxl"
+    },
+    {
+     "anchor": [
+      1610,
+      1452
+     ],
+     "link": null,
+     "name": "guidance",
+     "widget": "guidance"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1991,
+      1314
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1600,
+    1300
+   ],
+   "size": [
+    400,
+    166
+   ],
+   "title": "CLIPTextEncodeFlux",
+   "type": "CLIPTextEncodeFlux",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    100,
+    1870,
+    400,
+    280
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "13",
+   "inputs": [
+    {
+     "anchor": [
+      110,
+      1914
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      110,
+      1936
+     ],
+     "link": null,
+     "name": "clip_l",
+     "widget": "clip_l"
+    },
+    {
+     "anchor": [
+      110,
+      2036
+     ],
+     "link": null,
+     "name": "t5xxl",
+     "widget": "t5xxl"
+    },
+    {
+     "anchor": [
+      110,
+      2136
+     ],
+     "link": null,
+     "name": "guidance",
+     "widget": "guidance"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      491,
+      1914
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    100,
+    1900
+   ],
+   "size": [
+    400,
+    250
+   ],
+   "title": "CLIPTextEncodeFlux",
+   "type": "CLIPTextEncodeFlux",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    600,
+    1870,
+    400,
+    480
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "14",
+   "inputs": [
+    {
+     "anchor": [
+      610,
+      1914
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      610,
+      1936
+     ],
+     "link": null,
+     "name": "clip_l",
+     "widget": "clip_l"
+    },
+    {
+     "anchor": [
+      610,
+      2136
+     ],
+     "link": null,
+     "name": "t5xxl",
+     "widget": "t5xxl"
+    },
+    {
+     "anchor": [
+      610,
+      2336
+     ],
+     "link": null,
+     "name": "guidance",
+     "widget": "guidance"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      991,
+      1914
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    600,
+    1900
+   ],
+   "size": [
+    400,
+    450
+   ],
+   "title": "CLIPTextEncodeFlux",
+   "type": "CLIPTextEncodeFlux",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1100,
+    1870,
+    400,
+    316
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "15",
+   "inputs": [
+    {
+     "anchor": [
+      1110,
+      1914
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1110,
+      1936
+     ],
+     "link": null,
+     "name": "width",
+     "widget": "width"
+    },
+    {
+     "anchor": [
+      1110,
+      1960
+     ],
+     "link": null,
+     "name": "height",
+     "widget": "height"
+    },
+    {
+     "anchor": [
+      1110,
+      1984
+     ],
+     "link": null,
+     "name": "crop_w",
+     "widget": "crop_w"
+    },
+    {
+     "anchor": [
+      1110,
+      2008
+     ],
+     "link": null,
+     "name": "crop_h",
+     "widget": "crop_h"
+    },
+    {
+     "anchor": [
+      1110,
+      2032
+     ],
+     "link": null,
+     "name": "target_width",
+     "widget": "target_width"
+    },
+    {
+     "anchor": [
+      1110,
+      2056
+     ],
+     "link": null,
+     "name": "target_height",
+     "widget": "target_height"
+    },
+    {
+     "anchor": [
+      1110,
+      2080
+     ],
+     "link": null,
+     "name": "text_g",
+     "widget": "text_g"
+    },
+    {
+     "anchor": [
+      1110,
+      2138
+     ],
+     "link": null,
+     "name": "text_l",
+     "widget": "text_l"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1491,
+      1914
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1100,
+    1900
+   ],
+   "size": [
+    400,
+    286
+   ],
+   "title": "CLIP Text Encode (SDXL)",
+   "type": "CLIPTextEncodeSDXL",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1600,
+    1870,
+    400,
+    530
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "16",
+   "inputs": [
+    {
+     "anchor": [
+      1610,
+      1914
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1610,
+      1936
+     ],
+     "link": null,
+     "name": "width",
+     "widget": "width"
+    },
+    {
+     "anchor": [
+      1610,
+      1960
+     ],
+     "link": null,
+     "name": "height",
+     "widget": "height"
+    },
+    {
+     "anchor": [
+      1610,
+      1984
+     ],
+     "link": null,
+     "name": "crop_w",
+     "widget": "crop_w"
+    },
+    {
+     "anchor": [
+      1610,
+      2008
+     ],
+     "link": null,
+     "name": "crop_h",
+     "widget": "crop_h"
+    },
+    {
+     "anchor": [
+      1610,
+      2032
+     ],
+     "link": null,
+     "name": "target_width",
+     "widget": "target_width"
+    },
+    {
+     "anchor": [
+      1610,
+      2056
+     ],
+     "link": null,
+     "name": "target_height",
+     "widget": "target_height"
+    },
+    {
+     "anchor": [
+      1610,
+      2080
+     ],
+     "link": null,
+     "name": "text_g",
+     "widget": "text_g"
+    },
+    {
+     "anchor": [
+      1610,
+      2245
+     ],
+     "link": null,
+     "name": "text_l",
+     "widget": "text_l"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1991,
+      1914
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1600,
+    1900
+   ],
+   "size": [
+    400,
+    500
+   ],
+   "title": "CLIP Text Encode (SDXL)",
+   "type": "CLIPTextEncodeSDXL",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    100,
+    2470,
+    213.22265625,
+    30
+   ],
+   "collapsed": true,
+   "collapsed_width": 213.22265625,
+   "id": "17",
+   "inputs": [
+    {
+     "anchor": [
+      100,
+      2485
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      100,
+      2485
+     ],
+     "link": null,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      313.22265625,
+      2485
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    100,
+    2500
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    600,
+    2470,
+    112.740234375,
+    30
+   ],
+   "collapsed": true,
+   "collapsed_width": 112.740234375,
+   "id": "18",
+   "inputs": [
+    {
+     "anchor": [
+      600,
+      2485
+     ],
+     "link": null,
+     "name": "string",
+     "widget": "string"
+    },
+    {
+     "anchor": [
+      600,
+      2485
+     ],
+     "link": null,
+     "name": "mode",
+     "widget": "mode"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      712.740234375,
+      2485
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    600,
+    2500
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "Trim Text",
+   "type": "StringTrim",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1100,
+    2470,
+    159.8203125,
+    30
+   ],
+   "collapsed": true,
+   "collapsed_width": 159.8203125,
+   "id": "19",
+   "inputs": [
+    {
+     "anchor": [
+      1100,
+      2485
+     ],
+     "link": null,
+     "name": "string_a",
+     "widget": "string_a"
+    },
+    {
+     "anchor": [
+      1100,
+      2485
+     ],
+     "link": null,
+     "name": "string_b",
+     "widget": "string_b"
+    },
+    {
+     "anchor": [
+      1100,
+      2485
+     ],
+     "link": null,
+     "name": "delimiter",
+     "widget": "delimiter"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1259.8203125,
+      2485
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    1100,
+    2500
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "Concatenate Text",
+   "type": "StringConcatenate",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1600,
+    2470,
+    177.017578125,
+    30
+   ],
+   "collapsed": true,
+   "collapsed_width": 177.017578125,
+   "id": "20",
+   "inputs": [
+    {
+     "anchor": [
+      1600,
+      2485
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1600,
+      2485
+     ],
+     "link": null,
+     "name": "clip_l",
+     "widget": "clip_l"
+    },
+    {
+     "anchor": [
+      1600,
+      2485
+     ],
+     "link": null,
+     "name": "t5xxl",
+     "widget": "t5xxl"
+    },
+    {
+     "anchor": [
+      1600,
+      2485
+     ],
+     "link": null,
+     "name": "guidance",
+     "widget": "guidance"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1777.017578125,
+      2485
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1600,
+    2500
+   ],
+   "size": [
+    400,
+    250
+   ],
+   "title": "CLIPTextEncodeFlux",
+   "type": "CLIPTextEncodeFlux",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    100,
+    3070,
+    300,
+    112
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "21",
+   "inputs": [
+    {
+     "anchor": [
+      110,
+      3136
+     ],
+     "link": null,
+     "name": "value",
+     "widget": "value"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      391,
+      3114
+     ],
+     "links": [
+      1,
+      4,
+      5,
+      6,
+      7
+     ],
+     "name": "INT"
+    }
+   ],
+   "pos": [
+    100,
+    3100
+   ],
+   "size": [
+    300,
+    82
+   ],
+   "title": "Int",
+   "type": "PrimitiveInt",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    500,
+    3070,
+    400,
+    530
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "22",
+   "inputs": [
+    {
+     "anchor": [
+      510,
+      3114
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      510,
+      3136
+     ],
+     "link": null,
+     "name": "width",
+     "widget": "width"
+    },
+    {
+     "anchor": [
+      510,
+      3160
+     ],
+     "link": null,
+     "name": "height",
+     "widget": "height"
+    },
+    {
+     "anchor": [
+      510,
+      3184
+     ],
+     "link": 1,
+     "name": "crop_w",
+     "widget": "crop_w"
+    },
+    {
+     "anchor": [
+      510,
+      3208
+     ],
+     "link": null,
+     "name": "crop_h",
+     "widget": "crop_h"
+    },
+    {
+     "anchor": [
+      510,
+      3232
+     ],
+     "link": null,
+     "name": "target_width",
+     "widget": "target_width"
+    },
+    {
+     "anchor": [
+      510,
+      3256
+     ],
+     "link": null,
+     "name": "target_height",
+     "widget": "target_height"
+    },
+    {
+     "anchor": [
+      510,
+      3280
+     ],
+     "link": null,
+     "name": "text_g",
+     "widget": "text_g"
+    },
+    {
+     "anchor": [
+      510,
+      3445
+     ],
+     "link": null,
+     "name": "text_l",
+     "widget": "text_l"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      891,
+      3114
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    500,
+    3100
+   ],
+   "size": [
+    400,
+    500
+   ],
+   "title": "CLIP Text Encode (SDXL)",
+   "type": "CLIPTextEncodeSDXL",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1000,
+    3070,
+    400,
+    230
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "23",
+   "inputs": [
+    {
+     "anchor": [
+      1010,
+      3136
+     ],
+     "link": null,
+     "name": "string",
+     "widget": "string"
+    },
+    {
+     "anchor": [
+      1010,
+      3286
+     ],
+     "link": null,
+     "name": "mode",
+     "widget": "mode"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1391,
+      3114
+     ],
+     "links": [
+      2,
+      3
+     ],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    1000,
+    3100
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "Trim Text",
+   "type": "StringTrim",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1500,
+    3070,
+    400,
+    230
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "24",
+   "inputs": [
+    {
+     "anchor": [
+      1510,
+      3114
+     ],
+     "link": null,
+     "name": "clip",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1510,
+      3136
+     ],
+     "link": 2,
+     "name": "text",
+     "widget": "text"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1891,
+      3114
+     ],
+     "links": [],
+     "name": "CONDITIONING"
+    }
+   ],
+   "pos": [
+    1500,
+    3100
+   ],
+   "size": [
+    400,
+    200
+   ],
+   "title": "CLIP Text Encode (Prompt)",
+   "type": "CLIPTextEncode",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    2000,
+    3070,
+    400,
+    430
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "25",
+   "inputs": [
+    {
+     "anchor": [
+      2010,
+      3136
+     ],
+     "link": 3,
+     "name": "string_a",
+     "widget": "string_a"
+    },
+    {
+     "anchor": [
+      2010,
+      3311
+     ],
+     "link": null,
+     "name": "string_b",
+     "widget": "string_b"
+    },
+    {
+     "anchor": [
+      2010,
+      3486
+     ],
+     "link": null,
+     "name": "delimiter",
+     "widget": "delimiter"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      2391,
+      3114
+     ],
+     "links": [],
+     "name": "STRING"
+    }
+   ],
+   "pos": [
+    2000,
+    3100
+   ],
+   "size": [
+    400,
+    400
+   ],
+   "title": "Concatenate Text",
+   "type": "StringConcatenate",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    500,
+    3670,
+    315,
+    136
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "26",
+   "inputs": [
+    {
+     "anchor": [
+      510,
+      3736
+     ],
+     "link": 4,
+     "name": "width",
+     "widget": "width"
+    },
+    {
+     "anchor": [
+      510,
+      3760
+     ],
+     "link": 5,
+     "name": "height",
+     "widget": "height"
+    },
+    {
+     "anchor": [
+      510,
+      3784
+     ],
+     "link": 6,
+     "name": "batch_size",
+     "widget": "batch_size"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      806,
+      3714
+     ],
+     "links": [],
+     "name": "LATENT"
+    }
+   ],
+   "pos": [
+    500,
+    3700
+   ],
+   "size": [
+    315,
+    106
+   ],
+   "title": "Empty Latent Image",
+   "type": "EmptyLatentImage",
+   "vue_box": null
+  },
+  {
+   "bounding": [
+    1000,
+    3670,
+    400,
+    330
+   ],
+   "collapsed": false,
+   "collapsed_width": null,
+   "id": "27",
+   "inputs": [
+    {
+     "anchor": [
+      1010,
+      3714
+     ],
+     "link": null,
+     "name": "model",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1010,
+      3734
+     ],
+     "link": null,
+     "name": "positive",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1010,
+      3754
+     ],
+     "link": null,
+     "name": "negative",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1010,
+      3774
+     ],
+     "link": null,
+     "name": "latent_image",
+     "widget": null
+    },
+    {
+     "anchor": [
+      1010,
+      3796
+     ],
+     "link": 7,
+     "name": "seed",
+     "widget": "seed"
+    },
+    {
+     "anchor": [
+      1010,
+      3844
+     ],
+     "link": null,
+     "name": "steps",
+     "widget": "steps"
+    },
+    {
+     "anchor": [
+      1010,
+      3868
+     ],
+     "link": null,
+     "name": "cfg",
+     "widget": "cfg"
+    },
+    {
+     "anchor": [
+      1010,
+      3892
+     ],
+     "link": null,
+     "name": "sampler_name",
+     "widget": "sampler_name"
+    },
+    {
+     "anchor": [
+      1010,
+      3916
+     ],
+     "link": null,
+     "name": "scheduler",
+     "widget": "scheduler"
+    },
+    {
+     "anchor": [
+      1010,
+      3940
+     ],
+     "link": null,
+     "name": "denoise",
+     "widget": "denoise"
+    }
+   ],
+   "outputs": [
+    {
+     "anchor": [
+      1391,
+      3714
+     ],
+     "links": [],
+     "name": "LATENT"
+    }
+   ],
+   "pos": [
+    1000,
+    3700
+   ],
+   "size": [
+    400,
+    300
+   ],
+   "title": "KSampler",
+   "type": "KSampler",
+   "vue_box": null
+  }
+ ],
+ "renderer": "classic",
+ "run": "classic",
+ "serialized": {
+  "config": {},
+  "extra": {
+   "ds": {
+    "offset": [
+     40,
+     40
+    ],
+    "scale": 1
+   }
+  },
+  "groups": [],
+  "id": "f2cf5180-45d4-47dc-b9fc-224309e5237a",
+  "last_link_id": 7,
+  "last_node_id": 27,
+  "links": [
+   [
+    2,
+    23,
+    0,
+    24,
+    1,
+    "STRING"
+   ],
+   [
+    3,
+    23,
+    0,
+    25,
+    0,
+    "STRING"
+   ],
+   [
+    4,
+    21,
+    0,
+    26,
+    0,
+    "INT"
+   ],
+   [
+    5,
+    21,
+    0,
+    26,
+    1,
+    "INT"
+   ],
+   [
+    6,
+    21,
+    0,
+    26,
+    2,
+    "INT"
+   ],
+   [
+    7,
+    21,
+    0,
+    27,
+    4,
+    "INT"
+   ],
+   [
+    1,
+    21,
+    0,
+    22,
+    3,
+    "INT"
+   ]
+  ],
+  "nodes": [
+   {
+    "flags": {},
+    "id": 1,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 0,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     100,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     88
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "one box"
+    ],
+    "widgets_values_named": {
+     "text": "one box"
+    }
+   },
+   {
+    "flags": {},
+    "id": 2,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 1,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     600,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     102
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "one box"
+    ],
+    "widgets_values_named": {
+     "text": "one box"
+    }
+   },
+   {
+    "flags": {},
+    "id": 3,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 2,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1100,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     300
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "one box"
+    ],
+    "widgets_values_named": {
+     "text": "one box"
+    }
+   },
+   {
+    "flags": {},
+    "id": 4,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 3,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1600,
+     100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     450
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "one box"
+    ],
+    "widgets_values_named": {
+     "text": "one box"
+    }
+   },
+   {
+    "flags": {},
+    "id": 5,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string",
+      "name": "string",
+      "type": "STRING",
+      "widget": {
+       "name": "string"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "mode",
+      "name": "mode",
+      "type": "COMBO",
+      "widget": {
+       "name": "mode"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 4,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     100,
+     700
+    ],
+    "properties": {
+     "Node name for S&R": "StringTrim"
+    },
+    "size": [
+     400,
+     112
+    ],
+    "type": "StringTrim",
+    "widgets_values": [
+     "box above a combo",
+     "Both"
+    ],
+    "widgets_values_named": {
+     "mode": "Both",
+     "string": "box above a combo"
+    }
+   },
+   {
+    "flags": {},
+    "id": 6,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string",
+      "name": "string",
+      "type": "STRING",
+      "widget": {
+       "name": "string"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "mode",
+      "name": "mode",
+      "type": "COMBO",
+      "widget": {
+       "name": "mode"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 5,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     600,
+     700
+    ],
+    "properties": {
+     "Node name for S&R": "StringTrim"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "StringTrim",
+    "widgets_values": [
+     "box above a combo",
+     "Both"
+    ],
+    "widgets_values_named": {
+     "mode": "Both",
+     "string": "box above a combo"
+    }
+   },
+   {
+    "flags": {},
+    "id": 7,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string",
+      "name": "string",
+      "type": "STRING",
+      "widget": {
+       "name": "string"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "mode",
+      "name": "mode",
+      "type": "COMBO",
+      "widget": {
+       "name": "mode"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 6,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1100,
+     700
+    ],
+    "properties": {
+     "Node name for S&R": "StringTrim"
+    },
+    "size": [
+     400,
+     400
+    ],
+    "type": "StringTrim",
+    "widgets_values": [
+     "box above a combo",
+     "Both"
+    ],
+    "widgets_values_named": {
+     "mode": "Both",
+     "string": "box above a combo"
+    }
+   },
+   {
+    "flags": {},
+    "id": 8,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 7,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1600,
+     700
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "one box"
+    ],
+    "widgets_values_named": {
+     "text": "one box"
+    }
+   },
+   {
+    "flags": {},
+    "id": 9,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string_a",
+      "name": "string_a",
+      "type": "STRING",
+      "widget": {
+       "name": "string_a"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "string_b",
+      "name": "string_b",
+      "type": "STRING",
+      "widget": {
+       "name": "string_b"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "delimiter",
+      "name": "delimiter",
+      "type": "STRING",
+      "widget": {
+       "name": "delimiter"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 8,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     100,
+     1300
+    ],
+    "properties": {
+     "Node name for S&R": "StringConcatenate"
+    },
+    "size": [
+     400,
+     166
+    ],
+    "type": "StringConcatenate",
+    "widgets_values": [
+     "box a",
+     "box b",
+     ","
+    ],
+    "widgets_values_named": {
+     "delimiter": ",",
+     "string_a": "box a",
+     "string_b": "box b"
+    }
+   },
+   {
+    "flags": {},
+    "id": 10,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string_a",
+      "name": "string_a",
+      "type": "STRING",
+      "widget": {
+       "name": "string_a"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "string_b",
+      "name": "string_b",
+      "type": "STRING",
+      "widget": {
+       "name": "string_b"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "delimiter",
+      "name": "delimiter",
+      "type": "STRING",
+      "widget": {
+       "name": "delimiter"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 9,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     600,
+     1300
+    ],
+    "properties": {
+     "Node name for S&R": "StringConcatenate"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "StringConcatenate",
+    "widgets_values": [
+     "box a",
+     "box b",
+     ","
+    ],
+    "widgets_values_named": {
+     "delimiter": ",",
+     "string_a": "box a",
+     "string_b": "box b"
+    }
+   },
+   {
+    "flags": {},
+    "id": 11,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string_a",
+      "name": "string_a",
+      "type": "STRING",
+      "widget": {
+       "name": "string_a"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "string_b",
+      "name": "string_b",
+      "type": "STRING",
+      "widget": {
+       "name": "string_b"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "delimiter",
+      "name": "delimiter",
+      "type": "STRING",
+      "widget": {
+       "name": "delimiter"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 10,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1100,
+     1300
+    ],
+    "properties": {
+     "Node name for S&R": "StringConcatenate"
+    },
+    "size": [
+     400,
+     400
+    ],
+    "type": "StringConcatenate",
+    "widgets_values": [
+     "box a",
+     "box b",
+     ","
+    ],
+    "widgets_values_named": {
+     "delimiter": ",",
+     "string_a": "box a",
+     "string_b": "box b"
+    }
+   },
+   {
+    "flags": {},
+    "id": 12,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "clip_l",
+      "name": "clip_l",
+      "type": "STRING",
+      "widget": {
+       "name": "clip_l"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "t5xxl",
+      "name": "t5xxl",
+      "type": "STRING",
+      "widget": {
+       "name": "t5xxl"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "guidance",
+      "name": "guidance",
+      "type": "FLOAT",
+      "widget": {
+       "name": "guidance"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 11,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1600,
+     1300
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeFlux"
+    },
+    "size": [
+     400,
+     166
+    ],
+    "type": "CLIPTextEncodeFlux",
+    "widgets_values": [
+     "box l",
+     "box t5",
+     3.5
+    ],
+    "widgets_values_named": {
+     "clip_l": "box l",
+     "guidance": 3.5,
+     "t5xxl": "box t5"
+    }
+   },
+   {
+    "flags": {},
+    "id": 13,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "clip_l",
+      "name": "clip_l",
+      "type": "STRING",
+      "widget": {
+       "name": "clip_l"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "t5xxl",
+      "name": "t5xxl",
+      "type": "STRING",
+      "widget": {
+       "name": "t5xxl"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "guidance",
+      "name": "guidance",
+      "type": "FLOAT",
+      "widget": {
+       "name": "guidance"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 12,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     100,
+     1900
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeFlux"
+    },
+    "size": [
+     400,
+     250
+    ],
+    "type": "CLIPTextEncodeFlux",
+    "widgets_values": [
+     "box l",
+     "box t5",
+     3.5
+    ],
+    "widgets_values_named": {
+     "clip_l": "box l",
+     "guidance": 3.5,
+     "t5xxl": "box t5"
+    }
+   },
+   {
+    "flags": {},
+    "id": 14,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "clip_l",
+      "name": "clip_l",
+      "type": "STRING",
+      "widget": {
+       "name": "clip_l"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "t5xxl",
+      "name": "t5xxl",
+      "type": "STRING",
+      "widget": {
+       "name": "t5xxl"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "guidance",
+      "name": "guidance",
+      "type": "FLOAT",
+      "widget": {
+       "name": "guidance"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 13,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     600,
+     1900
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeFlux"
+    },
+    "size": [
+     400,
+     450
+    ],
+    "type": "CLIPTextEncodeFlux",
+    "widgets_values": [
+     "box l",
+     "box t5",
+     3.5
+    ],
+    "widgets_values_named": {
+     "clip_l": "box l",
+     "guidance": 3.5,
+     "t5xxl": "box t5"
+    }
+   },
+   {
+    "flags": {},
+    "id": 15,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "width",
+      "name": "width",
+      "type": "INT",
+      "widget": {
+       "name": "width"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "height",
+      "name": "height",
+      "type": "INT",
+      "widget": {
+       "name": "height"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "crop_w",
+      "name": "crop_w",
+      "type": "INT",
+      "widget": {
+       "name": "crop_w"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "crop_h",
+      "name": "crop_h",
+      "type": "INT",
+      "widget": {
+       "name": "crop_h"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "target_width",
+      "name": "target_width",
+      "type": "INT",
+      "widget": {
+       "name": "target_width"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "target_height",
+      "name": "target_height",
+      "type": "INT",
+      "widget": {
+       "name": "target_height"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "text_g",
+      "name": "text_g",
+      "type": "STRING",
+      "widget": {
+       "name": "text_g"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "text_l",
+      "name": "text_l",
+      "type": "STRING",
+      "widget": {
+       "name": "text_l"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 14,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1100,
+     1900
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeSDXL"
+    },
+    "size": [
+     400,
+     286
+    ],
+    "type": "CLIPTextEncodeSDXL",
+    "widgets_values": [
+     1024,
+     1024,
+     0,
+     0,
+     1024,
+     1024,
+     "box g",
+     "box l"
+    ],
+    "widgets_values_named": {
+     "crop_h": 0,
+     "crop_w": 0,
+     "height": 1024,
+     "target_height": 1024,
+     "target_width": 1024,
+     "text_g": "box g",
+     "text_l": "box l",
+     "width": 1024
+    }
+   },
+   {
+    "flags": {},
+    "id": 16,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "width",
+      "name": "width",
+      "type": "INT",
+      "widget": {
+       "name": "width"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "height",
+      "name": "height",
+      "type": "INT",
+      "widget": {
+       "name": "height"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "crop_w",
+      "name": "crop_w",
+      "type": "INT",
+      "widget": {
+       "name": "crop_w"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "crop_h",
+      "name": "crop_h",
+      "type": "INT",
+      "widget": {
+       "name": "crop_h"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "target_width",
+      "name": "target_width",
+      "type": "INT",
+      "widget": {
+       "name": "target_width"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "target_height",
+      "name": "target_height",
+      "type": "INT",
+      "widget": {
+       "name": "target_height"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "text_g",
+      "name": "text_g",
+      "type": "STRING",
+      "widget": {
+       "name": "text_g"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "text_l",
+      "name": "text_l",
+      "type": "STRING",
+      "widget": {
+       "name": "text_l"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 15,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1600,
+     1900
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeSDXL"
+    },
+    "size": [
+     400,
+     500
+    ],
+    "type": "CLIPTextEncodeSDXL",
+    "widgets_values": [
+     1024,
+     1024,
+     0,
+     0,
+     1024,
+     1024,
+     "box g",
+     "box l"
+    ],
+    "widgets_values_named": {
+     "crop_h": 0,
+     "crop_w": 0,
+     "height": 1024,
+     "target_height": 1024,
+     "target_width": 1024,
+     "text_g": "box g",
+     "text_l": "box l",
+     "width": 1024
+    }
+   },
+   {
+    "flags": {
+     "collapsed": true
+    },
+    "id": 17,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 16,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     100,
+     2500
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "one box"
+    ],
+    "widgets_values_named": {
+     "text": "one box"
+    }
+   },
+   {
+    "flags": {
+     "collapsed": true
+    },
+    "id": 18,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string",
+      "name": "string",
+      "type": "STRING",
+      "widget": {
+       "name": "string"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "mode",
+      "name": "mode",
+      "type": "COMBO",
+      "widget": {
+       "name": "mode"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 17,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     600,
+     2500
+    ],
+    "properties": {
+     "Node name for S&R": "StringTrim"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "StringTrim",
+    "widgets_values": [
+     "box above a combo",
+     "Both"
+    ],
+    "widgets_values_named": {
+     "mode": "Both",
+     "string": "box above a combo"
+    }
+   },
+   {
+    "flags": {
+     "collapsed": true
+    },
+    "id": 19,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string_a",
+      "name": "string_a",
+      "type": "STRING",
+      "widget": {
+       "name": "string_a"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "string_b",
+      "name": "string_b",
+      "type": "STRING",
+      "widget": {
+       "name": "string_b"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "delimiter",
+      "name": "delimiter",
+      "type": "STRING",
+      "widget": {
+       "name": "delimiter"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 18,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1100,
+     2500
+    ],
+    "properties": {
+     "Node name for S&R": "StringConcatenate"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "StringConcatenate",
+    "widgets_values": [
+     "box a",
+     "box b",
+     ","
+    ],
+    "widgets_values_named": {
+     "delimiter": ",",
+     "string_a": "box a",
+     "string_b": "box b"
+    }
+   },
+   {
+    "flags": {
+     "collapsed": true
+    },
+    "id": 20,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "clip_l",
+      "name": "clip_l",
+      "type": "STRING",
+      "widget": {
+       "name": "clip_l"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "t5xxl",
+      "name": "t5xxl",
+      "type": "STRING",
+      "widget": {
+       "name": "t5xxl"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "guidance",
+      "name": "guidance",
+      "type": "FLOAT",
+      "widget": {
+       "name": "guidance"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 19,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1600,
+     2500
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeFlux"
+    },
+    "size": [
+     400,
+     250
+    ],
+    "type": "CLIPTextEncodeFlux",
+    "widgets_values": [
+     "box l",
+     "box t5",
+     3.5
+    ],
+    "widgets_values_named": {
+     "clip_l": "box l",
+     "guidance": 3.5,
+     "t5xxl": "box t5"
+    }
+   },
+   {
+    "flags": {},
+    "id": 21,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "value",
+      "name": "value",
+      "type": "INT",
+      "widget": {
+       "name": "value"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 20,
+    "outputs": [
+     {
+      "links": [
+       1,
+       4,
+       5,
+       6,
+       7
+      ],
+      "localized_name": "INT",
+      "name": "INT",
+      "type": "INT"
+     }
+    ],
+    "pos": [
+     100,
+     3100
+    ],
+    "properties": {
+     "Node name for S&R": "PrimitiveInt"
+    },
+    "size": [
+     300,
+     82
+    ],
+    "type": "PrimitiveInt",
+    "widgets_values": [
+     7,
+     "fixed"
+    ],
+    "widgets_values_named": {
+     "control_after_generate": "fixed",
+     "value": 7
+    }
+   },
+   {
+    "flags": {},
+    "id": 22,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": null,
+      "localized_name": "width",
+      "name": "width",
+      "type": "INT",
+      "widget": {
+       "name": "width"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "height",
+      "name": "height",
+      "type": "INT",
+      "widget": {
+       "name": "height"
+      }
+     },
+     {
+      "link": 1,
+      "localized_name": "crop_w",
+      "name": "crop_w",
+      "type": "INT",
+      "widget": {
+       "name": "crop_w"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "crop_h",
+      "name": "crop_h",
+      "type": "INT",
+      "widget": {
+       "name": "crop_h"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "target_width",
+      "name": "target_width",
+      "type": "INT",
+      "widget": {
+       "name": "target_width"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "target_height",
+      "name": "target_height",
+      "type": "INT",
+      "widget": {
+       "name": "target_height"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "text_g",
+      "name": "text_g",
+      "type": "STRING",
+      "widget": {
+       "name": "text_g"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "text_l",
+      "name": "text_l",
+      "type": "STRING",
+      "widget": {
+       "name": "text_l"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 22,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     500,
+     3100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncodeSDXL"
+    },
+    "size": [
+     400,
+     500
+    ],
+    "type": "CLIPTextEncodeSDXL",
+    "widgets_values": [
+     1024,
+     1024,
+     0,
+     0,
+     1024,
+     1024,
+     "box g",
+     "box l"
+    ],
+    "widgets_values_named": {
+     "crop_h": 0,
+     "crop_w": 0,
+     "height": 1024,
+     "target_height": 1024,
+     "target_width": 1024,
+     "text_g": "box g",
+     "text_l": "box l",
+     "width": 1024
+    }
+   },
+   {
+    "flags": {},
+    "id": 23,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "string",
+      "name": "string",
+      "type": "STRING",
+      "widget": {
+       "name": "string"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "mode",
+      "name": "mode",
+      "type": "COMBO",
+      "widget": {
+       "name": "mode"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 21,
+    "outputs": [
+     {
+      "links": [
+       2,
+       3
+      ],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     1000,
+     3100
+    ],
+    "properties": {
+     "Node name for S&R": "StringTrim"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "StringTrim",
+    "widgets_values": [
+     "source",
+     "Both"
+    ],
+    "widgets_values_named": {
+     "mode": "Both",
+     "string": "source"
+    }
+   },
+   {
+    "flags": {},
+    "id": 24,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "clip",
+      "name": "clip",
+      "type": "CLIP"
+     },
+     {
+      "link": 2,
+      "localized_name": "text",
+      "name": "text",
+      "type": "STRING",
+      "widget": {
+       "name": "text"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 25,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "CONDITIONING",
+      "name": "CONDITIONING",
+      "type": "CONDITIONING"
+     }
+    ],
+    "pos": [
+     1500,
+     3100
+    ],
+    "properties": {
+     "Node name for S&R": "CLIPTextEncode"
+    },
+    "size": [
+     400,
+     200
+    ],
+    "type": "CLIPTextEncode",
+    "widgets_values": [
+     "linked"
+    ],
+    "widgets_values_named": {
+     "text": "linked"
+    }
+   },
+   {
+    "flags": {},
+    "id": 25,
+    "inputs": [
+     {
+      "link": 3,
+      "localized_name": "string_a",
+      "name": "string_a",
+      "type": "STRING",
+      "widget": {
+       "name": "string_a"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "string_b",
+      "name": "string_b",
+      "type": "STRING",
+      "widget": {
+       "name": "string_b"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "delimiter",
+      "name": "delimiter",
+      "type": "STRING",
+      "widget": {
+       "name": "delimiter"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 26,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "STRING",
+      "name": "STRING",
+      "type": "STRING"
+     }
+    ],
+    "pos": [
+     2000,
+     3100
+    ],
+    "properties": {
+     "Node name for S&R": "StringConcatenate"
+    },
+    "size": [
+     400,
+     400
+    ],
+    "type": "StringConcatenate",
+    "widgets_values": [
+     "linked",
+     "box b",
+     ","
+    ],
+    "widgets_values_named": {
+     "delimiter": ",",
+     "string_a": "linked",
+     "string_b": "box b"
+    }
+   },
+   {
+    "flags": {},
+    "id": 26,
+    "inputs": [
+     {
+      "link": 4,
+      "localized_name": "width",
+      "name": "width",
+      "type": "INT",
+      "widget": {
+       "name": "width"
+      }
+     },
+     {
+      "link": 5,
+      "localized_name": "height",
+      "name": "height",
+      "type": "INT",
+      "widget": {
+       "name": "height"
+      }
+     },
+     {
+      "link": 6,
+      "localized_name": "batch_size",
+      "name": "batch_size",
+      "type": "INT",
+      "widget": {
+       "name": "batch_size"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 23,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "LATENT",
+      "name": "LATENT",
+      "type": "LATENT"
+     }
+    ],
+    "pos": [
+     500,
+     3700
+    ],
+    "properties": {
+     "Node name for S&R": "EmptyLatentImage"
+    },
+    "size": [
+     315,
+     106
+    ],
+    "type": "EmptyLatentImage",
+    "widgets_values": [
+     512,
+     512,
+     1
+    ],
+    "widgets_values_named": {
+     "batch_size": 1,
+     "height": 512,
+     "width": 512
+    }
+   },
+   {
+    "flags": {},
+    "id": 27,
+    "inputs": [
+     {
+      "link": null,
+      "localized_name": "model",
+      "name": "model",
+      "type": "MODEL"
+     },
+     {
+      "link": null,
+      "localized_name": "positive",
+      "name": "positive",
+      "type": "CONDITIONING"
+     },
+     {
+      "link": null,
+      "localized_name": "negative",
+      "name": "negative",
+      "type": "CONDITIONING"
+     },
+     {
+      "link": null,
+      "localized_name": "latent_image",
+      "name": "latent_image",
+      "type": "LATENT"
+     },
+     {
+      "link": 7,
+      "localized_name": "seed",
+      "name": "seed",
+      "type": "INT",
+      "widget": {
+       "name": "seed"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "steps",
+      "name": "steps",
+      "type": "INT",
+      "widget": {
+       "name": "steps"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "cfg",
+      "name": "cfg",
+      "type": "FLOAT",
+      "widget": {
+       "name": "cfg"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "sampler_name",
+      "name": "sampler_name",
+      "type": "COMBO",
+      "widget": {
+       "name": "sampler_name"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "scheduler",
+      "name": "scheduler",
+      "type": "COMBO",
+      "widget": {
+       "name": "scheduler"
+      }
+     },
+     {
+      "link": null,
+      "localized_name": "denoise",
+      "name": "denoise",
+      "type": "FLOAT",
+      "widget": {
+       "name": "denoise"
+      }
+     }
+    ],
+    "mode": 0,
+    "order": 24,
+    "outputs": [
+     {
+      "links": [],
+      "localized_name": "LATENT",
+      "name": "LATENT",
+      "type": "LATENT"
+     }
+    ],
+    "pos": [
+     1000,
+     3700
+    ],
+    "properties": {
+     "Node name for S&R": "KSampler"
+    },
+    "size": [
+     400,
+     300
+    ],
+    "type": "KSampler",
+    "widgets_values": [
+     0,
+     "fixed",
+     20,
+     8,
+     "euler",
+     "normal",
+     1
+    ],
+    "widgets_values_named": {
+     "cfg": 8,
+     "control_after_generate": "fixed",
+     "denoise": 1,
+     "sampler_name": "euler",
+     "scheduler": "normal",
+     "seed": 0,
+     "steps": 20
+    }
+   }
+  ],
+  "revision": 0,
+  "version": 0.4
+ },
+ "settings": {
+  "always_snap_to_grid": false,
+  "canvas_grid_size": 10,
+  "group_font": "Inter",
+  "group_text_size": 20,
+  "links_render_mode": 2,
+  "node_collapsed_width": 80,
+  "node_slot_height": 20,
+  "node_title_height": 30,
+  "snap_to_grid_size": 10
+ },
+ "settings_forced": {},
+ "versions": {
+  "comfyui": "0.45.0",
+  "frontend": "1.59.1",
+  "named_values_restore": false,
+  "vue_nodes": false
+ }
+}

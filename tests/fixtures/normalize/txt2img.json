@@ -1,0 +1,49 @@
+{
+  "_workflow": {
+    "format": 1,
+    "title": "Minimal text to image",
+    "locale": "en",
+    "layout": {"preset": "bento"}
+  },
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {"ckpt_name": "base.safetensors"}
+  },
+  "pos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {"clip": ["ckpt", "CLIP"], "text": "a cat"},
+    "_meta": {"title": "Positive prompt", "ui_role": "cockpit", "ui_expose": ["text"]}
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {"clip": ["ckpt", "CLIP"], "text": "blurry, lowres"},
+    "_meta": {"title": "Negative prompt", "ui_role": "cockpit"}
+  },
+  "latent": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {"width": 1024, "height": 1024, "batch_size": 1},
+    "_meta": {"title": "Canvas size", "ui_role": "cockpit"}
+  },
+  "sampler": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["ckpt", "MODEL"],
+      "positive": ["pos", 0],
+      "negative": ["neg", 0],
+      "latent_image": ["latent", 0],
+      "steps": 28,
+      "cfg": 4.0,
+      "sampler_name": "euler",
+      "scheduler": "normal"
+    },
+    "_meta": {"title": "Main sampler", "ui_locked": ["cfg"], "ui_note": "the recipe fixes cfg at 4.0"}
+  },
+  "decode": {
+    "class_type": "VAEDecode",
+    "inputs": {"samples": ["sampler", "LATENT"], "vae": ["ckpt", "VAE"]}
+  },
+  "save": {
+    "class_type": "SaveImage",
+    "inputs": {"images": ["decode", "IMAGE"], "filename_prefix": "cwc_demo"}
+  }
+}

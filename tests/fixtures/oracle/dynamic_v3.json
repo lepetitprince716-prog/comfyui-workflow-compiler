@@ -1,0 +1,91 @@
+{
+  "last_node_id": 7,
+  "last_link_id": 8,
+  "nodes": [
+    {
+      "id": 1, "type": "EmptyImage", "pos": [0, 0], "size": [270, 130], "flags": {}, "order": 0, "mode": 0,
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [1, 2, 7, 8]}],
+      "properties": {},
+      "widgets_values": [512, 512, 1, 0],
+      "widgets_values_named": {"width": 512, "height": 512, "batch_size": 1, "color": 0}
+    },
+    {
+      "id": 2, "type": "EmptyImage", "pos": [0, 200], "size": [270, 130], "flags": {}, "order": 1, "mode": 0,
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [3, 6]}],
+      "properties": {},
+      "widgets_values": [256, 256, 1, 0],
+      "widgets_values_named": {"width": 256, "height": 256, "batch_size": 1, "color": 0}
+    },
+    {
+      "id": 3, "type": "BatchImagesNode", "title": "autogrow", "pos": [350, 0], "size": [140, 66], "flags": {}, "order": 2, "mode": 0,
+      "inputs": [
+        {"label": "image0", "name": "images.image0", "type": "IMAGE", "link": 1},
+        {"label": "image1", "name": "images.image1", "type": "IMAGE", "shape": 7, "link": 3}
+      ],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [4]}],
+      "properties": {}
+    },
+    {
+      "id": 4, "type": "ResizeImageMaskNode", "title": "dynamic combo, sub widget", "pos": [350, 200], "size": [270, 106], "flags": {}, "order": 3, "mode": 0,
+      "inputs": [
+        {"name": "input", "type": "IMAGE,MASK", "link": 2},
+        {"name": "resize_type", "type": "COMFY_DYNAMICCOMBO_V3", "widget": {"name": "resize_type"}, "link": null},
+        {"name": "resize_type.multiplier", "type": "FLOAT", "widget": {"name": "resize_type.multiplier"}, "link": null},
+        {"name": "scale_method", "type": "COMBO", "widget": {"name": "scale_method"}, "link": null}
+      ],
+      "outputs": [{"name": "resized", "type": "IMAGE", "links": [5]}],
+      "properties": {},
+      "widgets_values": ["scale by multiplier", 0.5, "area"],
+      "widgets_values_named": {"resize_type": "scale by multiplier", "resize_type.multiplier": 0.5, "scale_method": "area"}
+    },
+    {
+      "id": 5, "type": "ResizeImageMaskNode", "title": "dynamic combo, sub socket", "pos": [350, 400], "size": [270, 106], "flags": {}, "order": 4, "mode": 0,
+      "inputs": [
+        {"name": "input", "type": "IMAGE,MASK", "link": 7},
+        {"name": "resize_type", "type": "COMFY_DYNAMICCOMBO_V3", "widget": {"name": "resize_type"}, "link": null},
+        {"name": "resize_type.match", "type": "IMAGE,MASK", "link": 6},
+        {"name": "resize_type.crop", "type": "COMBO", "widget": {"name": "resize_type.crop"}, "link": null},
+        {"name": "scale_method", "type": "COMBO", "widget": {"name": "scale_method"}, "link": null}
+      ],
+      "outputs": [{"name": "resized", "type": "IMAGE", "links": null}],
+      "properties": {},
+      "widgets_values": ["match size", "disabled", "bicubic"],
+      "widgets_values_named": {"resize_type": "match size", "resize_type.crop": "disabled", "scale_method": "bicubic"}
+    },
+    {
+      "id": 6, "type": "ComfySwitchNode", "title": "matchtype, unresolved", "pos": [700, 0], "size": [270, 78], "flags": {}, "order": 5, "mode": 0,
+      "inputs": [
+        {"name": "on_false", "type": "*", "shape": 7, "link": 5},
+        {"name": "on_true", "type": "*", "shape": 7, "link": 4},
+        {"name": "switch", "type": "BOOLEAN", "widget": {"name": "switch"}, "link": null}
+      ],
+      "outputs": [{"name": "output", "type": "*", "links": null}],
+      "properties": {},
+      "widgets_values": [true],
+      "widgets_values_named": {"switch": true}
+    },
+    {
+      "id": 7, "type": "ResizeImageMaskNode", "title": "dynamic combo, positional only", "pos": [350, 600], "size": [270, 106], "flags": {}, "order": 6, "mode": 0,
+      "inputs": [
+        {"name": "input", "type": "IMAGE,MASK", "link": 8}
+      ],
+      "outputs": [{"name": "resized", "type": "IMAGE", "links": null}],
+      "properties": {},
+      "widgets_values": ["scale longer dimension", 1024, "bilinear"]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 3, 0, "IMAGE"],
+    [2, 1, 0, 4, 0, "IMAGE"],
+    [3, 2, 0, 3, 1, "IMAGE"],
+    [4, 3, 0, 6, 1, "IMAGE"],
+    [5, 4, 0, 6, 0, "IMAGE"],
+    [6, 2, 0, 5, 2, "IMAGE"],
+    [7, 1, 0, 5, 0, "IMAGE"],
+    [8, 1, 0, 7, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

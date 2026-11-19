@@ -1,0 +1,120 @@
+{
+  "format": 1,
+  "presets": {
+    "bento": {
+      "axis": "x",
+      "wrap_ratio": 2.4,
+      "guide_width": 460,
+      "numbering": "number",
+      "palette": "semantic",
+      "bands": [
+        {
+          "slots": [
+            {"zones": ["cockpit"]},
+            {"zones": ["model", "prompt"], "stack": "x"},
+            {"zones": ["sampling", "stage"], "repeat": "x"},
+            {"zones": ["postprocess"]},
+            {"zones": ["output"]}
+          ]
+        },
+        {
+          "slots": [
+            {"zones": ["control", "optional"], "stack": "x"}
+          ]
+        }
+      ],
+      "corridors": [{"kind": "bus"}]
+    },
+    "swimlanes": {
+      "axis": "x",
+      "wrap_ratio": 2.4,
+      "guide_width": 460,
+      "numbering": "number",
+      "palette": "semantic",
+      "bands": [
+        {
+          "slots": [
+            {"zones": ["cockpit"]},
+            {
+              "zones": ["model", "prompt", "control", "sampling", "stage", "postprocess", "optional", "output"],
+              "repeat": "x",
+              "attach": ["control"]
+            }
+          ]
+        }
+      ],
+      "corridors": [{"kind": "skybridge"}]
+    },
+    "cockpit-split": {
+      "axis": "x",
+      "wrap_ratio": 2.4,
+      "guide_width": 460,
+      "numbering": "number",
+      "palette": "semantic",
+      "bands": [
+        {
+          "slots": [
+            {"zones": ["cockpit"]},
+            {
+              "zones": ["model", "prompt", "control", "sampling", "stage", "postprocess", "optional", "output"],
+              "stack": "y",
+              "repeat": "x",
+              "attach": ["control"]
+            }
+          ]
+        }
+      ],
+      "corridors": [{"kind": "spine", "after_slot": 0}],
+      "cockpit_split": {"core": ["positive", "negative", "reference", "size", "seed"]}
+    },
+    "tower-preview": {
+      "axis": "x",
+      "wrap_ratio": 2.4,
+      "guide_width": 460,
+      "numbering": "number",
+      "palette": "semantic",
+      "bands": [
+        {
+          "slots": [
+            {"zones": ["cockpit"]},
+            {"zones": ["model", "prompt"], "stack": "x"},
+            {"zones": ["sampling", "stage"], "repeat": "x"},
+            {"zones": ["postprocess"]},
+            {"zones": ["output"]}
+          ]
+        },
+        {
+          "slots": [
+            {"zones": ["control", "optional"], "stack": "x"}
+          ]
+        }
+      ],
+      "corridors": [{"kind": "bus"}],
+      "preview": {"zone": "output", "share": 0.55, "min_height": 680}
+    },
+    "stepped": {
+      "axis": "x",
+      "wrap_ratio": 2.4,
+      "guide_width": 480,
+      "numbering": "step",
+      "palette": "official",
+      "bands": [
+        {
+          "slots": [
+            {"zones": ["model", "cockpit"]},
+            {"zones": ["prompt"]},
+            {"zones": ["sampling", "stage"], "repeat": "x"},
+            {"zones": ["postprocess"]},
+            {"zones": ["output"]}
+          ]
+        },
+        {
+          "slots": [
+            {"zones": ["control", "optional"], "stack": "x"}
+          ]
+        }
+      ],
+      "corridors": []
+    }
+  }
+}

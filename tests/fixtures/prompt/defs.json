@@ -1,0 +1,85 @@
+{
+  "TestLoader": {
+    "display_name": "Test Loader",
+    "inputs": [{"name": "ckpt_name", "type": "COMBO", "widget": true}],
+    "outputs": [["MODEL", "MODEL"], ["CLIP", "CLIP"], ["VAE", "VAE"]]
+  },
+  "TestLora": {
+    "inputs": [
+      {"name": "model", "type": "MODEL"},
+      {"name": "clip", "type": "CLIP"},
+      {"name": "lora_name", "type": "COMBO", "widget": true},
+      {"name": "strength", "type": "FLOAT", "widget": true, "default": 1.0}
+    ],
+    "outputs": [["MODEL", "MODEL"], ["CLIP", "CLIP"]]
+  },
+  "TestEncode": {
+    "display_name": "Test Encode",
+    "inputs": [
+      {"name": "text", "type": "STRING", "widget": true, "default": ""},
+      {"name": "clip", "type": "CLIP"}
+    ],
+    "outputs": [["CONDITIONING", "CONDITIONING"]]
+  },
+  "TestLatent": {
+    "inputs": [
+      {"name": "width", "type": "INT", "widget": true, "default": 512},
+      {"name": "height", "type": "INT", "widget": true, "default": 512}
+    ],
+    "outputs": [["LATENT", "LATENT"]]
+  },
+  "TestSampler": {
+    "display_name": "Test Sampler",
+    "inputs": [
+      {"name": "model", "type": "MODEL"},
+      {"name": "seed", "type": "INT", "widget": true, "default": 0},
+      {"name": "steps", "type": "INT", "widget": true, "default": 20},
+      {"name": "positive", "type": "CONDITIONING"},
+      {"name": "negative", "type": "CONDITIONING"},
+      {"name": "latent", "type": "LATENT"}
+    ],
+    "widgets": [
+      {"name": "seed", "input": "seed", "default": 0},
+      {"name": "control_after_generate", "kind": "control_after_generate", "input": "seed", "default": "randomize", "to_prompt": false},
+      {"name": "steps", "input": "steps", "default": 20}
+    ],
+    "outputs": [["LATENT", "LATENT"]]
+  },
+  "TestDecode": {
+    "display_name": "Test Decode",
+    "inputs": [{"name": "samples", "type": "LATENT"}, {"name": "vae", "type": "VAE"}],
+    "outputs": [["IMAGE", "IMAGE"]]
+  },
+  "TestUpscale": {
+    "inputs": [
+      {"name": "image", "type": "IMAGE"},
+      {"name": "scale", "type": "FLOAT", "widget": true, "default": 2.0}
+    ],
+    "outputs": [["IMAGE", "IMAGE"]]
+  },
+  "TestWidgetFirst": {
+    "inputs": [
+      {"name": "scale", "type": "FLOAT", "widget": true, "default": 1.0},
+      {"name": "image", "type": "IMAGE"}
+    ],
+    "outputs": [["IMAGE", "IMAGE"]]
+  },
+  "TestIntGen": {"inputs": [], "outputs": [["INT", "INT"]]},
+  "TestImage": {"inputs": [], "outputs": [["IMAGE", "IMAGE"]]},
+  "TestAny": {"inputs": [{"name": "anything", "type": "*"}], "outputs": [["*", "*"]]},
+  "TestSave": {
+    "inputs": [
+      {"name": "images", "type": "IMAGE"},
+      {"name": "filename_prefix", "type": "STRING", "widget": true, "default": "cwc"}
+    ],
+    "outputs": [],
+    "output_node": true
+  },
+  "TestList": {
+    "inputs": [{"name": "values", "type": "STRING", "widget": true, "default": []}],
+    "outputs": [["STRING", "STRING"]]
+  },
+  "TestReroute": {"virtual": true, "behavior": "passthrough", "inputs": [], "outputs": []},
+  "TestPrimitive": {"virtual": true, "behavior": "primitive", "inputs": [], "outputs": []},
+  "TestNote": {"virtual": true, "behavior": "note", "inputs": [], "outputs": []}
+}

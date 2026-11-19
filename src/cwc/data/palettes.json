@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "zone_classes": {
+    "cockpit": "cockpit",
+    "model": "model",
+    "prompt": "conditioning",
+    "control": "conditioning",
+    "sampling": "sampling",
+    "stage": "sampling",
+    "postprocess": "postprocess",
+    "output": "output",
+    "optional": "optional"
+  },
+  "nodes": {
+    "positive": {"color": "#1c3828", "bgcolor": "#234732"},
+    "negative": {"color": "#3d1e25", "bgcolor": "#4d262f"}
+  },
+  "palettes": {
+    "semantic": {
+      "cockpit": "#4a6b8a",
+      "model": "#6b5a8a",
+      "conditioning": "#4f7a5e",
+      "sampling": "#8a6f3e",
+      "postprocess": "#3f7a7a",
+      "output": "#8a4f4f",
+      "optional": "#5c5c5c"
+    },
+    "official": {
+      "cockpit": "#3f789e",
+      "model": "#3f789e",
+      "conditioning": "#3f789e",
+      "sampling": "#3f789e",
+      "postprocess": "#3f789e",
+      "output": "#3f789e",
+      "optional": "#3f789e"
+    }
+  }
+}

@@ -1,0 +1,1003 @@
+{
+ "source": "ComfyUI 0.45.0 /object_info, core nodes; descriptions and tooltips removed",
+ "nodes": {
+  "KSampler": {
+   "input": {
+    "required": {
+     "model": [
+      "MODEL",
+      {}
+     ],
+     "seed": [
+      "INT",
+      {
+       "default": 0,
+       "min": 0,
+       "max": 18446744073709551615,
+       "control_after_generate": true
+      }
+     ],
+     "steps": [
+      "INT",
+      {
+       "default": 20,
+       "min": 1,
+       "max": 10000
+      }
+     ],
+     "cfg": [
+      "FLOAT",
+      {
+       "default": 8.0,
+       "min": 0.0,
+       "max": 100.0,
+       "step": 0.1,
+       "round": 0.01
+      }
+     ],
+     "sampler_name": [
+      [
+       "euler",
+       "euler_cfg_pp",
+       "euler_ancestral",
+       "euler_ancestral_cfg_pp",
+       "heun",
+       "heunpp2",
+       "exp_heun_2_x0",
+       "exp_heun_2_x0_sde",
+       "dpm_2",
+       "dpm_2_ancestral",
+       "lms",
+       "dpm_fast",
+       "dpm_adaptive",
+       "dpmpp_2s_ancestral",
+       "dpmpp_2s_ancestral_cfg_pp",
+       "dpmpp_sde",
+       "dpmpp_sde_gpu",
+       "dpmpp_2m",
+       "dpmpp_2m_cfg_pp",
+       "dpmpp_2m_sde",
+       "dpmpp_2m_sde_gpu",
+       "dpmpp_2m_sde_heun",
+       "dpmpp_2m_sde_heun_gpu",
+       "dpmpp_3m_sde",
+       "dpmpp_3m_sde_gpu",
+       "ddpm",
+       "lcm",
+       "ipndm",
+       "ipndm_v",
+       "deis",
+       "cfgpp_ud10_ab",
+       "res_multistep",
+       "res_multistep_cfg_pp",
+       "res_multistep_ancestral",
+       "res_multistep_ancestral_cfg_pp",
+       "gradient_estimation",
+       "gradient_estimation_cfg_pp",
+       "er_sde",
+       "seeds_2",
+       "seeds_3",
+       "sa_solver",
+       "sa_solver_pece",
+       "ddim",
+       "uni_pc",
+       "uni_pc_bh2"
+      ],
+      {}
+     ],
+     "scheduler": [
+      [
+       "simple",
+       "sgm_uniform",
+       "karras",
+       "exponential",
+       "ddim_uniform",
+       "beta",
+       "normal",
+       "linear_quadratic",
+       "kl_optimal"
+      ],
+      {}
+     ],
+     "positive": [
+      "CONDITIONING",
+      {}
+     ],
+     "negative": [
+      "CONDITIONING",
+      {}
+     ],
+     "latent_image": [
+      "LATENT",
+      {}
+     ],
+     "denoise": [
+      "FLOAT",
+      {
+       "default": 1.0,
+       "min": 0.0,
+       "max": 1.0,
+       "step": 0.01
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "model",
+     "seed",
+     "steps",
+     "cfg",
+     "sampler_name",
+     "scheduler",
+     "positive",
+     "negative",
+     "latent_image",
+     "denoise"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "LATENT"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "LATENT"
+   ],
+   "name": "KSampler",
+   "display_name": "KSampler",
+   "python_module": "nodes",
+   "category": "model/sampling",
+   "output_node": false,
+   "has_intermediate_output": false
+  },
+  "SeedNode": {
+   "input": {
+    "required": {
+     "seed": [
+      "INT",
+      {
+       "min": 0,
+       "max": 9223372036854775807,
+       "control_after_generate": "fixed"
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "seed"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "INT"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "seed"
+   ],
+   "output_matchtypes": null,
+   "name": "SeedNode",
+   "display_name": "Seed",
+   "python_module": "comfy_extras.nodes_seed",
+   "category": "utilities",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": null,
+   "has_intermediate_output": false
+  },
+  "LoadImage": {
+   "input": {
+    "required": {
+     "image": [
+      [],
+      {
+       "image_upload": true
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "image"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "IMAGE",
+    "MASK"
+   ],
+   "output_is_list": [
+    false,
+    false
+   ],
+   "output_name": [
+    "IMAGE",
+    "MASK"
+   ],
+   "name": "LoadImage",
+   "display_name": "Load Image",
+   "python_module": "nodes",
+   "category": "image",
+   "output_node": false,
+   "has_intermediate_output": false,
+   "essentials_category": "Basics"
+  },
+  "LoadImageOutput": {
+   "input": {
+    "required": {
+     "image": [
+      "COMBO",
+      {
+       "image_upload": true,
+       "image_folder": "output",
+       "remote": {
+        "route": "/internal/files/output",
+        "refresh_button": true,
+        "control_after_refresh": "first"
+       }
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "image"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "IMAGE",
+    "MASK"
+   ],
+   "output_is_list": [
+    false,
+    false
+   ],
+   "output_name": [
+    "IMAGE",
+    "MASK"
+   ],
+   "name": "LoadImageOutput",
+   "display_name": "Load Image (from Outputs)",
+   "python_module": "nodes",
+   "category": "image",
+   "output_node": false,
+   "has_intermediate_output": false,
+   "experimental": true,
+   "essentials_category": "Basics"
+  },
+  "LoadAudio": {
+   "input": {
+    "required": {
+     "audio": [
+      "COMBO",
+      {
+       "multiselect": false,
+       "options": [],
+       "audio_upload": true
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "audio"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "AUDIO"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "AUDIO"
+   ],
+   "output_matchtypes": null,
+   "name": "LoadAudio",
+   "display_name": "Load Audio",
+   "python_module": "comfy_extras.nodes_audio",
+   "category": "audio",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": "Audio",
+   "has_intermediate_output": false
+  },
+  "ResizeImageMaskNode": {
+   "input": {
+    "required": {
+     "input": [
+      "COMFY_MATCHTYPE_V3",
+      {
+       "template": {
+        "template_id": "input_type",
+        "allowed_types": "IMAGE,MASK"
+       }
+      }
+     ],
+     "resize_type": [
+      "COMFY_DYNAMICCOMBO_V3",
+      {
+       "options": [
+        {
+         "key": "scale dimensions",
+         "inputs": {
+          "required": {
+           "width": [
+            "INT",
+            {
+             "default": 512,
+             "min": 0,
+             "max": 16384,
+             "step": 1
+            }
+           ],
+           "height": [
+            "INT",
+            {
+             "default": 512,
+             "min": 0,
+             "max": 16384,
+             "step": 1
+            }
+           ],
+           "crop": [
+            "COMBO",
+            {
+             "default": "center",
+             "multiselect": false,
+             "options": [
+              "disabled",
+              "center"
+             ]
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale by multiplier",
+         "inputs": {
+          "required": {
+           "multiplier": [
+            "FLOAT",
+            {
+             "default": 1.0,
+             "min": 0.01,
+             "max": 8.0,
+             "step": 0.01
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale longer dimension",
+         "inputs": {
+          "required": {
+           "longer_size": [
+            "INT",
+            {
+             "default": 512,
+             "min": 0,
+             "max": 16384,
+             "step": 1
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale shorter dimension",
+         "inputs": {
+          "required": {
+           "shorter_size": [
+            "INT",
+            {
+             "default": 512,
+             "min": 0,
+             "max": 16384,
+             "step": 1
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale width",
+         "inputs": {
+          "required": {
+           "width": [
+            "INT",
+            {
+             "default": 512,
+             "min": 0,
+             "max": 16384,
+             "step": 1
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale height",
+         "inputs": {
+          "required": {
+           "height": [
+            "INT",
+            {
+             "default": 512,
+             "min": 0,
+             "max": 16384,
+             "step": 1
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale total pixels",
+         "inputs": {
+          "required": {
+           "megapixels": [
+            "FLOAT",
+            {
+             "default": 1.0,
+             "min": 0.01,
+             "max": 16.0,
+             "step": 0.01
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "match size",
+         "inputs": {
+          "required": {
+           "match": [
+            "IMAGE,MASK",
+            {}
+           ],
+           "crop": [
+            "COMBO",
+            {
+             "default": "center",
+             "multiselect": false,
+             "options": [
+              "disabled",
+              "center"
+             ]
+            }
+           ]
+          }
+         }
+        },
+        {
+         "key": "scale to multiple",
+         "inputs": {
+          "required": {
+           "multiple": [
+            "INT",
+            {
+             "default": 8,
+             "min": 1,
+             "max": 16384,
+             "step": 1
+            }
+           ]
+          }
+         }
+        }
+       ]
+      }
+     ],
+     "scale_method": [
+      "COMBO",
+      {
+       "default": "area",
+       "multiselect": false,
+       "options": [
+        "nearest-exact",
+        "bilinear",
+        "area",
+        "bicubic",
+        "lanczos"
+       ]
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "input",
+     "resize_type",
+     "scale_method"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "COMFY_MATCHTYPE_V3"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "resized"
+   ],
+   "output_matchtypes": [
+    "input_type"
+   ],
+   "name": "ResizeImageMaskNode",
+   "display_name": "Resize Image/Mask",
+   "python_module": "comfy_extras.nodes_post_processing",
+   "category": "image/transform",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": null,
+   "has_intermediate_output": false
+  },
+  "BatchImagesNode": {
+   "input": {
+    "required": {
+     "images": [
+      "COMFY_AUTOGROW_V3",
+      {
+       "template": {
+        "input": {
+         "required": {
+          "image": [
+           "IMAGE",
+           {}
+          ]
+         }
+        },
+        "prefix": "image",
+        "min": 1,
+        "max": 50
+       }
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "images"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "IMAGE"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "IMAGE"
+   ],
+   "output_matchtypes": null,
+   "name": "BatchImagesNode",
+   "display_name": "Batch Images",
+   "python_module": "comfy_extras.nodes_post_processing",
+   "category": "image/batch",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": "Image Tools",
+   "has_intermediate_output": false
+  },
+  "StringFormat": {
+   "input": {
+    "required": {
+     "values": [
+      "COMFY_AUTOGROW_V3",
+      {
+       "template": {
+        "input": {
+         "required": {
+          "value": [
+           "*",
+           {}
+          ]
+         }
+        },
+        "names": [
+         "a",
+         "b",
+         "c",
+         "d",
+         "e",
+         "f",
+         "g",
+         "h",
+         "i",
+         "j",
+         "k",
+         "l",
+         "m",
+         "n",
+         "o",
+         "p",
+         "q",
+         "r",
+         "s",
+         "t",
+         "u",
+         "v",
+         "w",
+         "x",
+         "y",
+         "z"
+        ],
+        "min": 0
+       }
+      }
+     ],
+     "f_string": [
+      "STRING",
+      {
+       "default": "{a}",
+       "multiline": true
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "values",
+     "f_string"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "STRING"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "STRING"
+   ],
+   "output_matchtypes": null,
+   "name": "StringFormat",
+   "display_name": "Format Text",
+   "python_module": "comfy_extras.nodes_string",
+   "category": "text",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": null,
+   "has_intermediate_output": false
+  },
+  "SDPoseKeypointExtractor": {
+   "input": {
+    "required": {
+     "model": [
+      "MODEL",
+      {}
+     ],
+     "vae": [
+      "VAE",
+      {}
+     ],
+     "image": [
+      "IMAGE",
+      {}
+     ],
+     "batch_size": [
+      "INT",
+      {
+       "default": 16,
+       "min": 1,
+       "max": 10000,
+       "step": 1
+      }
+     ]
+    },
+    "optional": {
+     "bboxes": [
+      "BOUNDING_BOX",
+      {
+       "default": {
+        "x": 0,
+        "y": 0,
+        "width": 512,
+        "height": 512
+       },
+       "socketless": true,
+       "forceInput": true
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "model",
+     "vae",
+     "image",
+     "batch_size"
+    ],
+    "optional": [
+     "bboxes"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "POSE_KEYPOINT"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "keypoints"
+   ],
+   "output_matchtypes": null,
+   "name": "SDPoseKeypointExtractor",
+   "display_name": "SDPose Keypoint Extractor",
+   "python_module": "comfy_extras.nodes_sdpose",
+   "category": "image/detection",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": null,
+   "has_intermediate_output": false
+  },
+  "ImageCropV2": {
+   "input": {
+    "required": {
+     "image": [
+      "IMAGE",
+      {}
+     ],
+     "crop_region": [
+      "BOUNDING_BOX",
+      {
+       "default": {
+        "x": 0,
+        "y": 0,
+        "width": 512,
+        "height": 512
+       },
+       "socketless": true,
+       "component": "ImageCrop"
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "image",
+     "crop_region"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "IMAGE"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "IMAGE"
+   ],
+   "output_matchtypes": null,
+   "name": "ImageCropV2",
+   "display_name": "Crop Image",
+   "python_module": "comfy_extras.nodes_images",
+   "category": "image/transform",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": "Image Tools",
+   "has_intermediate_output": true
+  },
+  "ImageCompare": {
+   "input": {
+    "required": {
+     "compare_view": [
+      "IMAGECOMPARE",
+      {
+       "socketless": true
+      }
+     ]
+    },
+    "optional": {
+     "image_a": [
+      "IMAGE",
+      {}
+     ],
+     "image_b": [
+      "IMAGE",
+      {}
+     ]
+    },
+    "hidden": {
+     "prompt": [
+      "PROMPT"
+     ],
+     "extra_pnginfo": [
+      "EXTRA_PNGINFO"
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "compare_view"
+    ],
+    "optional": [
+     "image_a",
+     "image_b"
+    ],
+    "hidden": [
+     "prompt",
+     "extra_pnginfo"
+    ]
+   },
+   "is_input_list": false,
+   "output": [],
+   "output_is_list": [],
+   "output_name": [],
+   "output_matchtypes": null,
+   "name": "ImageCompare",
+   "display_name": "Compare Images",
+   "python_module": "comfy_extras.nodes_image_compare",
+   "category": "image",
+   "output_node": true,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": "Image Tools",
+   "has_intermediate_output": false
+  },
+  "CustomCombo": {
+   "input": {
+    "required": {
+     "choice": [
+      "COMBO",
+      {
+       "multiselect": false,
+       "options": []
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "choice"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "STRING",
+    "INT"
+   ],
+   "output_is_list": [
+    false,
+    false
+   ],
+   "output_name": [
+    "STRING",
+    "INDEX"
+   ],
+   "output_matchtypes": null,
+   "name": "CustomCombo",
+   "display_name": "Custom Combo",
+   "python_module": "comfy_extras.nodes_logic",
+   "category": "utilities",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": true,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": null,
+   "has_intermediate_output": false
+  },
+  "LoadLoraModel": {
+   "input": {
+    "required": {
+     "model": [
+      "MODEL",
+      {}
+     ],
+     "loras": [
+      "COMFY_DYNAMICGROUP_V3",
+      {
+       "template": {
+        "required": {
+         "lora_name": [
+          "COMBO",
+          {
+           "multiselect": false,
+           "options": []
+          }
+         ],
+         "strength": [
+          "FLOAT",
+          {
+           "default": 1.0,
+           "min": -100.0,
+           "max": 100.0,
+           "step": 0.01
+          }
+         ],
+         "enabled": [
+          "BOOLEAN",
+          {
+           "default": true
+          }
+         ]
+        }
+       },
+       "min": 1,
+       "max": 20,
+       "group_name": "LoRA"
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "model",
+     "loras"
+    ]
+   },
+   "is_input_list": false,
+   "output": [
+    "MODEL"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "MODEL"
+   ],
+   "output_matchtypes": null,
+   "name": "LoadLoraModel",
+   "display_name": "Load LoRA (Model)",
+   "python_module": "comfy_extras.nodes_lora_stack",
+   "category": "model/loaders",
+   "output_node": false,
+   "deprecated": false,
+   "experimental": false,
+   "dev_only": false,
+   "api_node": false,
+   "price_badge": null,
+   "essentials_category": null,
+   "has_intermediate_output": false
+  }
+ }
+}

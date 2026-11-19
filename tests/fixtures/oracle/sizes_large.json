@@ -1,0 +1,14 @@
+{
+ "last_node_id": 9, "last_link_id": 0, "links": [], "groups": [], "config": {}, "extra": {}, "version": 0.4,
+ "nodes": [
+  {"id": 1, "type": "CheckpointLoaderSimple", "pos": [100, 100], "size": [640, 720], "flags": {}, "order": 0, "mode": 0, "properties": {"Node name for S&R": "CheckpointLoaderSimple"}, "widgets_values": ["model.safetensors"]},
+  {"id": 2, "type": "CLIPTextEncode", "pos": [800, 100], "size": [640, 720], "flags": {}, "order": 1, "mode": 0, "properties": {"Node name for S&R": "CLIPTextEncode"}, "widgets_values": ["a photo of a cat"]},
+  {"id": 3, "type": "KSampler", "pos": [1500, 100], "size": [640, 720], "flags": {}, "order": 2, "mode": 0, "properties": {"Node name for S&R": "KSampler"}, "widgets_values": [0, "fixed", 20, 8, "euler", "normal", 1]},
+  {"id": 4, "type": "EmptyLatentImage", "pos": [100, 900], "size": [640, 720], "flags": {}, "order": 3, "mode": 0, "properties": {"Node name for S&R": "EmptyLatentImage"}, "widgets_values": [512, 512, 1]},
+  {"id": 5, "type": "VAEDecode", "pos": [800, 900], "size": [640, 720], "flags": {}, "order": 4, "mode": 0, "properties": {"Node name for S&R": "VAEDecode"}, "widgets_values": []},
+  {"id": 6, "type": "SaveImage", "pos": [1500, 900], "size": [640, 720], "flags": {}, "order": 5, "mode": 0, "properties": {"Node name for S&R": "SaveImage"}, "widgets_values": ["ComfyUI"]},
+  {"id": 7, "type": "LoadImage", "pos": [100, 1700], "size": [640, 720], "flags": {}, "order": 6, "mode": 0, "properties": {"Node name for S&R": "LoadImage"}, "widgets_values": ["example.png", "image"]},
+  {"id": 8, "type": "PreviewImage", "pos": [800, 1700], "size": [640, 720], "flags": {}, "order": 7, "mode": 0, "properties": {"Node name for S&R": "PreviewImage"}, "widgets_values": []},
+  {"id": 9, "type": "Note", "pos": [1500, 1700], "size": [640, 720], "flags": {}, "order": 8, "mode": 0, "properties": {"Node name for S&R": "Note"}, "widgets_values": ["short note"]}
+ ]
+}

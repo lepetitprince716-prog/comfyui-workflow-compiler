@@ -1,0 +1,39 @@
+name: Sweeps
+
+# The random-graph sweep over every generator entry, one job per preset, reconciled with
+# tools/sweep_known.json. Started by hand only: it takes minutes per preset, and its result
+# matters when the layout changes, not on every push.
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: Runner for the sweep jobs
+        type: choice
+        default: ubuntu-24.04
+        options:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    name: sweep (${{ matrix.preset }})
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        preset: [bento, swimlanes, stepped, cockpit-split, tower-preview]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.13"
+      - name: Sweep and reconcile with the known failures
+        env:
+          PRESET: ${{ matrix.preset }}
+        run: python -B tools/sweep.py --preset "$PRESET" --jobs "$(nproc)"

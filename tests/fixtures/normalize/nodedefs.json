@@ -1,0 +1,462 @@
+{
+ "source": "ComfyUI 0.45.0 /object_info, core nodes; descriptions and tooltips removed",
+ "nodes": {
+  "CheckpointLoaderSimple": {
+   "input": {
+    "required": {
+     "ckpt_name": [
+      [],
+      {}
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "ckpt_name"
+    ]
+   },
+   "output": [
+    "MODEL",
+    "CLIP",
+    "VAE"
+   ],
+   "output_is_list": [
+    false,
+    false,
+    false
+   ],
+   "output_name": [
+    "MODEL",
+    "CLIP",
+    "VAE"
+   ],
+   "name": "CheckpointLoaderSimple",
+   "display_name": "Load Checkpoint",
+   "category": "model/loaders",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "CLIPTextEncode": {
+   "input": {
+    "required": {
+     "text": [
+      "STRING",
+      {
+       "multiline": true,
+       "dynamicPrompts": true
+      }
+     ],
+     "clip": [
+      "CLIP",
+      {}
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "text",
+     "clip"
+    ]
+   },
+   "output": [
+    "CONDITIONING"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "CONDITIONING"
+   ],
+   "name": "CLIPTextEncode",
+   "display_name": "CLIP Text Encode (Prompt)",
+   "category": "model/conditioning",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "EmptyLatentImage": {
+   "input": {
+    "required": {
+     "width": [
+      "INT",
+      {
+       "default": 1024,
+       "min": 16,
+       "max": 16384,
+       "step": 8
+      }
+     ],
+     "height": [
+      "INT",
+      {
+       "default": 1024,
+       "min": 16,
+       "max": 16384,
+       "step": 8
+      }
+     ],
+     "batch_size": [
+      "INT",
+      {
+       "default": 1,
+       "min": 1,
+       "max": 4096
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "width",
+     "height",
+     "batch_size"
+    ]
+   },
+   "output": [
+    "LATENT"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "LATENT"
+   ],
+   "name": "EmptyLatentImage",
+   "display_name": "Empty Latent Image",
+   "category": "model/latent",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "VAEDecode": {
+   "input": {
+    "required": {
+     "samples": [
+      "LATENT",
+      {}
+     ],
+     "vae": [
+      "VAE",
+      {}
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "samples",
+     "vae"
+    ]
+   },
+   "output": [
+    "IMAGE"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "IMAGE"
+   ],
+   "name": "VAEDecode",
+   "display_name": "VAE Decode",
+   "category": "model/latent",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "SaveImage": {
+   "input": {
+    "required": {
+     "images": [
+      "IMAGE",
+      {}
+     ],
+     "filename_prefix": [
+      "STRING",
+      {
+       "default": "ComfyUI"
+      }
+     ]
+    },
+    "hidden": {
+     "prompt": "PROMPT",
+     "extra_pnginfo": "EXTRA_PNGINFO"
+    }
+   },
+   "input_order": {
+    "required": [
+     "images",
+     "filename_prefix"
+    ],
+    "hidden": [
+     "prompt",
+     "extra_pnginfo"
+    ]
+   },
+   "output": [
+    "IMAGE"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "images"
+   ],
+   "name": "SaveImage",
+   "display_name": "Save Image",
+   "category": "image",
+   "python_module": "nodes",
+   "output_node": true
+  },
+  "LoraLoader": {
+   "input": {
+    "required": {
+     "model": [
+      "MODEL",
+      {}
+     ],
+     "clip": [
+      "CLIP",
+      {}
+     ],
+     "lora_name": [
+      [],
+      {}
+     ],
+     "strength_model": [
+      "FLOAT",
+      {
+       "default": 1.0,
+       "min": -100.0,
+       "max": 100.0,
+       "step": 0.01
+      }
+     ],
+     "strength_clip": [
+      "FLOAT",
+      {
+       "default": 1.0,
+       "min": -100.0,
+       "max": 100.0,
+       "step": 0.01
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "model",
+     "clip",
+     "lora_name",
+     "strength_model",
+     "strength_clip"
+    ]
+   },
+   "output": [
+    "MODEL",
+    "CLIP"
+   ],
+   "output_is_list": [
+    false,
+    false
+   ],
+   "output_name": [
+    "MODEL",
+    "CLIP"
+   ],
+   "name": "LoraLoader",
+   "display_name": "Load LoRA (Model and CLIP)",
+   "category": "model/loaders",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "ImageScaleBy": {
+   "input": {
+    "required": {
+     "image": [
+      "IMAGE"
+     ],
+     "upscale_method": [
+      [
+       "nearest-exact",
+       "bilinear",
+       "area",
+       "bicubic",
+       "lanczos"
+      ]
+     ],
+     "scale_by": [
+      "FLOAT",
+      {
+       "default": 1.0,
+       "min": 0.01,
+       "max": 8.0,
+       "step": 0.01
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "image",
+     "upscale_method",
+     "scale_by"
+    ]
+   },
+   "output": [
+    "IMAGE"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "IMAGE"
+   ],
+   "name": "ImageScaleBy",
+   "display_name": "Upscale Image By",
+   "category": "image/upscaling",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "PreviewImage": {
+   "input": {
+    "required": {
+     "images": [
+      "IMAGE"
+     ]
+    },
+    "hidden": {
+     "prompt": "PROMPT",
+     "extra_pnginfo": "EXTRA_PNGINFO"
+    }
+   },
+   "input_order": {
+    "required": [
+     "images"
+    ],
+    "hidden": [
+     "prompt",
+     "extra_pnginfo"
+    ]
+   },
+   "output": [
+    "IMAGE"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "images"
+   ],
+   "name": "PreviewImage",
+   "display_name": "Preview Image",
+   "category": "image",
+   "python_module": "nodes",
+   "output_node": true
+  },
+  "VAEEncode": {
+   "input": {
+    "required": {
+     "pixels": [
+      "IMAGE"
+     ],
+     "vae": [
+      "VAE"
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "pixels",
+     "vae"
+    ]
+   },
+   "output": [
+    "LATENT"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "LATENT"
+   ],
+   "name": "VAEEncode",
+   "display_name": "VAE Encode",
+   "category": "model/latent",
+   "python_module": "nodes",
+   "output_node": false
+  },
+  "PrimitiveInt": {
+   "input": {
+    "required": {
+     "value": [
+      "INT",
+      {
+       "min": -9223372036854775807,
+       "max": 9223372036854775807,
+       "control_after_generate": "fixed"
+      }
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "value"
+    ]
+   },
+   "output": [
+    "INT"
+   ],
+   "output_is_list": [
+    false
+   ],
+   "output_name": [
+    "INT"
+   ],
+   "name": "PrimitiveInt",
+   "display_name": "Int",
+   "category": "utilities/primitive",
+   "python_module": "comfy_extras.nodes_primitive",
+   "output_node": false
+  },
+  "GetImageSize": {
+   "input": {
+    "required": {
+     "image": [
+      "IMAGE",
+      {}
+     ]
+    },
+    "hidden": {
+     "unique_id": [
+      "UNIQUE_ID"
+     ]
+    }
+   },
+   "input_order": {
+    "required": [
+     "image"
+    ],
+    "hidden": [
+     "unique_id"
+    ]
+   },
+   "output": [
+    "INT",
+    "INT",
+    "INT"
+   ],
+   "output_is_list": [
+    false,
+    false,
+    false
+   ],
+   "output_name": [
+    "width",
+    "height",
+    "batch_size"
+   ],
+   "name": "GetImageSize",
+   "display_name": "Get Image Size",
+   "category": "image",
+   "python_module": "comfy_extras.nodes_images",
+   "output_node": false
+  }
+ }
+}

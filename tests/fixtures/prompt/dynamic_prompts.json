@@ -1,0 +1,202 @@
+{
+ "frontend": "1.59.1",
+ "type": "CLIPTextEncode",
+ "cases": [
+  {
+   "value": "",
+   "exported": ""
+  },
+  {
+   "value": "plain text, no markup",
+   "exported": "plain text, no markup"
+  },
+  {
+   "value": "a /* note */ b",
+   "exported": "a  b"
+  },
+  {
+   "value": "multi /* line\ncomment\nhere */ end",
+   "exported": "multi  end"
+  },
+  {
+   "value": "a /* x */ b /* y */ c",
+   "exported": "a  b  c"
+  },
+  {
+   "value": "a /* unterminated block",
+   "exported": "a /* unterminated block"
+  },
+  {
+   "value": "a /*/ not closed",
+   "exported": "a /*/ not closed"
+  },
+  {
+   "value": "a /*/ closed */ d",
+   "exported": "a  d"
+  },
+  {
+   "value": "/* a // b */ c",
+   "exported": " c"
+  },
+  {
+   "value": "line // note\nnext",
+   "exported": "line \nnext"
+  },
+  {
+   "value": "line // note\rnext",
+   "exported": "line \rnext"
+  },
+  {
+   "value": "line // note\u2028next",
+   "exported": "line \u2028next"
+  },
+  {
+   "value": "line // note\u2029next",
+   "exported": "line \u2029next"
+  },
+  {
+   "value": "line // note\r\nnext",
+   "exported": "line \r\nnext"
+  },
+  {
+   "value": "just // comment to the end",
+   "exported": "just "
+  },
+  {
+   "value": "x /* y // z */ w // v\nu",
+   "exported": "x  w \nu"
+  },
+  {
+   "value": "see https://example.com end",
+   "exported": "see https:"
+  },
+  {
+   "value": "slashes / single and a/b and */ stray",
+   "exported": "slashes / single and a/b and */ stray"
+  },
+  {
+   "value": "///",
+   "exported": ""
+  },
+  {
+   "value": "a\\// b",
+   "exported": "a\\undefined"
+  },
+  {
+   "value": "escaped \\{x\\|y\\} ok",
+   "exported": "escaped {x|y} ok"
+  },
+  {
+   "value": "bare | pipe and } brace at top level",
+   "exported": "bare | pipe and } brace at top level"
+  },
+  {
+   "value": "back\\slash and \\n and C:\\path\\to",
+   "exported": "back\\slash and \\n and C:\\path\\to"
+  },
+  {
+   "value": "double \\\\ backslash",
+   "exported": "double \\\\ backslash"
+  },
+  {
+   "value": "\\\\{x|x}",
+   "exported": "\\\\x"
+  },
+  {
+   "value": "{\\\\}x",
+   "exported": "\\\\x"
+  },
+  {
+   "value": "\\\ud83d\ude00 astral after backslash",
+   "exported": "\\\ud83d\ude00 astral after backslash"
+  },
+  {
+   "value": "trailing\\",
+   "exported": "trailing\\undefined"
+  },
+  {
+   "value": "{a\\",
+   "exported": "a\\undefined"
+  },
+  {
+   "value": "photo of {red|red} car",
+   "exported": "photo of red car"
+  },
+  {
+   "value": "{solo}",
+   "exported": "solo"
+  },
+  {
+   "value": "{}",
+   "exported": ""
+  },
+  {
+   "value": "a {} b",
+   "exported": "a  b"
+  },
+  {
+   "value": "{|}",
+   "exported": ""
+  },
+  {
+   "value": "{a|a|a}",
+   "exported": "a"
+  },
+  {
+   "value": "{a|{a|a}} x",
+   "exported": "a x"
+  },
+  {
+   "value": "{{a|a}|{a|a}}",
+   "exported": "a"
+  },
+  {
+   "value": "{{a}}",
+   "exported": "a"
+  },
+  {
+   "value": "{a|a}{b|b}",
+   "exported": "ab"
+  },
+  {
+   "value": "{a\\|b|a\\|b}",
+   "exported": "a|b"
+  },
+  {
+   "value": "{a\\}|a\\}} tail",
+   "exported": "a} tail"
+  },
+  {
+   "value": "{\\\ud83d\ude00|\\\ud83d\ude00}",
+   "exported": "\\\ud83d\ude00"
+  },
+  {
+   "value": "\ud83d\ude00 {\u732b|\u732b}",
+   "exported": "\ud83d\ude00 \u732b"
+  },
+  {
+   "value": "{/}",
+   "exported": "/"
+  },
+  {
+   "value": "a {/} b {/}{/} c",
+   "exported": "a / b // c"
+  },
+  {
+   "value": "{a|a",
+   "exported": "a"
+  },
+  {
+   "value": "pre {x",
+   "exported": "pre x"
+  },
+  {
+   "value": "a } b { c",
+   "exported": "a } b  c"
+  },
+  {
+   "value": "\\{b|b}",
+   "exported": "{b|b}"
+  }
+ ]
+}

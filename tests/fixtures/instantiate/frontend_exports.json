@@ -1,0 +1,2166 @@
+{
+ "cases": {
+  "autogrow": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "b.png"
+     }
+    },
+    "11": {
+     "_meta": {
+      "title": "Conditioning Zero Out"
+     },
+     "class_type": "ConditioningZeroOut",
+     "inputs": {
+      "conditioning": [
+       "4",
+       0
+      ]
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Load CLIP"
+     },
+     "class_type": "CLIPLoader",
+     "inputs": {
+      "clip_name": "te.safetensors",
+      "device": "default",
+      "type": "stable_diffusion"
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "7",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Text Encode MOSS-Image Edit"
+     },
+     "class_type": "TextEncodeMOSSImageEdit",
+     "inputs": {
+      "clip": [
+       "2",
+       0
+      ],
+      "edit_format": "ai-toolkit",
+      "image_strength": 1,
+      "images.image_0": [
+       "9",
+       0
+      ],
+      "images.image_1": [
+       "5",
+       0
+      ],
+      "images.image_2": [
+       "9",
+       0
+      ],
+      "prompt": "make it blue",
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Invert Image Colors"
+     },
+     "class_type": "ImageInvert",
+     "inputs": {
+      "image": [
+       "10",
+       0
+      ]
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Empty Latent Image"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 512,
+      "width": 512
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "KSampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 8,
+      "denoise": 1,
+      "latent_image": [
+       "6",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "11",
+       0
+      ],
+      "positive": [
+       "4",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 20
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+       "3",
+       0
+      ]
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "a.png"
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "b.png"
+     }
+    },
+    "11": {
+     "_meta": {
+      "title": "Conditioning Zero Out"
+     },
+     "class_type": "ConditioningZeroOut",
+     "inputs": {
+      "conditioning": [
+       "4",
+       0
+      ]
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Load CLIP"
+     },
+     "class_type": "CLIPLoader",
+     "inputs": {
+      "clip_name": "te.safetensors",
+      "device": "default",
+      "type": "stable_diffusion"
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "7",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Text Encode MOSS-Image Edit"
+     },
+     "class_type": "TextEncodeMOSSImageEdit",
+     "inputs": {
+      "clip": [
+       "2",
+       0
+      ],
+      "edit_format": "ai-toolkit",
+      "image_strength": 1,
+      "images.image_0": [
+       "9",
+       0
+      ],
+      "images.image_1": [
+       "10",
+       0
+      ],
+      "images.image_2": [
+       "9",
+       0
+      ],
+      "prompt": "make it blue",
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Empty Latent Image"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 512,
+      "width": 512
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "KSampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 8,
+      "denoise": 1,
+      "latent_image": [
+       "6",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "11",
+       0
+      ],
+      "positive": [
+       "4",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 20
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+       "3",
+       0
+      ]
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "a.png"
+     }
+    }
+   }
+  },
+  "capture": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "example.png"
+     }
+    },
+    "11": {
+     "_meta": {
+      "title": "Load ControlNet Model"
+     },
+     "class_type": "ControlNetLoader",
+     "inputs": {
+      "control_net_name": "control.safetensors"
+     }
+    },
+    "12": {
+     "_meta": {
+      "title": "Apply ControlNet"
+     },
+     "class_type": "ControlNetApplyAdvanced",
+     "inputs": {
+      "control_net": [
+       "11",
+       0
+      ],
+      "end_percent": 1,
+      "image": [
+       "10",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "3",
+       0
+      ],
+      "start_percent": 0,
+      "strength": 0.7,
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "13": {
+     "_meta": {
+      "title": "Load CLIP"
+     },
+     "class_type": "CLIPLoader",
+     "inputs": {
+      "clip_name": "te.safetensors",
+      "device": "default",
+      "type": "stable_diffusion"
+     }
+    },
+    "14": {
+     "_meta": {
+      "title": "Resize Image/Mask"
+     },
+     "class_type": "ResizeImageMaskNode",
+     "inputs": {
+      "input": [
+       "10",
+       0
+      ],
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 0.5,
+      "scale_method": "area"
+     }
+    },
+    "15": {
+     "_meta": {
+      "title": "Batch Images"
+     },
+     "class_type": "BatchImagesNode",
+     "inputs": {
+      "images.image0": [
+       "10",
+       0
+      ],
+      "images.image1": [
+       "14",
+       0
+      ]
+     }
+    },
+    "16": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "15",
+       0
+      ]
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Load LoRA (Model and CLIP)"
+     },
+     "class_type": "LoraLoader",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "lora_name": "style.safetensors",
+      "model": [
+       "1",
+       0
+      ],
+      "strength_clip": 1,
+      "strength_model": 0.8
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "2",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "2",
+       1
+      ],
+      "text": "blurry"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Empty Latent Image"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 768,
+      "width": 1024
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Int"
+     },
+     "class_type": "PrimitiveInt",
+     "inputs": {
+      "value": 30
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "KSampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4.5,
+      "denoise": 1,
+      "latent_image": [
+       "5",
+       0
+      ],
+      "model": [
+       "2",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "3",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "seed": 42,
+      "steps": [
+       "6",
+       0
+      ]
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "7",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_shape",
+      "images": [
+       "8",
+       0
+      ]
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "example.png"
+     }
+    },
+    "11": {
+     "_meta": {
+      "title": "Load ControlNet Model"
+     },
+     "class_type": "ControlNetLoader",
+     "inputs": {
+      "control_net_name": "control.safetensors"
+     }
+    },
+    "12": {
+     "_meta": {
+      "title": "Apply ControlNet"
+     },
+     "class_type": "ControlNetApplyAdvanced",
+     "inputs": {
+      "control_net": [
+       "11",
+       0
+      ],
+      "end_percent": 1,
+      "image": [
+       "10",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "3",
+       0
+      ],
+      "start_percent": 0,
+      "strength": 0.7,
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "13": {
+     "_meta": {
+      "title": "Load CLIP"
+     },
+     "class_type": "CLIPLoader",
+     "inputs": {
+      "clip_name": "te.safetensors",
+      "device": "default",
+      "type": "stable_diffusion"
+     }
+    },
+    "14": {
+     "_meta": {
+      "title": "Resize Image/Mask"
+     },
+     "class_type": "ResizeImageMaskNode",
+     "inputs": {
+      "input": [
+       "10",
+       0
+      ],
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 0.5,
+      "scale_method": "area"
+     }
+    },
+    "15": {
+     "_meta": {
+      "title": "Batch Images"
+     },
+     "class_type": "BatchImagesNode",
+     "inputs": {
+      "images.image0": [
+       "10",
+       0
+      ],
+      "images.image1": [
+       "14",
+       0
+      ]
+     }
+    },
+    "16": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "15",
+       0
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "CLIP Text Encode (Prompt)"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "blurry"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Empty Latent Image"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 768,
+      "width": 1024
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Int"
+     },
+     "class_type": "PrimitiveInt",
+     "inputs": {
+      "value": 30
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "KSampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4.5,
+      "denoise": 1,
+      "latent_image": [
+       "5",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "3",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "seed": 42,
+      "steps": [
+       "6",
+       0
+      ]
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "7",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_shape",
+      "images": [
+       "8",
+       0
+      ]
+     }
+    }
+   }
+  },
+  "dynamic_match": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Float"
+     },
+     "class_type": "PrimitiveFloat",
+     "inputs": {
+      "value": 0.5
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Invert Image Colors"
+     },
+     "class_type": "ImageInvert",
+     "inputs": {
+      "image": [
+       "5",
+       0
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "4",
+       0
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "If/Else Switch"
+     },
+     "class_type": "ComfySwitchNode",
+     "inputs": {
+      "on_false": [
+       "2",
+       0
+      ],
+      "on_true": [
+       "5",
+       0
+      ],
+      "switch": true
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Resize Image/Mask"
+     },
+     "class_type": "ResizeImageMaskNode",
+     "inputs": {
+      "input": [
+       "6",
+       0
+      ],
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": [
+       "1",
+       0
+      ],
+      "scale_method": "area"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "a.png"
+     }
+    }
+   },
+   "factory": {
+    "2": {
+     "_meta": {
+      "title": "Invert Image Colors"
+     },
+     "class_type": "ImageInvert",
+     "inputs": {
+      "image": [
+       "5",
+       0
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "4",
+       0
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "If/Else Switch"
+     },
+     "class_type": "ComfySwitchNode",
+     "inputs": {
+      "on_false": [
+       "2",
+       0
+      ],
+      "on_true": [
+       "5",
+       0
+      ],
+      "switch": true
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Resize Image/Mask"
+     },
+     "class_type": "ResizeImageMaskNode",
+     "inputs": {
+      "input": [
+       "6",
+       0
+      ],
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 1,
+      "scale_method": "area"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "a.png"
+     }
+    }
+   }
+  },
+  "dynamic_text": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "6",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a } b { c \\{ \\| \\\\ C:\\path //"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "see https://example.com/ref, {soft|hard} light /* note */ | a \\n b\nsecond // line"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "3",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "5",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "2",
+       0
+      ]
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "6",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a } b { c \\{ \\| \\\\ C:\\path //"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "see https://example.com/ref, {soft|hard} light /* note */ | a \\n b\nsecond // line"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "3",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "5",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "2",
+       0
+      ]
+     }
+    }
+   }
+  },
+  "match_partial": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Convert Mask to Image"
+     },
+     "class_type": "MaskToImage",
+     "inputs": {
+      "mask": [
+       "9",
+       0
+      ]
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "a.png"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Branch"
+     },
+     "class_type": "BranchNode",
+     "inputs": {
+      "autogrow.branch0": [
+       "10",
+       0
+      ],
+      "autogrow.branch1": [
+       "4",
+       0
+      ],
+      "branch": "branch0",
+      "branch_names": {
+       "__value__": [
+        "branch0",
+        "branch1"
+       ]
+      }
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Convert Image to Mask"
+     },
+     "class_type": "ImageToMask",
+     "inputs": {
+      "channel": "red",
+      "image": [
+       "10",
+       0
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "b.png"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "1",
+       0
+      ]
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "2",
+       0
+      ]
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "8",
+       0
+      ]
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "If/Else Switch"
+     },
+     "class_type": "ComfySwitchNode",
+     "inputs": {
+      "on_true": [
+       "10",
+       0
+      ],
+      "switch": true
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Resize Image/Mask"
+     },
+     "class_type": "ResizeImageMaskNode",
+     "inputs": {
+      "input": [
+       "3",
+       0
+      ],
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 0.5,
+      "scale_method": "area"
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Convert Mask to Image"
+     },
+     "class_type": "MaskToImage",
+     "inputs": {
+      "mask": [
+       "9",
+       0
+      ]
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "a.png"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Branch"
+     },
+     "class_type": "BranchNode",
+     "inputs": {
+      "autogrow.branch0": [
+       "10",
+       0
+      ],
+      "autogrow.branch1": [
+       "4",
+       0
+      ],
+      "branch": "branch0",
+      "branch_names": {
+       "__value__": [
+        "branch0",
+        "branch1"
+       ]
+      }
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Convert Image to Mask"
+     },
+     "class_type": "ImageToMask",
+     "inputs": {
+      "channel": "red",
+      "image": [
+       "10",
+       0
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "b.png"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "1",
+       0
+      ]
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "2",
+       0
+      ]
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Preview Image"
+     },
+     "class_type": "PreviewImage",
+     "inputs": {
+      "images": [
+       "8",
+       0
+      ]
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "If/Else Switch"
+     },
+     "class_type": "ComfySwitchNode",
+     "inputs": {
+      "on_true": [
+       "10",
+       0
+      ],
+      "switch": true
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Resize Image/Mask"
+     },
+     "class_type": "ResizeImageMaskNode",
+     "inputs": {
+      "input": [
+       "3",
+       0
+      ],
+      "resize_type": "scale by multiplier",
+      "resize_type.multiplier": 0.5,
+      "scale_method": "area"
+     }
+    }
+   }
+  },
+  "optional_chain": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Upscale Image By"
+     },
+     "class_type": "ImageScaleBy",
+     "inputs": {
+      "image": [
+       "2",
+       0
+      ],
+      "scale_by": 1.5,
+      "upscale_method": "lanczos"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "8",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Load LoRA (Model and CLIP)"
+     },
+     "class_type": "LoraLoader",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "lora_name": "style.safetensors",
+      "model": [
+       "1",
+       0
+      ],
+      "strength_clip": 1,
+      "strength_model": 1
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Load LoRA (Model and CLIP)"
+     },
+     "class_type": "LoraLoader",
+     "inputs": {
+      "clip": [
+       "4",
+       1
+      ],
+      "lora_name": "detail.safetensors",
+      "model": [
+       "4",
+       0
+      ],
+      "strength_clip": 0.6,
+      "strength_model": 0.6
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "5",
+       1
+      ],
+      "text": "blurry, lowres"
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "5",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "3",
+       0
+      ],
+      "model": [
+       "5",
+       0
+      ],
+      "negative": [
+       "6",
+       0
+      ],
+      "positive": [
+       "7",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "10",
+       0
+      ]
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "8",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "blurry, lowres"
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "3",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "6",
+       0
+      ],
+      "positive": [
+       "7",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "2",
+       0
+      ]
+     }
+    }
+   }
+  },
+  "optional_controlnet": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "4",
+       0
+      ]
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "Apply ControlNet"
+     },
+     "class_type": "ControlNetApplyAdvanced",
+     "inputs": {
+      "control_net": [
+       "3",
+       0
+      ],
+      "end_percent": 1,
+      "image": [
+       "5",
+       0
+      ],
+      "negative": [
+       "7",
+       0
+      ],
+      "positive": [
+       "8",
+       0
+      ],
+      "start_percent": 0,
+      "strength": 0.8
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Load ControlNet Model"
+     },
+     "class_type": "ControlNetLoader",
+     "inputs": {
+      "control_net_name": "cn.safetensors"
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "9",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Load Image"
+     },
+     "class_type": "LoadImage",
+     "inputs": {
+      "image": "pose.png"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "blurry, lowres"
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "6",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "2",
+       1
+      ],
+      "positive": [
+       "2",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "10": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "4",
+       0
+      ]
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "9",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "blurry, lowres"
+     }
+    },
+    "8": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "9": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "6",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "7",
+       0
+      ],
+      "positive": [
+       "8",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    }
+   }
+  },
+  "txt2img": {
+   "all_enabled": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "6",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "blurry, lowres"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "3",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "5",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "2",
+       0
+      ]
+     }
+    }
+   },
+   "factory": {
+    "1": {
+     "_meta": {
+      "title": "Load Checkpoint"
+     },
+     "class_type": "CheckpointLoaderSimple",
+     "inputs": {
+      "ckpt_name": "base.safetensors"
+     }
+    },
+    "2": {
+     "_meta": {
+      "title": "VAE Decode"
+     },
+     "class_type": "VAEDecode",
+     "inputs": {
+      "samples": [
+       "6",
+       0
+      ],
+      "vae": [
+       "1",
+       2
+      ]
+     }
+    },
+    "3": {
+     "_meta": {
+      "title": "Canvas size"
+     },
+     "class_type": "EmptyLatentImage",
+     "inputs": {
+      "batch_size": 1,
+      "height": 1024,
+      "width": 1024
+     }
+    },
+    "4": {
+     "_meta": {
+      "title": "Negative prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "blurry, lowres"
+     }
+    },
+    "5": {
+     "_meta": {
+      "title": "Positive prompt"
+     },
+     "class_type": "CLIPTextEncode",
+     "inputs": {
+      "clip": [
+       "1",
+       1
+      ],
+      "text": "a cat"
+     }
+    },
+    "6": {
+     "_meta": {
+      "title": "Main sampler"
+     },
+     "class_type": "KSampler",
+     "inputs": {
+      "cfg": 4,
+      "denoise": 1,
+      "latent_image": [
+       "3",
+       0
+      ],
+      "model": [
+       "1",
+       0
+      ],
+      "negative": [
+       "4",
+       0
+      ],
+      "positive": [
+       "5",
+       0
+      ],
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "seed": 0,
+      "steps": 28
+     }
+    },
+    "7": {
+     "_meta": {
+      "title": "Save Image"
+     },
+     "class_type": "SaveImage",
+     "inputs": {
+      "filename_prefix": "cwc_demo",
+      "images": [
+       "2",
+       0
+      ]
+     }
+    }
+   }
+  }
+ },
+ "comfyui": "0.45.0",
+ "frontend": "1.59.1"
+}
