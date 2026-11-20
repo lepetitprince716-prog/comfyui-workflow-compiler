@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any, Protocol, Sequence
 
 from cwc.nodedefs.types import NodeDef
-from cwc.normalize.diagnostics import Findings, listing
+from cwc.normalize.diagnostics import Findings, listing, no_effect_notice
 from cwc.normalize.ids import RawNode, assign_ids, split_document
 from cwc.normalize.inputs import NodeOutput, check_node, check_unknown_node
 from cwc.normalize.intents import check_group_purity, parse_intent
@@ -16,7 +16,17 @@ from cwc.prompt.bypass import ResolveError, factory_prompt
 from cwc.prompt.model import Prompt, sort_prompt
 from cwc.report import Code, CwcError, ExitCode, Finding, Severity, sort_findings
 
-SNAPSHOT_HINT = "run `cwc snapshot` against a ComfyUI that has the node pack installed"
+# How to give cwc a definition it lacks. ``--nodedefs`` entries are added to the bundled core
+# definitions (``NodeDefs.load``), so a file holding only the missing types is enough.
+NODEDEFS_HINT = (
+    "pass --nodedefs with the URL of a ComfyUI server that has the node pack installed, or with a JSON "
+    "file saved from <server>/api/object_info (the entries for the missing types are enough)"
+)
+UNKNOWN_HINT = (
+    "if the type name is right, either " + NODEDEFS_HINT[0].lower() + NODEDEFS_HINT[1:]
+    + ", or pass --allow-unknown to keep its inputs unchecked (link to its outputs by index then)"
+)
+OPTIONAL_UNKNOWN_HINT = "--allow-unknown does not cover this; " + NODEDEFS_HINT
 
 
 class NodeDefSource(Protocol):
@@ -28,10 +38,11 @@ class NodeDefSource(Protocol):
 
 
 def normalize(doc: dict[str, Any], defs: NodeDefSource, *, allow_unknown: bool = False) -> tuple[Authoring, list[Finding]]:
-    """Check an authoring document (E1 to E7) and build its strict prompts.
+    """Check an authoring document (E1 to E8) and build its strict prompts.
 
     Raises ``CwcError(INPUT_ERROR, findings)`` when any finding is an error; otherwise
-    returns the result with the warnings, sorted.
+    returns the result with the warnings, sorted. The E8 info on keys without effect rides on
+    ``Authoring.notices`` and is left out of a failed run.
     """
     out = Findings()
     raw_workflow, nodes = split_document(doc, out)
@@ -40,7 +51,13 @@ def normalize(doc: dict[str, Any], defs: NodeDefSource, *, allow_unknown: bool =
     intents = {node.author_id: parse_intent(node.author_id, node.meta, out) for node in nodes}
     resolved = {node.author_id: _definition(node, defs, allow_unknown, out) for node in nodes}
 
-    sources = Sources(ids, resolved)
+    # E1 errors: no definition and no --allow-unknown, or a frontend-only (virtual) type
+    rejected = frozenset(
+        node.author_id
+        for node in nodes
+        if resolved[node.author_id] is None and (not allow_unknown or defs.get(node.class_type) is not None)
+    )
+    sources = Sources(ids, resolved, rejected)
     outputs: dict[str, NodeOutput] = {}
     for node in nodes:
         nodedef = resolved[node.author_id]
@@ -59,6 +76,7 @@ def normalize(doc: dict[str, Any], defs: NodeDefSource, *, allow_unknown: bool =
         )
     check_group_purity(intents, out)
     _check_unknown_bypass(nodes, resolved, intents, outputs, out)
+    notices = no_effect_notice(out.unused)
     if out.has_errors:
         raise CwcError(ExitCode.INPUT_ERROR, sort_findings(out.items))
 
@@ -92,6 +110,7 @@ def normalize(doc: dict[str, Any], defs: NodeDefSource, *, allow_unknown: bool =
         widget_values={
             ids[n.author_id]: values for n in by_numeric if (values := outputs[n.author_id].widget_values) is not None
         },
+        notices=notices,
     )
     return authoring, sort_findings(out.items)
 
@@ -110,7 +129,7 @@ def _definition(node: RawNode, defs: NodeDefSource, allow_unknown: bool, out: Fi
     if nodedef is not None:
         return nodedef
     closest = list(defs.closest(node.class_type, 3))
-    hint = (f"closest known types: {listing(closest)}; " if closest else "") + SNAPSHOT_HINT
+    hint = (f"closest known types: {listing(closest)}; " if closest else "") + UNKNOWN_HINT
     data = {"closest": closest}
     if allow_unknown:
         out.warning(
@@ -119,7 +138,8 @@ def _definition(node: RawNode, defs: NodeDefSource, allow_unknown: bool, out: Fi
             "its widget values are written in authoring order and a frontend that knows the type "
             "reads them by position, so its exported values are not verified and may be shifted",
             [aid],
-            hint="write every input of this node in the type's own widget order; reference its outputs by index only",
+            hint="write every widget input of this node, in the order the node shows its widgets in ComfyUI, and "
+            "link to its outputs by index, as [\"node_id\", 0]; to have it checked instead, " + NODEDEFS_HINT,
             data=data,
         )
     else:
@@ -140,14 +160,14 @@ def _check_unknown_bypass(
         if resolved[aid] is not None:
             continue
         if intents[aid].ui_optional:
-            out.error(Code.E1, f"node {aid!r}: a node of unknown type {node.class_type!r} cannot be ui_optional", [aid], SNAPSHOT_HINT)
+            out.error(Code.E1, f"node {aid!r}: a node of unknown type {node.class_type!r} cannot be ui_optional", [aid], OPTIONAL_UNKNOWN_HINT)
         feeding = sorted(src for src in outputs[aid].sources if intents[src].ui_optional)
         if feeding:
             out.error(
                 Code.E1,
                 f"node {aid!r}: a node of unknown type {node.class_type!r} cannot take links from optional nodes ({', '.join(feeding)})",
                 [aid, *feeding],
-                SNAPSHOT_HINT,
+                OPTIONAL_UNKNOWN_HINT,
             )
 
 

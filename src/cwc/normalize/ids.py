@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from cwc.ingest.authoring import WORKFLOW_INFO_KEY
+from cwc.ingest.limits import MAX_ID_DIGITS
 from cwc.normalize.diagnostics import Findings
 from cwc.report import Code
 
@@ -59,6 +60,14 @@ def _valid_id(key: str, out: Findings) -> bool:
         return False
     if key.strip() == "" or ":" in key:
         out.error(Code.E7, f"node id {key!r} is empty or contains ':'", [key], hint="use a plain name such as \"sampler\"")
+        return False
+    if _DIGITS.fullmatch(key) and len(key) > MAX_ID_DIGITS:
+        out.error(
+            Code.E7,
+            f"node id {key[:12]}... is a number of {len(key)} digits; the limit is {MAX_ID_DIGITS}",
+            [key[:12] + "..."],
+            hint="numeric ids are small positive integers; use a name instead",
+        )
         return False
     if _DIGITS.fullmatch(key) and not _POSITIVE.fullmatch(key):
         out.error(

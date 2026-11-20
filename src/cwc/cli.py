@@ -19,15 +19,22 @@ from cwc.nodedefs.derive import slot_layout
 from cwc.nodedefs.learn import command as learn_command
 from cwc.nodedefs.registry import NodeDefs, read_source
 from cwc.nodedefs.types import NodeDef
-from cwc.pipeline import compile_document
+from cwc.layout.presets import load_presets
+from cwc.pipeline import AUTO, Compiled, compile_document, preset_guide
 from cwc.render.command import command as render_command
-from cwc.report import CwcError, ExitCode, Mode, Report, Severity, sort_findings
+from cwc.report import Code, CwcError, ExitCode, Mode, Report, Severity, sort_findings
+from cwc.resources import read_bytes
 
 CLOSEST = 3
+GUIDE_FILE = "guide.md"  # the one authoring reference; README and the skill point at `cwc guide`
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog=TOOL_NAME, description="ComfyUI workflow compiler")
+    parser = argparse.ArgumentParser(
+        prog=TOOL_NAME,
+        description="ComfyUI workflow compiler. New here? `cwc guide` explains the input format, "
+        "every authoring key and its effect, with an example.",
+    )
     parser.add_argument("--version", action="version", version=f"{TOOL_NAME} {__version__}")
     commands = parser.add_subparsers(dest="command", required=True, metavar="COMMAND")
 
@@ -40,17 +47,32 @@ def _parser() -> argparse.ArgumentParser:
 
     build = commands.add_parser("compile", help="compile an authoring graph into a canvas and its API prompts")
     build.add_argument("graph", metavar="GRAPH.json", help="authoring file (API prompt with cwc relaxations)")
-    build.add_argument("-o", "--out", required=True, metavar="DIR", help="output folder")
+    build.add_argument(
+        "-o",
+        "--out",
+        required=True,
+        metavar="DIR",
+        help="output folder; a run removes the outputs of an earlier run of the same graph name that it does "
+        "not write itself (a failed run leaves only its report), so an old canvas is never taken for a new one, "
+        "and names on stderr what it removed",
+    )
     build.add_argument("--nodedefs", metavar="FILE|URL", help="/object_info export or ComfyUI server URL")
     build.add_argument(
         "--preset",
         metavar="NAME",
-        help="layout preset, or auto to choose one by the graph's size and shape (default: the graph's _workflow.layout.preset, else bento)",
+        help="layout preset, or auto to choose one by the graph's size and shape (default: the graph's _workflow.layout.preset, else bento); `cwc presets` describes each",
     )
     build.add_argument("--all-enabled", action="store_true", help="also write <name>.full.api.json")
     build.add_argument("--allow-unknown", action="store_true", help="accept node types with no definition")
     build.add_argument("--json", action="store_true", help="print a JSON summary")
     build.set_defaults(run=_compile)
+
+    guide = commands.add_parser("guide", help="print the authoring guide: input format, _meta and _workflow keys, an example")
+    guide.set_defaults(run=_guide)
+
+    presets = commands.add_parser("presets", help="list the layout presets, what each looks like and when to pick it")
+    presets.add_argument("--json", action="store_true", help="print JSON")
+    presets.set_defaults(run=_presets)
 
     learn = commands.add_parser("learn", help="learn widget templates from canvases paired with their API prompts")
     learn.add_argument("files", nargs="+", metavar="FILE", help="PNG with workflow and prompt chunks, or x_ui.json / x.ui.json beside x_api.json / x.api.json")
@@ -75,6 +97,28 @@ def _value(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
+OPTIONS_SHOWN = 20  # dropdown values printed per input in text; --json lists them all
+
+
+def _dropdown(nd: NodeDef, widget: str | None) -> tuple[Any, ...] | None:
+    """The values of the dropdown widget called ``widget``, or None when it is no dropdown."""
+    spec = nd.input(widget) if widget is not None else None
+    return spec.combo_values if spec is not None and spec.widget else None
+
+
+def _options_field(nd: NodeDef, widget: str | None) -> dict[str, Any]:
+    values = _dropdown(nd, widget)
+    return {} if values is None else {"options": list(values)}
+
+
+def _options_line(name: str, values: tuple[Any, ...]) -> str:
+    if not values:
+        return f"  {name} options: none in these definitions; --nodedefs reads a server's list"
+    shown = ", ".join(_value(v) for v in values[:OPTIONS_SHOWN])
+    more = f" ({OPTIONS_SHOWN} of {len(values)}; --json lists all)" if len(values) > OPTIONS_SHOWN else ""
+    return f"  {name} options: {shown}{more}"
+
+
 def _node_json(nd: NodeDef) -> dict[str, Any]:
     return {
         "type": nd.type,
@@ -87,10 +131,18 @@ def _node_json(nd: NodeDef) -> dict[str, Any]:
         "layout_complete": nd.layout_complete,
         "names_complete": nd.names_complete,
         "inputs": [
-            {"name": s.name, "type": s.type, "widget": s.widget, "optional": s.optional} for s in slot_layout(nd)
+            {"name": s.name, "type": s.type, "widget": s.widget, "optional": s.optional, **_options_field(nd, s.widget)}
+            for s in slot_layout(nd)
         ],
         "widgets": [
-            {"name": w.name, "kind": w.kind.value, "input": w.input_name, "default": w.default, "to_prompt": w.to_prompt}
+            {
+                "name": w.name,
+                "kind": w.kind.value,
+                "input": w.input_name,
+                "default": w.default,
+                "to_prompt": w.to_prompt,
+                **_options_field(nd, w.name),
+            }
             for w in nd.widgets
         ],
         "outputs": [{"name": o.name, "type": o.type, "is_list": o.is_list} for o in nd.outputs],
@@ -103,8 +155,12 @@ def _node_text(nd: NodeDef) -> list[str]:
         f"{nd.type}  ({nd.display_name or nd.type})  tier: {nd.tier.value}  category: {nd.category or '-'}",
         "inputs:  " + (", ".join(f"{s.name}{'?' if s.optional else ''}: {s.type}" for s in sockets) or "-"),
         "widgets: " + (", ".join(f"{w.name or '<unnamed>'}={_value(w.default)}" for w in nd.widgets) or "-"),
-        "outputs: " + (", ".join(f"{o.name}: {o.type}{'[]' if o.is_list else ''}" for o in nd.outputs) or "-"),
     ]
+    for w in nd.widgets:
+        values = _dropdown(nd, w.name)
+        if w.name is not None and values is not None:
+            lines.append(_options_line(w.name, values))
+    lines.append("outputs: " + (", ".join(f"{o.name}: {o.type}{'[]' if o.is_list else ''}" for o in nd.outputs) or "-"))
     if not nd.layout_complete:
         lines.append("layout:  incomplete (compile needs a truth or template entry for this type)")
     elif not nd.names_complete:
@@ -129,22 +185,45 @@ def _node(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
             out.write(json_bytes(rows).decode("utf-8"))
         else:
             out.writelines(_search_line(n) + "\n" for n in found)
-            if not found:
-                err.write(f"no node type matches {args.search!r}\n")
+        if not found:  # like grep: an empty answer is a failed check, not an error
+            err.write(f"no node type matches {args.search!r}\n")
+            return ExitCode.CHECK_FAILED
         return ExitCode.OK
 
     nd = defs.get(args.type)
-    if nd is None:
+    if nd is None:  # the definitions loaded; the name given is wrong
         closest = defs.closest(args.type, CLOSEST)
         if args.json:
             out.write(json_bytes({"type": args.type, "error": "unknown node type", "closest": closest}).decode("utf-8"))
-        else:
-            err.write(f"unknown node type {args.type!r}; closest: {', '.join(closest) or '-'}\n")
-        return ExitCode.NODEDEFS_MISSING
+        err.write(f"unknown node type {args.type!r}; closest: {', '.join(closest) or '-'}\n")
+        return ExitCode.INPUT_ERROR
     if args.json:
         out.write(json_bytes(_node_json(nd)).decode("utf-8"))
     else:
         out.writelines(line + "\n" for line in _node_text(nd))
+    return ExitCode.OK
+
+
+# --- cwc guide ------------------------------------------------------------------------
+
+
+def _guide(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
+    out.write(read_bytes(GUIDE_FILE).decode("utf-8"))
+    return ExitCode.OK
+
+
+# --- cwc presets ----------------------------------------------------------------------
+
+
+def _presets(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
+    guide = preset_guide()
+    rows = [{"name": name, "description": guide[name][0], "use_when": guide[name][1]} for name in [*load_presets(), AUTO]]
+    if args.json:
+        out.write(json_bytes(rows).decode("utf-8"))
+    else:
+        width = max(len(row["name"]) for row in rows)
+        for row in rows:
+            out.write(f"{row['name']:<{width}}  {row['description']}\n{'':<{width}}  use when: {row['use_when']}\n")
     return ExitCode.OK
 
 
@@ -170,6 +249,7 @@ def _compile(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
     source = Path(args.graph)
     paths = {kind: Path(args.out) / f"{source.stem}{suffix}" for kind, suffix in ARTEFACTS.items()}
     files: dict[str, bytes] = {}
+    compiled: Compiled | None = None
     try:
         doc = load_authoring(read_file(source, "authoring file"))
         defs = NodeDefs.load(object_info=read_source(args.nodedefs) if args.nodedefs else None)
@@ -185,13 +265,18 @@ def _compile(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
         report, exit_code = Report(Mode.COMPILE, findings=list(exc.findings)), exc.exit_code
     files["report"] = json_bytes(report.to_json())
 
+    removed: list[Path] = []  # outputs of an earlier run that this run does not replace
     try:
         Path(args.out).mkdir(parents=True, exist_ok=True)
         for kind, path in paths.items():
             if kind in files:
                 write_atomic(path, files[kind])
             else:
-                path.unlink(missing_ok=True)
+                try:
+                    path.unlink()
+                except FileNotFoundError:
+                    continue
+                removed.append(path)
     except OSError as exc:
         leftover = _remove_artefacts(paths.values())  # never leave a canvas and a report of different runs
         message = f"cannot write to {args.out}: {exc.strerror or exc}"
@@ -210,11 +295,47 @@ def _compile(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
         out.write(json_bytes(_summary(report.ok, exit_code, written, report)).decode("utf-8"))
     else:
         out.writelines(f"wrote {path}\n" for path in written.values())
-        for finding in sort_findings(report.blocking()):
-            err.write(f"{finding.code.value}: {finding.message}\n")
-        if not report.ok:
-            err.write(f"{TOOL_NAME} compile: {counts['error']} error(s); see {written['report']}\n")
+    _print_findings(report, err)
+    if removed:
+        names = ", ".join(str(path) for path in removed)
+        err.write(f"{TOOL_NAME} compile: removed {names} from an earlier run, which this run does not replace\n")
+    if not report.ok:
+        err.write(f"{TOOL_NAME} compile: {counts['error']} error(s); see {written['report']}\n")
+    elif compiled is not None:
+        err.write(_success_line(compiled, written["ui"], counts["warning"]) + "\n")
     return exit_code
+
+
+def _plural(count: int, word: str) -> str:
+    return f"{count} {word}{'' if count == 1 else 's'}"
+
+
+def _success_line(compiled: Compiled, ui_path: str, warnings: int) -> str:
+    metrics = compiled.report.metrics
+    auto = metrics.get("preset_auto")
+    preset = metrics["preset"] + (f" ({AUTO}: {auto['rule']})" if auto else "")
+    return (
+        f"{TOOL_NAME} compile: ok; preset {preset}; {_plural(len(compiled.canvas.groups), 'group')}, "
+        f"{_plural(compiled.counts.optional_modules, 'optional module')}, {_plural(warnings, 'warning')}; "
+        f"preview: {TOOL_NAME} render {ui_path} -o {Path(ui_path).name.removesuffix('.ui.json')}.svg"
+    )
+
+
+# Authoring checks (E1 to E8) speak about what the author wrote, so they reach the terminal at
+# every severity. Infos from the canvas checks stay in the report.
+AUTHORING_CODES = frozenset(code for code in Code if code.value.startswith("E"))
+
+
+def _print_findings(report: Report, err: TextIO) -> None:
+    """Every error and warning on stderr, with its hint, and the authoring infos: a caller that
+    reads only the terminal must not take a run with an ignored key for a clean one."""
+    for finding in sort_findings(report.findings):
+        if finding.severity is Severity.INFO and finding.code not in AUTHORING_CODES:
+            continue
+        label = finding.code.value if finding.severity is Severity.ERROR else f"{finding.code.value} {finding.severity.value}"
+        err.write(f"{label}: {finding.message}\n")
+        if finding.hint:
+            err.write(f"  hint: {finding.hint}\n")
 
 
 def _summary(ok: bool, exit_code: ExitCode, outputs: dict[str, str], report: Report) -> dict[str, Any]:
@@ -224,6 +345,8 @@ def _summary(ok: bool, exit_code: ExitCode, outputs: dict[str, str], report: Rep
         "exit_code": int(exit_code),
         "outputs": outputs,
         "findings": {severity.value: counts[severity.value] for severity in Severity},
+        # the report's own list, so a program needs no second read for what went wrong
+        "finding_list": [f.to_json() for f in sort_findings(report.findings)],
     }
 
 

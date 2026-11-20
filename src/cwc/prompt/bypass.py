@@ -96,7 +96,27 @@ def is_valid_connection(type_a: SlotType, type_b: SlotType) -> bool:
     b = _js_string(type_b).lower()
     if "," not in a and "," not in b:
         return a == b
-    return any(is_valid_connection(x, y) for x in a.split(",") for y in b.split(","))
+    return _lists_match(a, b)
+
+
+def _members(text: str) -> tuple[set[str], bool, bool]:
+    """``(members, has a wildcard, has an event type)`` of a comma list, as members are judged alone."""
+    members = text.split(",")
+    wild = any(_js_loose_equal(m, "") or m == WILDCARD for m in members)
+    event = any(_js_loose_equal(m, _JS_EVENT) for m in members)
+    return set(members), wild, event
+
+
+def _lists_match(a: str, b: str) -> bool:
+    """Whether some member of ``a`` is a valid connection with some member of ``b``.
+
+    A pair of members (no commas left) is valid when either is empty or ``*``, when both are
+    the event type, or when the two are the same text. Those cases are tested once per list
+    instead of once per pair, so the time is linear in the lengths of the lists.
+    """
+    members_a, wild_a, event_a = _members(a)
+    members_b, wild_b, event_b = _members(b)
+    return wild_a or wild_b or (event_a and event_b) or not members_a.isdisjoint(members_b)
 
 
 def bypass_slot_index(

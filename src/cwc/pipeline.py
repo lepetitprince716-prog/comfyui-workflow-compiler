@@ -13,9 +13,12 @@ from typing import Any
 from cwc.annotate import annotate, apply_notes
 from cwc.annotate.types import PlanCounts
 from cwc.canvas.model import Canvas, id_order
+from cwc.effects import authoring_effects, overridden_keys
 from cwc.instantiate import instantiate
 from cwc.layout import layout
+from cwc.canvas.geometry import snap_up
 from cwc.layout.presets import DEFAULT, load_presets
+from cwc.layout.section import BAND_GAP, SCREEN_W
 from cwc.layout.types import LayoutResult
 from cwc.nodedefs.registry import NodeDefs
 from cwc.normalize import normalize
@@ -37,6 +40,62 @@ AUTO_PARALLEL_BRANCHES = 3  # at least this many control or mask branches: swiml
 AUTO_LARGE_NODES = 60  # at least this many nodes: cockpit-split
 
 
+def preset_guide() -> dict[str, tuple[str, str]]:
+    """`cwc presets`: what each preset looks like and when to pick it, by name, ``auto`` last.
+
+    Only what layout does today: the corridors the presets name are reserved space, and the
+    router does not use them yet (docs/ARCHITECTURE.md), so no description promises them for
+    links. Numbers come from the presets document and the layout constants. A test keeps the
+    names here and in presets.json the same, and measures the geometry described."""
+    presets = load_presets()
+    bento, tower = presets["bento"], presets["tower-preview"]
+    preview = tower.preview
+    assert preview is not None  # the presets document gives tower-preview its preview
+    preview_w = snap_up(round(preview.share * SCREEN_W, 6))
+    wrap = f"The main row wraps onto a new row below when it gets wider than {bento.wrap_ratio:g} times its height."
+    columns = (
+        "every other group in one row of columns in data-flow order, a control branch in the column of "
+        "the stage it steers, no second row"
+    )
+    return {
+        "bento": (
+            "Controls group first, then models and prompts side by side, sampling, post-processing and output "
+            f"in one main row; control branches and optional modules in a second row below it. {wrap}",
+            "most graphs; the default",
+        ),
+        "swimlanes": (
+            f"Controls group first, then {columns}; an empty strip {BAND_GAP} px high above each row.",
+            f"several parallel control or mask branches (auto picks it at {AUTO_PARALLEL_BRANCHES} or more)",
+        ),
+        "cockpit-split": (
+            "Controls group first, split in two boxes when it holds both kinds: prompts, reference image, size "
+            f"and seed in the top box, the other controls in a box under it. Then a gap of {BAND_GAP} px and "
+            f"{columns}.",
+            f"large graphs (auto picks it at {AUTO_LARGE_NODES} nodes or more)",
+        ),
+        "tower-preview": (
+            "The bento arrangement. When the output group holds a node that shows an image preview, the group "
+            f"is at least {preview_w} px wide and {preview.min_height} px high and the preview node grows to "
+            "fill it.",
+            f"small graphs whose result you look at while tuning (auto picks it at {AUTO_SMALL_NODES} nodes or "
+            "fewer with no optional module)",
+        ),
+        "stepped": (
+            "Groups titled Step 1, Step 2 and so on; the models and Controls groups one above "
+            "the other in the first column, then prompts, sampling, post-processing and output; control "
+            "branches and optional modules in a second row.",
+            "a graph meant to be followed in order, like a tutorial",
+        ),
+        AUTO: (
+            f"Picks a preset from the graph's counts, the first rule that holds: at most {AUTO_SMALL_NODES} "
+            f"nodes and no optional module: tower-preview; {AUTO_PARALLEL_BRANCHES} or more control or mask "
+            f"branches: swimlanes; {AUTO_LARGE_NODES} nodes or more: cockpit-split; otherwise: bento. The "
+            "compile summary and the report say which rule held.",
+            "you have no preference",
+        ),
+    }
+
+
 @dataclass(frozen=True)
 class AutoChoice:
     preset: str
@@ -50,6 +109,7 @@ class Compiled:
     report: Report  # verification and geometry findings plus the authoring warnings
     layout: LayoutResult
     routes: RouteResult
+    counts: PlanCounts  # what auto read; the command line's summary reports the optional modules
 
 
 def compile_document(
@@ -94,8 +154,12 @@ def compile_document(
         report.metrics["preset_auto"] = {"rule": auto.rule, **_counts_json(plan.counts)}
     report.metrics["geometry"] = geometry.metrics
     report.metrics["route"] = _route_metrics(routes)
+    effects = authoring_effects(authoring, plan, canvas)
+    report.metrics["authoring_keys"] = effects
     report.extend(warnings)
-    return Compiled(authoring, canvas, report, laid, routes)
+    report.extend(overridden_keys(authoring, effects))
+    report.extend(authoring.notices)
+    return Compiled(authoring, canvas, report, laid, routes, plan.counts)
 
 
 def choose_auto(counts: PlanCounts) -> AutoChoice:

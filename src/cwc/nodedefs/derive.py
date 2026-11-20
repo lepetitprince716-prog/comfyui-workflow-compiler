@@ -55,6 +55,11 @@ _ARRAY_INDEX = re.compile(r"0|[1-9][0-9]*")
 _MAX_ARRAY_INDEX = 2**32 - 2
 _AUTOGROW_MIN = 1
 _AUTOGROW_MAX = 100
+# Limits on an Autogrow group, so a hostile definition cannot make cwc build millions of slots.
+# The bundled core nodes go up to 100 ordinals and a template of a few inputs; a ``max`` or
+# ``min`` past MAX_AUTOGROW, or more than MAX_AUTOGROW_SLOTS slots in one group, is refused.
+MAX_AUTOGROW = 1000
+MAX_AUTOGROW_SLOTS = 10000
 
 
 # --- JavaScript semantics -------------------------------------------------------------
@@ -173,6 +178,8 @@ class _Parse:
             return 0
         if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
             raise self._bad(f"autogrow {name!r}: {key} is {value!r}, not a number")
+        if abs(value) > MAX_AUTOGROW:
+            raise self._bad(f"autogrow {name!r}: {key} is {value!r}; the limit is {MAX_AUTOGROW}")
         return int(value)
 
     def autogrow(self, name: str, opts: Mapping[str, Any]) -> AutogrowSpec | None:
@@ -191,13 +198,18 @@ class _Parse:
         prefix = template.get("prefix")
         minimum = template.get("min", _AUTOGROW_MIN)
         maximum = len(names) if names is not None else template.get("max", _AUTOGROW_MAX)
-        return AutogrowSpec(
+        grow = AutogrowSpec(
             template=specs,
             names=names,
             prefix=prefix if isinstance(prefix, str) else "",  # the frontend defaults prefix to ''
             min=self._count(name, "min", minimum),
             max=self._count(name, "max", maximum),
         )
+        if len(specs) * grow.max > MAX_AUTOGROW_SLOTS:
+            raise self._bad(
+                f"autogrow {name!r}: {len(specs)} template inputs times max {grow.max} is more than {MAX_AUTOGROW_SLOTS} slots"
+            )
+        return grow
 
 
 def _widget_key(type_: str, opts: Mapping[str, Any]) -> str:

@@ -10,6 +10,7 @@ export's: widgets in widget order, then links in slot order.
 from __future__ import annotations
 
 import copy
+import difflib
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -71,6 +72,7 @@ def check_node(node: RawNode, nodedef: NodeDef, intent: NodeIntent, sources: Sou
     accepted: dict[str, Any] = {}
     opaque: dict[str, Any] = {}
     result = NodeOutput({}, None)
+    meant: set[str] = set()  # omitted inputs a misspelt name stands for: no second error for them
 
     for name, raw in node.inputs.items():
         target = surf.targets.get(name)
@@ -78,7 +80,9 @@ def check_node(node: RawNode, nodedef: NodeDef, intent: NodeIntent, sources: Sou
             if surf.open_group_key(name):
                 opaque[name] = _opaque(name, raw, split, sources, aid, result, out)
             else:
-                _unknown_name(name, nodedef, surf, aid, out)
+                guess = _unknown_name(name, node, nodedef, surf, aid, out)
+                if guess is not None:
+                    meant.add(guess)
             continue
         if target.kind is Kind.FRONTEND:
             _frontend_only(target, nodedef, aid, out)
@@ -93,7 +97,7 @@ def check_node(node: RawNode, nodedef: NodeDef, intent: NodeIntent, sources: Sou
             if value is not INVALID:
                 accepted[name] = value
 
-    _check_omitted(node, nodedef, surf, aid, out)
+    _check_omitted(node, nodedef, surf, aid, out, meant)
     _check_dynamic_defaults(nodedef, surf, split, aid, out)
     _check_intent_names(intent, surf, aid, out)
 
@@ -127,14 +131,20 @@ def _opaque(name: str, raw: Any, split: _Split, sources: Sources, aid: str, resu
     return copy.deepcopy(raw)
 
 
-def _unknown_name(name: str, nodedef: NodeDef, surf: Surface, aid: str, out: Findings) -> None:
+def _unknown_name(name: str, node: RawNode, nodedef: NodeDef, surf: Surface, aid: str, out: Findings) -> str | None:
+    """E2 for a name the type does not have. Returns the omitted input it most likely stands
+    for, if any: the author wrote that input, only misspelt, so it is not reported missing too."""
+    omitted = [legal for legal in surf.legal if legal not in node.inputs]
+    guesses = difflib.get_close_matches(name, omitted, n=1, cutoff=0.75)
+    guess = guesses[0] if guesses else None
     out.error(
         Code.E2,
-        f"node {aid!r}: {nodedef.type} has no input {name!r}",
+        f"node {aid!r}: {nodedef.type} has no input {name!r}" + (f"; did you mean {guess!r}?" if guess else ""),
         [aid],
         hint=f"valid inputs: {listing(surf.legal, limit=40)}",
-        data={"valid": list(surf.legal)},
+        data={"valid": list(surf.legal), **({"did_you_mean": guess} if guess else {})},
     )
+    return guess
 
 
 def _frontend_only(target: Target, nodedef: NodeDef, aid: str, out: Findings) -> None:
@@ -187,9 +197,9 @@ def _literal(target: Target, value: Any, aid: str, out: Findings) -> Any:
     return copy.deepcopy(check_literal(target.spec, value, aid, out))
 
 
-def _check_omitted(node: RawNode, nodedef: NodeDef, surf: Surface, aid: str, out: Findings) -> None:
+def _check_omitted(node: RawNode, nodedef: NodeDef, surf: Surface, aid: str, out: Findings, meant: set[str]) -> None:
     for target in surf.targets.values():
-        if target.name in node.inputs:
+        if target.name in node.inputs or target.name in meant:
             continue
         if target.kind is Kind.SOCKET and target.required:
             out.error(
@@ -219,7 +229,7 @@ def _check_omitted(node: RawNode, nodedef: NodeDef, surf: Surface, aid: str, out
                 f"node {aid!r}: {target.name!r} is omitted, but the widget layout of {nodedef.type} is not "
                 "reliable enough to fill its default",
                 [aid],
-                hint=f"write every widget input of this node, or add a frontend truth snapshot for {nodedef.type} (`cwc snapshot`)",
+                hint="write every widget input of this node",
             )
 
 

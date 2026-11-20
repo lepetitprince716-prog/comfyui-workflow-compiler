@@ -106,7 +106,7 @@
     },
     {
       "id": "lan_hostname",
-      "pattern": "(?<![A-Za-z0-9._-])(?:[A-Za-z0-9-]+\\.)+(?:local|lan|internal|home\\.arpa)(?![A-Za-z0-9-])(?!\\.[A-Za-z])",
+      "pattern": "(?<![A-Za-z0-9._-])(?:[A-Za-z0-9-]+\\.)+(?:local|lan|internal|home\\.arpa)(?![A-Za-z0-9-])(?!_[A-Za-z0-9])(?!\\.[A-Za-z])",
       "why": "local-network hostname exposes a machine name"
     }
   ],

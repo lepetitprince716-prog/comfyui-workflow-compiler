@@ -37,8 +37,10 @@ Where cwc deliberately differs, the file is read more strictly or not at all:
 * A text chunk with no NUL inside it is skipped. The frontend keeps scanning into the
   next chunk (and loops forever at the end of the file), so it stores the text under a
   keyword that includes bytes of other chunks.
-* The size limits stay: the file (``MAX_PNG_BYTES``) and the inflated text
-  (``MAX_JSON_BYTES``, I3).
+* The size limits stay: the file (``MAX_PNG_BYTES``) and the inflated text. The text of
+  all compressed chunks together may not inflate past ``MAX_JSON_BYTES`` (I3), whatever
+  their keywords and whether or not the chunk is read in the end, so a file of many small
+  bombs cannot add up to more memory than one large one.
 """
 
 from __future__ import annotations
@@ -141,15 +143,16 @@ def read_png_text(data: bytes) -> dict[str, str]:
     I1 for a file that is not a well-formed PNG and I3 for one over a size limit.
     """
     texts: dict[str, str] = {}
+    budget = _Budget(MAX_JSON_BYTES)
     for kind, start, length in _walk(data, past_iend=True):
         if kind in (TEXT, COMF, ITXT):
-            found = _frontend_text(data, kind, start, start + length)
+            found = _frontend_text(data, kind, start, start + length, budget)
             if found is not None:
                 texts[found[0]] = found[1]
     return texts
 
 
-def _frontend_text(data: bytes, kind: bytes, start: int, end: int) -> tuple[str, str] | None:
+def _frontend_text(data: bytes, kind: bytes, start: int, end: int, budget: _Budget) -> tuple[str, str] | None:
     """``(keyword, text)`` of the chunk whose data is ``data[start:end]``, or None to skip it.
 
     Offsets run over the whole file, as in ``getFromPngBuffer``, because the iTXt flag and
@@ -175,20 +178,45 @@ def _frontend_text(data: bytes, kind: bytes, start: int, end: int) -> tuple[str,
             return None
     content = data[text_start:end]
     if compressed:
-        inflated = _inflate(content)
+        inflated = _inflate(content, budget)
         if inflated is None:
             return None
         content = inflated
     return keyword, content.decode("utf-8-sig", errors="replace")
 
 
-def _inflate(data: bytes) -> bytes | None:
-    """The zlib stream ``data`` holds, exactly; None when it is broken, cut short or has trailing bytes."""
+class _Budget:
+    """What one file may still inflate, in bytes, over all its compressed text chunks."""
+
+    def __init__(self, total: int):
+        self.remaining = total
+
+    def take(self, size: int) -> None:
+        self.remaining -= size
+        if self.remaining < 0:
+            raise input_error(Code.I3, f"the compressed PNG text chunks inflate past {MAX_JSON_BYTES} bytes in all")
+
+
+_INFLATE_STEP = 1 << 20  # bytes inflated per call, so a bomb is stopped after one step past the budget
+
+
+def _inflate(data: bytes, budget: _Budget) -> bytes | None:
+    """The zlib stream ``data`` holds, exactly; None when it is broken, cut short or has trailing bytes.
+
+    Every inflated byte is charged to ``budget`` as it appears, also when the stream turns
+    out to be broken and its output is dropped.
+    """
     inflater = zlib.decompressobj()
+    out: list[bytes] = []
+    pending = data
     try:
-        out = inflater.decompress(data, MAX_JSON_BYTES + 1)
+        while True:
+            piece = inflater.decompress(pending, min(_INFLATE_STEP, budget.remaining + 1))
+            budget.take(len(piece))
+            out.append(piece)
+            pending = inflater.unconsumed_tail
+            if inflater.eof or not (piece or pending):
+                break
     except zlib.error:
         return None
-    if len(out) > MAX_JSON_BYTES:
-        raise input_error(Code.I3, f"a compressed PNG text chunk inflates past {MAX_JSON_BYTES} bytes")
-    return out if inflater.eof and not inflater.unused_data else None
+    return b"".join(out) if inflater.eof and not inflater.unused_data else None

@@ -8,11 +8,21 @@ link endpoints, consistent tables) belong to ``verify``.
 
 from __future__ import annotations
 
-import math
 from typing import Any, Callable
 
 from cwc.canvas.model import ROOT_VERSION, Canvas, is_ascii_decimal
-from cwc.ingest.limits import MAX_LINKS, MAX_NODES, MAX_REPORTED, input_error, input_errors, parse_json
+from cwc.ingest.limits import (
+    MAX_COORDINATE,
+    MAX_ID_DIGITS,
+    MAX_LINKS,
+    MAX_NODES,
+    MAX_REPORTED,
+    input_error,
+    input_errors,
+    is_finite,
+    is_id_int,
+    parse_json,
+)
 from cwc.ingest.png import SIGNATURE, read_png_text
 from cwc.report import Code, Finding, Severity
 
@@ -96,12 +106,12 @@ def _check_node(node: Any, index: int, problems: _Problems) -> None:
     label = node_id if _is_node_id(node_id) else None
     where = f"node {node_id!r}" if label is not None else f"nodes[{index}]"
     if label is None:
-        problems.add(f"{where}: `id` must be an integer or a non-empty string (digits must be ASCII)")
+        problems.add(f"{where}: `id` must be an integer or a non-empty string (digits must be ASCII, at most {MAX_ID_DIGITS} of them)")
     if not isinstance(node.get("type"), str) or not node.get("type"):
         problems.add(f"{where}: `type` must be a non-empty string", label)
     for key in ("pos", "size"):
         if not _is_vec2(node.get(key)):
-            problems.add(f"{where}: `{key}` must be [x, y] or {{\"0\": x, \"1\": y}} with finite numbers", label)
+            problems.add(f"{where}: `{key}` must be [x, y] or {{\"0\": x, \"1\": y}} with finite numbers of at most {MAX_COORDINATE:g}", label)
     if "mode" in node and not _is_int(node["mode"]):  # ``Node.mode`` calls ``int()`` on it, so null is refused too
         problems.add(f"{where}: `mode` must be an integer", label)
     _check_optional(node, "title", lambda v: isinstance(v, str), "a string", where, label, problems)
@@ -151,7 +161,8 @@ def _check_links(links: Any, problems: _Problems) -> None:
         ):
             problems.add(
                 f"links[{index}] must be [id, origin_id, origin_slot, target_id, target_slot, type]"
-                " with an integer id, node ids and integer slots (digit strings must be ASCII)"
+                " with an integer id, node ids and integer slots (digit strings must be ASCII,"
+                f" at most {MAX_ID_DIGITS} digits)"
             )
 
 
@@ -162,7 +173,7 @@ def _check_groups(groups: Any, problems: _Problems) -> None:
     for index, group in enumerate(groups):
         bounding = group.get("bounding") if isinstance(group, dict) else None
         if not (isinstance(bounding, list) and len(bounding) == 4 and all(_is_number(v) for v in bounding)):
-            problems.add(f"groups[{index}] must be an object with `bounding` [x, y, w, h]")
+            problems.add(f"groups[{index}] must be an object with `bounding` [x, y, w, h] of finite numbers of at most {MAX_COORDINATE:g}")
 
 
 def _check_extra(extra: Any, problems: _Problems) -> None:
@@ -197,7 +208,7 @@ def _is_reroute(value: Any) -> bool:
 
 
 def _is_int(value: Any) -> bool:
-    return isinstance(value, int) and not isinstance(value, bool)
+    return isinstance(value, int) and not isinstance(value, bool) and is_id_int(value)
 
 
 def _is_optional_int(value: Any) -> bool:
@@ -205,7 +216,12 @@ def _is_optional_int(value: Any) -> bool:
 
 
 def _is_number(value: Any) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and is_finite(value)
+        and abs(value) <= MAX_COORDINATE
+    )
 
 
 def _is_node_id(value: Any) -> bool:
@@ -213,11 +229,15 @@ def _is_node_id(value: Any) -> bool:
     the link views convert digit strings with ``int()``."""
     if _is_int(value):
         return True
-    return isinstance(value, str) and value != "" and (is_ascii_decimal(value) or not value.isdigit())
+    return isinstance(value, str) and value != "" and (_is_digit_string(value) or not value.isdigit())
 
 
 def _is_slot(value: Any) -> bool:
-    return _is_int(value) or (isinstance(value, str) and is_ascii_decimal(value))
+    return _is_int(value) or (isinstance(value, str) and _is_digit_string(value))
+
+
+def _is_digit_string(value: str) -> bool:
+    return is_ascii_decimal(value) and len(value) <= MAX_ID_DIGITS
 
 
 def _is_vec2(value: Any) -> bool:

@@ -297,7 +297,7 @@ class IncompleteLayoutTest(unittest.TestCase):
         findings = caught.exception.findings
         self.assertEqual({f.code for f in findings}, {Code.E3})
         self.assertEqual(sorted(f.message.split("'")[3] for f in findings), ["denoise", "seed"])
-        self.assertIn("cwc snapshot", findings[0].hint)
+        self.assertEqual(findings[0].hint, "write every widget input of this node")
 
     def test_writing_every_widget_input_passes(self):
         doc = txt2img()

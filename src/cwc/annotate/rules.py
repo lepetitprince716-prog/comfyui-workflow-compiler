@@ -45,7 +45,7 @@ from dataclasses import dataclass, field
 from typing import Callable, Mapping
 
 from cwc.annotate.graph import ANY, COMBO, GraphView
-from cwc.annotate.types import COCKPIT_KEY, CockpitSlot, Zone
+from cwc.annotate.types import AUTHOR_GROUP_PREFIX, COCKPIT_KEY, CockpitSlot, Zone
 from cwc.canvas.model import id_order
 from cwc.nodedefs.types import Behavior
 from cwc.normalize.types import NodeIntent, Role
@@ -182,7 +182,7 @@ class _Rules:
             if intent.ui_role is Role.COCKPIT:
                 self.claim(key, 2, COCKPIT_KEY, Zone.COCKPIT, self.cockpit_slot(key))
             elif intent.ui_group is not None:
-                self.claim(key, 2, f"group:{intent.ui_group}", None)
+                self.claim(key, 2, f"{AUTHOR_GROUP_PREFIX}{intent.ui_group}", None)
             elif intent.ui_role is Role.PLUMBING:
                 self.reserved.add(key)
 
