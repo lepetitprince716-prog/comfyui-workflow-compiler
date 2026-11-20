@@ -65,6 +65,7 @@ class Source(str, Enum):
 
 
 COCKPIT_KEY = "cockpit"  # the key of the group annotate makes of the exposed controls
+AUTHOR_GROUP_PREFIX = "group:"  # the key of a group built from an author's ui_group is this plus the id
 
 
 @dataclass(frozen=True)

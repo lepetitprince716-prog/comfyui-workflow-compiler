@@ -67,7 +67,11 @@ class Folder(unittest.TestCase):
 class CompileTest(Folder):
     def test_writes_canvas_prompt_and_report(self):
         code, out, err = run("compile", self.graph(with_lora(TXT2IMG)), "-o", self.out)
-        self.assertEqual((code, err), (ExitCode.OK, ""))
+        self.assertEqual(code, ExitCode.OK)
+        notice, summary = err.splitlines()  # no error or warning: the success summary, after
+        # the one info line on the keys the graph sets that have no effect yet (ui_note and the like)
+        self.assertTrue(summary.startswith("cwc compile: ok; "), summary)
+        self.assertTrue(notice.startswith("E8 info: ") and "no effect" in notice, notice)
         self.assertEqual(sorted(p.name for p in self.out.iterdir()), ["graph.api.json", "graph.report.json", "graph.ui.json"])
         self.assertEqual(out.count("wrote "), 3)
         report = self.read(".report.json")
@@ -214,6 +218,150 @@ class CompileTest(Folder):
 
     def read_named(self, name):
         return json.loads((self.out / f"{name}.report.json").read_text(encoding="utf-8"))
+
+
+class StaleOutputTest(Folder):
+    """A run removes the outputs of an earlier run of the same graph that it does not write
+    itself, so an old canvas is never taken for this run's, and says on stderr what it removed."""
+
+    def removed_line(self, err):
+        lines = [line for line in err.splitlines() if line.startswith("cwc compile: removed ")]
+        self.assertEqual(len(lines), 1, err)
+        return lines[0]
+
+    def test_a_failed_run_names_the_outputs_it_removed(self):
+        path = self.graph(with_lora(TXT2IMG))
+        self.assertEqual(run("compile", path, "-o", self.out, "--all-enabled")[0], ExitCode.OK)
+        doc = with_lora(TXT2IMG)
+        doc["decode"]["class_type"] = "VAEDecodeNope"
+        code, _, err = run("compile", self.graph(doc), "-o", self.out)
+        self.assertEqual(code, ExitCode.INPUT_ERROR)
+        self.assertEqual([p.name for p in self.out.iterdir()], ["graph.report.json"])
+        line = self.removed_line(err)
+        for name in ("graph.ui.json", "graph.api.json", "graph.full.api.json"):
+            self.assertIn(str(self.out / name), line)
+        self.assertNotIn("graph.report.json", line)
+        self.assertTrue(err.rstrip("\n").splitlines()[-1].startswith("cwc compile: 1 error(s)"), err)
+
+    def test_a_successful_run_names_the_full_prompt_it_removed(self):
+        path = self.graph(with_lora(TXT2IMG))
+        self.assertEqual(run("compile", path, "-o", self.out, "--all-enabled")[0], ExitCode.OK)
+        code, _, err = run("compile", path, "-o", self.out, "--json")
+        self.assertEqual(code, ExitCode.OK)
+        line = self.removed_line(err)
+        self.assertIn(str(self.out / "graph.full.api.json"), line)
+        self.assertNotIn("graph.ui.json", line)
+
+    def test_nothing_to_remove_prints_nothing(self):
+        code, _, err = run("compile", self.graph(TXT2IMG), "-o", self.out)
+        self.assertEqual(code, ExitCode.OK)
+        self.assertNotIn("removed", err)
+        doc = copy.deepcopy(TXT2IMG)
+        doc["decode"]["class_type"] = "VAEDecodeNope"
+        code, _, err = run("compile", self.graph(doc, "other.json"), "-o", self.out)
+        self.assertEqual(code, ExitCode.INPUT_ERROR)
+        self.assertNotIn("removed", err)  # graph.* belongs to another graph name
+
+    def test_the_help_says_so(self):
+        code, out, _ = run("compile", "--help")
+        self.assertEqual(code, ExitCode.OK)
+        self.assertIn("removes", " ".join(out.split()))
+        self.assertIn("earlier run", " ".join(out.split()))
+
+
+def with_primitives(steps_order=None, cfg_order=None):
+    """txt2img with steps and cfg set from two primitive nodes in the Controls group: two
+    members of the same control kind, neither feeding the other."""
+    doc = copy.deepcopy(TXT2IMG)
+    doc["steps_p"] = {"class_type": "PrimitiveInt", "inputs": {"value": 28}, "_meta": {"title": "Steps", "ui_role": "cockpit"}}
+    doc["cfg_p"] = {"class_type": "PrimitiveFloat", "inputs": {"value": 4.0}, "_meta": {"title": "CFG", "ui_role": "cockpit"}}
+    for key, order in (("steps_p", steps_order), ("cfg_p", cfg_order)):
+        if order is not None:
+            doc[key]["_meta"]["ui_order"] = order
+    doc["sampler"]["inputs"]["steps"] = ["steps_p", 0]
+    doc["sampler"]["inputs"]["cfg"] = ["cfg_p", 0]
+    return doc
+
+
+class UiOrderTest(Folder):
+    """``ui_order`` orders Controls members of one control kind and one step of the data flow,
+    lower first; it does not move a member ahead of another kind (the guide says so)."""
+
+    def tops(self, doc, preset="bento"):
+        self.assertEqual(run("compile", self.graph(doc), "-o", self.out, "--preset", preset)[0], ExitCode.OK)
+        return {node["title"]: node["pos"][1] for node in self.read(".ui.json")["nodes"] if node.get("title")}
+
+    def test_a_lower_order_comes_first_in_every_preset(self):
+        for preset in ("bento", "stepped", "swimlanes", "cockpit-split", "tower-preview"):
+            with self.subTest(preset=preset):
+                plain = self.tops(with_primitives(), preset)
+                self.assertLess(plain["CFG"], plain["Steps"])  # by id without ui_order
+                swapped = self.tops(with_primitives(1, 2), preset)
+                self.assertLess(swapped["Steps"], swapped["CFG"])
+                alone = self.tops(with_primitives(steps_order=5), preset)  # members without one go last
+                self.assertLess(alone["Steps"], alone["CFG"])
+
+    def test_it_does_not_move_a_member_ahead_of_another_kind(self):
+        doc = with_primitives(-5, -4)
+        doc["pos"]["_meta"]["ui_order"] = 9
+        tops = self.tops(doc)
+        self.assertLess(tops["Positive prompt"], tops["Negative prompt"])
+        self.assertLess(tops["Negative prompt"], tops["Steps"])
+        self.assertLess(tops["Canvas size"], tops["Steps"])
+
+
+class AuthoringEffectTest(Folder):
+    """The report of a compile says which _meta keys took effect on which nodes
+    (``metrics.authoring_keys``), and on which nodes a key that is set did nothing."""
+
+    def effects(self, doc):
+        code, _, err = run("compile", self.graph(doc), "-o", self.out)
+        self.assertEqual(code, ExitCode.OK, err)
+        return {entry["key"]: entry for entry in self.read(".report.json")["metrics"]["authoring_keys"]}
+
+    def test_each_key_names_the_nodes_it_changed(self):
+        doc = with_lora(with_primitives(steps_order=1))
+        doc["sampler"]["_meta"]["ui_seed"] = "fixed"
+        doc["sampler"]["_meta"]["ui_order"] = 3  # not in the Controls group: no effect
+        doc["decode"]["_meta"] = {"ui_group": "finish"}
+        doc["save"]["_meta"] = {"ui_group": "finish"}
+        doc["neg"]["_meta"]["ui_role"] = "pipeline"
+        effects = self.effects(doc)
+        self.assertEqual(effects["_meta.ui_role"]["nodes"], ["cfg_p", "latent", "neg", "pos", "steps_p"])
+        self.assertEqual(effects["_meta.ui_optional"]["nodes"], ["lora"])
+        self.assertEqual(effects["_meta.ui_group"]["nodes"], ["decode", "save"])
+        self.assertEqual(effects["_meta.ui_seed"]["nodes"], ["sampler"])
+        self.assertEqual(effects["_meta.ui_order"]["nodes"], ["steps_p"])
+        self.assertEqual(effects["_meta.ui_order"]["no_effect_on"], ["sampler"])
+        self.assertIn("lora", effects["_meta.title"]["nodes"])
+        self.assertIn("sampler", effects["_meta.title"]["nodes"])
+        self.assertNotIn("no_effect_on", effects["_meta.ui_role"])
+        self.assertNotIn("_meta.ui_locked", effects)  # E8 names the keys without effect
+        canvas = self.read(".ui.json")
+        neg = next(node for node in canvas["nodes"] if node.get("title") == "Negative prompt")
+        controls = next(group for group in canvas["groups"] if "Controls" in group["title"])
+        x, y, w, h = controls["bounding"]
+        self.assertFalse(x <= neg["pos"][0] < x + w and y <= neg["pos"][1] < y + h)  # pipeline kept it out
+
+    def test_a_key_another_key_overrides_is_named_as_without_effect(self):
+        doc = copy.deepcopy(TXT2IMG)
+        doc["pos"]["_meta"]["ui_group"] = "words"  # ui_role cockpit wins: it stays in Controls
+        doc["decode"]["_meta"] = {"ui_role": "plumbing", "ui_group": "finish"}  # its group wins: not collapsed
+        effects = self.effects(doc)
+        self.assertEqual(effects["_meta.ui_group"]["no_effect_on"], ["pos"])
+        self.assertEqual(effects["_meta.ui_group"]["nodes"], ["decode"])
+        self.assertEqual(effects["_meta.ui_role"]["no_effect_on"], ["decode"])
+        canvas = self.read(".ui.json")
+        decode = next(node for node in canvas["nodes"] if node["type"] == "VAEDecode")
+        self.assertFalse(decode.get("flags", {}).get("collapsed", False))
+        self.assertNotIn("Words", [group["title"].split(" ", 1)[1] for group in canvas["groups"]])
+
+    def test_a_graph_without_meta_keys_has_an_empty_list(self):
+        doc = copy.deepcopy(TXT2IMG)
+        for key, entry in doc.items():
+            if key != "_workflow":
+                entry.pop("_meta", None)
+        self.assertEqual(self.effects(doc), {})
 
 
 def authored(doc, preset):

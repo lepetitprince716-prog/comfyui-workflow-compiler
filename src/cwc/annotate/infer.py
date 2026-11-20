@@ -9,7 +9,7 @@ from cwc.annotate.graph import GraphView, group_ranks
 from cwc.annotate.notes import group_zones, make_notes, member_order, node_zones
 from cwc.annotate.palette import zone_class
 from cwc.annotate.rules import Classified, classify, majority_zone
-from cwc.annotate.types import Annotations, GroupPlan, NodeNote, PlanCounts, Source, Zone
+from cwc.annotate.types import AUTHOR_GROUP_PREFIX, Annotations, GroupPlan, NodeNote, PlanCounts, Source, Zone
 from cwc.canvas.model import NodeMode
 from cwc.normalize.types import Authoring, NodeIntent, WorkflowInfo
 
@@ -25,7 +25,6 @@ ZONE_NAMES = {
     Zone.STAGE: "Stage",
 }
 _NUMBER_PREFIX = re.compile(r"^\s*(?:step\s*)?\d+[a-z]?(?=[\s.:)_-]|$)[\s.:)_-]*", re.IGNORECASE)
-_AUTHOR_KEY = "group:"
 _SEPARATORS = re.compile(r"[\s_-]+")
 _NUMBER_WORD = re.compile(r"[0-9]+")
 
@@ -91,14 +90,14 @@ def _groups(
     return tuple(plans)
 
 
-def _author_group(key: str, zone: Zone, keys: list[str], intents: Mapping[str, NodeIntent]) -> str | None:
+def author_group(key: str, zone: Zone, keys: list[str], intents: Mapping[str, NodeIntent]) -> str | None:
     """The author's group id when the author alone names this group, else None.
 
     A group keyed ``group:<id>`` was built from the author's ``ui_group``; nodes the compiler
     added to it later carry no ``ui_group``, so the key, not the members, says whose name it is.
     An optional module takes the author's name only when all its members name the same group."""
-    if key.startswith(_AUTHOR_KEY):
-        return key[len(_AUTHOR_KEY) :]
+    if key.startswith(AUTHOR_GROUP_PREFIX):
+        return key[len(AUTHOR_GROUP_PREFIX) :]
     if zone is Zone.OPTIONAL:
         authored = {intents[k].ui_group for k in keys if k in intents}
         if len(authored) == 1 and None not in authored:
@@ -126,7 +125,7 @@ def _name(
     workflow: WorkflowInfo,
 ) -> str:
     """A human name without a number; layout adds the numbers."""
-    group_id = _author_group(key, zone, keys, intents)
+    group_id = author_group(key, zone, keys, intents)
     if group_id is not None:
         info = workflow.groups.get(group_id)
         if info is not None and info.title:

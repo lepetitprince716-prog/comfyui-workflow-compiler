@@ -19,7 +19,9 @@ from __future__ import annotations
 
 import difflib
 import json
+import re
 import urllib.error
+import urllib.parse
 import urllib.request
 import zlib
 from dataclasses import replace
@@ -40,8 +42,28 @@ BUILTINS_FILE = "frontend_builtins.json"
 OBJECT_INFO_PATH = "/api/object_info"
 URL_TIMEOUT = 30  # seconds
 URL_SCHEMES = ("http://", "https://")
+MAX_REDIRECTS = 3  # redirects followed for one URL; a real server behind a proxy needs one or two
 
 ObjectInfo = Mapping[str, Mapping[str, Any]]
+
+
+class _SafeRedirect(urllib.request.HTTPRedirectHandler):
+    """The standard redirect handler, narrowed: at most ``MAX_REDIRECTS`` redirects, only to http or
+    https, and never from https to http. The target's address is not judged, because a ComfyUI
+    server on this machine or the local network is the usual source."""
+
+    max_redirections = MAX_REDIRECTS
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        old, new = urllib.parse.urlsplit(req.full_url).scheme, urllib.parse.urlsplit(newurl).scheme
+        if new not in ("http", "https"):
+            raise urllib.error.URLError(f"redirect to a {new} URL refused: only http and https are followed")
+        if old == "https" and new == "http":
+            raise urllib.error.URLError("redirect from https to http refused")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = urllib.request.build_opener(_SafeRedirect)
 
 
 def _missing(message: str) -> CwcError:
@@ -55,29 +77,49 @@ def _too_big(where: str, what: str) -> CwcError:
     return _missing(f"node definitions from {where}: {what} past the limit of {MAX_JSON_BYTES} bytes")
 
 
+_NOT_NUL = re.compile(rb"[^\0]")
+_GZIP_FIRST_STEP = 512  # bytes fed to a member's inflater first; doubled while the member goes on
+_GZIP_LAST_STEP = 1 << 20
+
+
 def _gunzip(data: bytes, where: str) -> bytes:
     """The members of a gzip file, inflated within ``MAX_JSON_BYTES`` in all.
 
     Raises ``ValueError`` for a broken or cut-short stream and ``CwcError`` D1 when the
     result would pass the limit, so a small bomb never gets to allocate its output.
+
+    Linear in the size of ``data``: the inflater is fed small slices, never the whole rest of
+    the file, because it copies what it does not use (``unused_data``) at the end of a member,
+    and a file of very many tiny members would copy the rest of the file for each of them.
     """
     out: list[bytes] = []
     size = 0
-    while data:
-        inflater = zlib.decompressobj(16 + zlib.MAX_WBITS)
-        try:
-            piece = inflater.decompress(data, MAX_JSON_BYTES + 1 - size)
-        except zlib.error as exc:
-            raise ValueError(f"gzip data is broken: {exc}") from None
-        size += len(piece)
-        if size > MAX_JSON_BYTES:
-            raise _too_big(where, "the gzip data inflates")
-        if not inflater.eof:
-            raise ValueError("gzip data ends early")
-        out.append(piece)
-        data = inflater.unused_data.lstrip(b"\0")  # padding between or after members
-        if data and data[:2] != b"\x1f\x8b":
+    view = memoryview(data)
+    pos = 0
+    while True:
+        found = _NOT_NUL.search(data, pos)  # padding between or after members
+        if found is None:
+            break
+        pos = found.start()
+        if data[pos : pos + 2] != b"\x1f\x8b":
             raise ValueError("gzip data is followed by bytes that are not a gzip member")
+        inflater = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        step = _GZIP_FIRST_STEP
+        while not inflater.eof:
+            if pos >= len(data):
+                raise ValueError("gzip data ends early")
+            piece_in = view[pos : pos + step]
+            try:
+                piece = inflater.decompress(piece_in, MAX_JSON_BYTES + 1 - size)
+            except zlib.error as exc:
+                raise ValueError(f"gzip data is broken: {exc}") from None
+            size += len(piece)
+            if size > MAX_JSON_BYTES:
+                raise _too_big(where, "the gzip data inflates")
+            if piece:
+                out.append(piece)
+            pos += len(piece_in) - (len(inflater.unused_data) if inflater.eof else 0)
+            step = min(step * 2, _GZIP_LAST_STEP)
     return b"".join(out)
 
 
@@ -105,7 +147,7 @@ def read_source(source: str) -> Any:
     if source.startswith(URL_SCHEMES):
         url = source.rstrip("/") + OBJECT_INFO_PATH
         try:
-            with urllib.request.urlopen(url, timeout=URL_TIMEOUT) as response:
+            with _OPENER.open(url, timeout=URL_TIMEOUT) as response:
                 data = response.read(MAX_JSON_BYTES + 1)
         except urllib.error.HTTPError as exc:
             exc.close()

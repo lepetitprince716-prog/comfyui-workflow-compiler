@@ -23,8 +23,8 @@ from cwc.nodedefs.types import InputSpec, NodeDef, WidgetKind, WidgetSpec
 
 __all__ = ["DynamicText", "process", "escape", "is_dynamic_input", "dynamic_widgets"]
 
-# JavaScript ``/\/\*[\s\S]*?\*\/|\/\/.*/g``: ``.`` stops at the four line terminators.
-_COMMENT = re.compile(r"/\*[\s\S]*?\*/|//[^\n\r\u2028\u2029]*")
+# The end of a line comment: ``.`` of the JavaScript pattern stops at the four line terminators.
+_LINE_END = re.compile(r"[\n\r\u2028\u2029]")
 _ESCAPED_SPECIAL = re.compile(r"\\([{}|])")
 _SPECIAL = "{}|"
 
@@ -49,8 +49,42 @@ def process(text: str) -> DynamicText:
     return DynamicText(result, random)
 
 
+def _strip_comments(text: str) -> str:
+    """``text.replace(/\\/\\*[\\s\\S]*?\\*\\/|\\/\\/.*/g, "")``, in linear time.
+
+    The pattern as a Python regex backtracks quadratically on text with many ``/*`` and no
+    ``*/``: each ``/*`` searches to the end again. Here the search for ``*/`` is made once
+    from a ``/*`` that finds none, because no later ``/*`` can find one either.
+    """
+    size = len(text)
+    out: list[str] = []
+    pos = 0  # text before this offset is already in ``out`` or removed
+    closable = True  # false once a ``/*`` found no ``*/`` after it
+    while True:
+        slash = text.find("/", pos)
+        if slash < 0 or slash + 1 >= size:
+            break
+        following = text[slash + 1]
+        if following == "*" and closable:
+            close = text.find("*/", slash + 2)
+            if close >= 0:
+                out.append(text[pos:slash])
+                pos = close + 2
+                continue
+            closable = False
+        elif following == "/":
+            line_end = _LINE_END.search(text, slash + 2)
+            out.append(text[pos:slash])
+            pos = line_end.start() if line_end else size
+            continue
+        out.append(text[pos : slash + 1])
+        pos = slash + 1
+    out.append(text[pos:])
+    return "".join(out)
+
+
 def _process(source: str) -> tuple[str, bool]:
-    source = _COMMENT.sub("", source)  # comments go before any escape is read
+    source = _strip_comments(source)  # comments go before any escape is read
     size = len(source)
     out: list[str] = []
     random = False

@@ -54,6 +54,7 @@ class Code(str, Enum):
     E5 = "E5"
     E6 = "E6"
     E7 = "E7"
+    E8 = "E8"
     # Structure.
     S1 = "S1"
     S2 = "S2"
@@ -116,6 +117,7 @@ TITLES: dict[Code, str] = {
     Code.E5: "literal value has the wrong type, is out of range, or is not a known option",
     Code.E6: "link points at a missing node or output, or names an ambiguous output",
     Code.E7: "graph structure is invalid (cycle, bad id, bad _workflow, mixed optional group)",
+    Code.E8: "authoring key is accepted but has no effect yet",
     Code.S1: "root version is not 0.4",
     Code.S2: "node is missing a required field",
     Code.S3: "node or link id is not unique",

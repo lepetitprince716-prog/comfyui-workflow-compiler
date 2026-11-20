@@ -21,15 +21,22 @@ as the export wrote it.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import copy
 import gzip
+import io
 import json
+import os
 import sys
+import tempfile
+import zlib
 from pathlib import Path
 from typing import Any, Iterable
 
 FORMAT = 1
 MAX_DEFAULT_CHARS = 64
+# A raw /object_info export is tens of megabytes; an input, or a gzip input once inflated, past this is refused.
+MAX_INPUT_BYTES = 256 * 1024 * 1024
 CORE_MODULE = "nodes"
 CORE_PREFIXES = ("comfy_extras.", "comfy_api_nodes.")
 # Keys of a node entry that only explain the node to a person.
@@ -126,14 +133,40 @@ def canonical_json(doc: Any, *, sort_keys: bool) -> bytes:
     return text.encode("ascii")
 
 
+def write_atomically(target: Path, data: bytes) -> None:
+    """Write ``data`` to ``target`` through a new temporary file beside it, then rename it over.
+
+    The temporary file is created exclusively under a name nobody can have planted, so a symbolic
+    link in the output folder is never written through; a link at ``target`` is replaced.
+    """
+    fd, name = tempfile.mkstemp(dir=target.parent, prefix=target.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            umask = os.umask(0)
+            os.umask(umask)
+            os.fchmod(handle.fileno(), 0o666 & ~umask)  # mkstemp makes it 0600; a written file follows the umask
+            handle.write(data)
+        os.replace(name, target)
+    except BaseException:
+        with contextlib.suppress(OSError):
+            os.unlink(name)
+        raise
+
+
 def _sorted(mapping: dict[str, Any]) -> dict[str, Any]:
     return {key: mapping[key] for key in sorted(mapping)}
 
 
 def read_doc(path: Path) -> Any:
-    data = path.read_bytes()
+    with path.open("rb") as handle:
+        data = handle.read(MAX_INPUT_BYTES + 1)
+    if len(data) > MAX_INPUT_BYTES:
+        raise ValueError(f"{path} is past the limit of {MAX_INPUT_BYTES} bytes")
     if data[:2] == b"\x1f\x8b":
-        data = gzip.decompress(data)
+        with gzip.GzipFile(fileobj=io.BytesIO(data)) as packed:
+            data = packed.read(MAX_INPUT_BYTES + 1)
+        if len(data) > MAX_INPUT_BYTES:
+            raise ValueError(f"{path} inflates past the limit of {MAX_INPUT_BYTES} bytes")
     return json.loads(data.decode("utf-8"))
 
 
@@ -186,15 +219,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         nodedefs, truth = build(read_doc(args.object_info), read_doc(args.truth))
-    except (OSError, ValueError) as exc:
+    except (OSError, EOFError, zlib.error, ValueError) as exc:
         print(f"build_core_data: {exc}", file=sys.stderr)
         return 1
     args.out.mkdir(parents=True, exist_ok=True)
     for name, data in ((NODEDEFS_FILE, nodedefs), (TRUTH_FILE, truth)):
         target = args.out / name
-        tmp = target.with_name(target.name + ".tmp")
-        tmp.write_bytes(data)
-        tmp.replace(target)
+        write_atomically(target, data)
         print(f"{target.name}: {len(data)} bytes")
     return 0
 

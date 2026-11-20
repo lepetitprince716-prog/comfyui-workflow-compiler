@@ -53,7 +53,7 @@ class CheckCase(unittest.TestCase):
 
 
 class E1UnknownTypeTest(CheckCase):
-    def test_unknown_type_lists_close_names_and_the_snapshot_command(self):
+    def test_unknown_type_lists_close_names_and_the_ways_through(self):
         doc = txt2img()
         doc["sampler"]["class_type"] = "KSamplr"
         finding = self.errors(doc)[0]
@@ -61,7 +61,8 @@ class E1UnknownTypeTest(CheckCase):
         self.assertEqual(finding.nodes, ("sampler",))
         self.assertEqual(finding.data["closest"][0], "KSampler")
         self.assertEqual(len(finding.data["closest"]), 3)
-        self.assertIn("cwc snapshot", finding.hint)
+        self.assertIn("--nodedefs", finding.hint)
+        self.assertIn("--allow-unknown", finding.hint)
 
     def test_known_types_pass(self):
         self.passes(txt2img())
@@ -445,9 +446,14 @@ class E7StructureTest(CheckCase):
         self.assertEqual([(f.code, f.severity, f.nodes) for f in findings], [(Code.E7, Severity.WARNING, ("sampler",))])
         self.assertNotIn("note", authoring.full[authoring.ids["sampler"]])
 
-    def test_unknown_meta_key_is_a_warning(self):
+    def test_unknown_ui_meta_key_is_an_error(self):
         doc = txt2img()
         doc["sampler"]["_meta"]["ui_grup"] = "x"
+        self.assertIn("did you mean 'ui_group'", self.only(doc, Code.E7).message)
+
+    def test_unknown_meta_key_outside_ui_is_a_warning(self):
+        doc = txt2img()
+        doc["sampler"]["_meta"]["other_tool"] = "x"
         _, findings = self.passes(doc)
         self.assertEqual([(f.code, f.severity) for f in findings], [(Code.E7, Severity.WARNING)])
 

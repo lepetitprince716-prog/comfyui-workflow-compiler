@@ -39,10 +39,15 @@ def as_ref(value: Any) -> Ref | None:
 
 @dataclass(frozen=True)
 class Sources:
-    """What link resolution needs: author id -> numeric id, and -> definition (None: unknown)."""
+    """What link resolution needs: author id -> numeric id, and -> definition (None: unknown).
+
+    ``rejected`` holds the nodes whose type is already an E1 error: a link that names one of
+    their outputs is not reported again.
+    """
 
     ids: Mapping[str, str]
     defs: Mapping[str, NodeDef | None]
+    rejected: frozenset[str] = frozenset()
 
 
 def resolve(ref: Ref, sources: Sources, consumer: str, input_name: str, out: Findings) -> Resolved | None:
@@ -59,6 +64,8 @@ def resolve(ref: Ref, sources: Sources, consumer: str, input_name: str, out: Fin
     nodedef = sources.defs[ref.source]
     if nodedef is None:
         if isinstance(ref.output, str):
+            if ref.source in sources.rejected:
+                return None  # the E1 of the source says what is wrong; the run fails on it
             out.error(
                 Code.E6,
                 f"{where} names output {ref.output!r} of node {ref.source!r}, whose type is unknown",

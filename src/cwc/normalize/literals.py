@@ -12,9 +12,9 @@ the defaults that fill in for an omitted or linked input, which instantiate also
 
 from __future__ import annotations
 
-import math
 from typing import Any
 
+from cwc.ingest.limits import is_finite
 from cwc.nodedefs.types import InputSpec
 from cwc.normalize.diagnostics import Findings, listing
 from cwc.prompt.dynamic import escape, is_dynamic_input
@@ -45,11 +45,11 @@ def check_literal(spec: InputSpec, value: Any, author_id: str, out: Findings) ->
         return bad("one of its options", f"options: {listing(keys)}", {"options": keys})
     kind = spec.type
     if kind == INT:
-        if not _number(value) or not math.isfinite(value) or (isinstance(value, float) and not value.is_integer()):
+        if not _number(value) or not is_finite(value) or (isinstance(value, float) and not value.is_integer()):
             return bad("an integer")
         return _range(spec, int(value), where, author_id, out)
     if kind == FLOAT:
-        if not _number(value) or not math.isfinite(value):
+        if not _number(value) or not is_finite(value):
             return bad("a number")
         return _range(spec, value, where, author_id, out)
     if kind == BOOLEAN:

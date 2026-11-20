@@ -1,6 +1,7 @@
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -56,15 +57,18 @@ class NodeShowTest(unittest.TestCase):
         self.assertEqual(code, ExitCode.OK)
         self.assertIn("tier: builtin", out)
 
-    def test_unknown_type_exits_4_with_three_suggestions(self):
+    def test_unknown_type_is_an_input_error_with_three_suggestions(self):
+        # A name that is not a node type is a wrong input (3); 4 stays for definitions that
+        # cannot be loaded at all.
         code, out, err = run("node", "KSamplr")
-        self.assertEqual(code, ExitCode.NODEDEFS_MISSING)
+        self.assertEqual(code, ExitCode.INPUT_ERROR)
         self.assertEqual(out, "")
         self.assertIn("KSampler", err)
         self.assertEqual(err.split("closest: ", 1)[1].strip().count(", "), 2)
-        code, out, _ = run("node", "KSamplr", "--json")
-        self.assertEqual(code, ExitCode.NODEDEFS_MISSING)
+        code, out, err = run("node", "KSamplr", "--json")
+        self.assertEqual(code, ExitCode.INPUT_ERROR)
         self.assertEqual(len(json.loads(out)["closest"]), 3)
+        self.assertIn("KSampler", err)
 
     def test_type_and_search_are_exclusive(self):
         self.assertEqual(run("node")[0], ExitCode.USAGE)
@@ -77,6 +81,83 @@ class NodeShowTest(unittest.TestCase):
         code, out, err = run("--help")
         self.assertEqual((code, err), (ExitCode.OK, ""))
         self.assertIn("usage:", out)
+
+
+LETTERS = [f"choice_{i:02d}" for i in range(25)]
+COMBOS = {
+    "Picker": {
+        "input": {
+            "required": {
+                "short": [["a", "b", "c"], {}],
+                "long": [LETTERS, {}],
+                "strength": ["FLOAT", {"default": 1.0}],
+                "image": ["IMAGE", {}],
+            }
+        },
+        "output": ["IMAGE"],
+        "output_name": ["IMAGE"],
+        "display_name": "Picker",
+        "category": "testing",
+        "python_module": "custom_nodes.picker",
+    }
+}
+
+
+class ComboOptionsTest(unittest.TestCase):
+    """A dropdown input lists its values: all of them in --json, the first 20 in text."""
+
+    def picker(self, *extra):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "object_info.json"
+            path.write_text(json.dumps(COMBOS), encoding="utf-8")
+            return run("node", "Picker", "--nodedefs", str(path), *extra)
+
+    def test_text_lists_each_dropdown_after_the_widgets_line(self):
+        code, out, err = self.picker()
+        self.assertEqual((code, err), (ExitCode.OK, ""))
+        lines = out.splitlines()
+        widgets = next(i for i, line in enumerate(lines) if line.startswith("widgets:"))
+        self.assertEqual(lines[widgets + 1], '  short options: "a", "b", "c"')
+        long_line = lines[widgets + 2]
+        self.assertTrue(long_line.startswith("  long options: "), long_line)
+        shown = re.findall(r'"([^"]+)"', long_line)
+        self.assertEqual(shown, LETTERS[:20])
+        self.assertTrue(long_line.endswith(f"(20 of {len(LETTERS)}; --json lists all)"), long_line)
+        self.assertFalse(any("strength options" in line or "image options" in line for line in lines))
+
+    def test_json_gives_every_value_wherever_the_input_appears(self):
+        code, out, _ = self.picker("--json")
+        self.assertEqual(code, ExitCode.OK)
+        doc = json.loads(out)
+        inputs = {entry["name"]: entry for entry in doc["inputs"]}
+        widgets = {entry["name"]: entry for entry in doc["widgets"]}
+        self.assertEqual(inputs["short"]["options"], ["a", "b", "c"])
+        self.assertEqual(widgets["short"]["options"], ["a", "b", "c"])
+        self.assertEqual(inputs["long"]["options"], LETTERS)
+        self.assertEqual(widgets["long"]["options"], LETTERS)
+        self.assertNotIn("options", inputs["image"])
+        self.assertNotIn("options", inputs["strength"])
+        self.assertNotIn("options", widgets["strength"])
+
+    def test_ksampler_sampler_name_is_listed_where_the_trial_looked(self):
+        code, out, _ = run("node", "KSampler", "--json")
+        doc = json.loads(out)
+        sampler = next(entry for entry in doc["inputs"] if entry["name"] == "sampler_name")
+        self.assertIn("euler", sampler["options"])
+        widget = next(entry for entry in doc["widgets"] if entry["name"] == "sampler_name")
+        self.assertEqual(widget["options"], sampler["options"])
+        control = next(entry for entry in doc["widgets"] if entry["name"] == "control_after_generate")
+        self.assertNotIn("options", control)
+        code, text, _ = run("node", "KSampler")
+        line = next(line for line in text.splitlines() if line.startswith("  sampler_name options: "))
+        self.assertIn(f"(20 of {len(sampler['options'])}; --json lists all)", line)
+
+    def test_a_dropdown_without_values_says_where_they_come_from(self):
+        code, out, _ = run("node", "CheckpointLoaderSimple", "--json")
+        entry = next(entry for entry in json.loads(out)["inputs"] if entry["name"] == "ckpt_name")
+        self.assertEqual(entry["options"], [])
+        code, out, _ = run("node", "CheckpointLoaderSimple")
+        self.assertIn("  ckpt_name options: none in these definitions; --nodedefs reads a server's list", out.splitlines())
 
 
 class NodeSearchTest(unittest.TestCase):
@@ -92,8 +173,14 @@ class NodeSearchTest(unittest.TestCase):
         code, out, _ = run("node", "--search", "ksampler", "--json")
         self.assertEqual(code, ExitCode.OK)
         self.assertTrue(all(set(row) == {"type", "display_name", "category", "tier"} for row in json.loads(out)))
+
+    def test_no_match_exits_1_with_empty_output(self):
         code, out, err = run("node", "--search", "no such word anywhere")
-        self.assertEqual((code, out), (ExitCode.OK, ""))
+        self.assertEqual((code, out), (ExitCode.CHECK_FAILED, ""))
+        self.assertIn("no node type matches", err)
+        self.assertEqual(len(err.splitlines()), 1)
+        code, out, err = run("node", "--search", "no such word anywhere", "--json")
+        self.assertEqual((code, json.loads(out)), (ExitCode.CHECK_FAILED, []))
         self.assertIn("no node type matches", err)
 
 
@@ -165,7 +252,7 @@ class ModuleEntryTest(unittest.TestCase):
                 ExitCode.CHECK_FAILED: ("compile", str(graph), "-o", f"{tmp}/b"),
                 ExitCode.USAGE: ("compile",),
                 ExitCode.INPUT_ERROR: ("compile", f"{tmp}/absent.json", "-o", f"{tmp}/c"),
-                ExitCode.NODEDEFS_MISSING: ("node", "KSamplr"),
+                ExitCode.NODEDEFS_MISSING: ("node", "KSampler", "--nodedefs", f"{tmp}/absent.json"),
             }
             for expected, argv in cases.items():
                 with self.subTest(expected=expected.name):
