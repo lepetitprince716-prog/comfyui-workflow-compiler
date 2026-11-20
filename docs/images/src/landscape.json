@@ -1,8 +1,6 @@
 {
   "_workflow": {
     "format": 1,
-    "title": "Landscape with a high-res pass",
-    "locale": "en",
     "layout": {
       "preset": "bento"
     }

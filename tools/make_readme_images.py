@@ -1,9 +1,13 @@
 """Regenerate the pictures in docs/images/ that README.md and README.zh-CN.md show.
 
-Usage (from the repository root, under a Python that has Playwright and Pillow, such as the
-oracle's):
+Usage, from the folder that holds ``pyproject.toml`` (the paths below are relative to it, and
+the script finds them from its own location, so another working directory works too):
 
     python tools/make_readme_images.py --url URL [--only NAME,...] [--keep DIR]
+
+Needs Python 3.10 or newer with Playwright and Pillow installed, and Google Chrome (the harness
+launches it headless through Playwright's ``chrome`` channel). ``cwc`` itself is imported from
+``src/``, so it does not have to be installed.
 
 URL is a running ComfyUI server (see tools/oracle/ and docs/m0-findings.md). The script compiles
 the graphs in ``docs/images/src/`` with ``cwc compile`` (in process, from ``src/``), opens each
