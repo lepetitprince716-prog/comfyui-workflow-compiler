@@ -1,0 +1,106 @@
+{
+  "_workflow": {
+    "format": 1,
+    "layout": {
+      "preset": "tower-preview"
+    }
+  },
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sdxl_base_1.0.safetensors"
+    }
+  },
+  "pos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        "CLIP"
+      ],
+      "text": "an anime illustration of a quiet mountain station at dusk, warm platform lamp"
+    },
+    "_meta": {
+      "title": "Positive prompt"
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "ckpt",
+        "CLIP"
+      ],
+      "text": "blurry, lowres, watermark, text"
+    },
+    "_meta": {
+      "title": "Negative prompt"
+    }
+  },
+  "latent": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1024,
+      "height": 1024,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "Canvas size"
+    }
+  },
+  "sampler": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "ckpt",
+        "MODEL"
+      ],
+      "positive": [
+        "pos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent",
+        0
+      ],
+      "seed": 42,
+      "steps": 28,
+      "cfg": 5.5,
+      "sampler_name": "euler",
+      "scheduler": "normal",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "Sampler",
+      "ui_role": "cockpit",
+      "ui_seed": "fixed"
+    }
+  },
+  "decode": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "sampler",
+        "LATENT"
+      ],
+      "vae": [
+        "ckpt",
+        "VAE"
+      ]
+    }
+  },
+  "save": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "decode",
+        "IMAGE"
+      ],
+      "filename_prefix": "station_dusk"
+    }
+  }
+}

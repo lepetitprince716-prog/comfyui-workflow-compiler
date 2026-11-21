@@ -1,0 +1,138 @@
+{
+  "_workflow": {
+    "format": 1,
+    "layout": {
+      "preset": "bento"
+    }
+  },
+  "ckpt": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sdxl_base_1.0.safetensors"
+    }
+  },
+  "lora": {
+    "class_type": "LoraLoader",
+    "inputs": {
+      "model": [
+        "ckpt",
+        "MODEL"
+      ],
+      "clip": [
+        "ckpt",
+        "CLIP"
+      ],
+      "lora_name": "sabikaze_style.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 0.85
+    },
+    "_meta": {
+      "title": "Style LoRA (Optional)",
+      "ui_optional": true
+    }
+  },
+  "pos": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "lora",
+        "CLIP"
+      ],
+      "text": "a coastal lighthouse in heavy mist, dry-brush ink and grey-teal palette"
+    },
+    "_meta": {
+      "title": "Positive prompt"
+    }
+  },
+  "neg": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "lora",
+        "CLIP"
+      ],
+      "text": "blurry, lowres, watermark"
+    },
+    "_meta": {
+      "title": "Negative prompt"
+    }
+  },
+  "latent": {
+    "class_type": "EmptyLatentImage",
+    "inputs": {
+      "width": 1216,
+      "height": 832,
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "Canvas size"
+    }
+  },
+  "steps": {
+    "class_type": "PrimitiveInt",
+    "inputs": {
+      "value": 28
+    },
+    "_meta": {
+      "title": "Steps",
+      "ui_role": "cockpit"
+    }
+  },
+  "sampler": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "lora",
+        "MODEL"
+      ],
+      "positive": [
+        "pos",
+        0
+      ],
+      "negative": [
+        "neg",
+        0
+      ],
+      "latent_image": [
+        "latent",
+        0
+      ],
+      "seed": 1024,
+      "steps": [
+        "steps",
+        0
+      ],
+      "cfg": 5.0,
+      "sampler_name": "dpmpp_2m",
+      "scheduler": "karras",
+      "denoise": 1.0
+    },
+    "_meta": {
+      "title": "Base sampler",
+      "ui_seed": "fixed"
+    }
+  },
+  "decode": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "sampler",
+        "LATENT"
+      ],
+      "vae": [
+        "ckpt",
+        "VAE"
+      ]
+    }
+  },
+  "save": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "decode",
+        "IMAGE"
+      ],
+      "filename_prefix": "lighthouse"
+    }
+  }
+}

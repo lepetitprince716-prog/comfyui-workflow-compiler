@@ -1,14 +1,14 @@
-<p align="right"><a href="README.zh-CN.md">中文</a></p>
+<p align="right"><a href="README.zh-CN.md">简体中文</a> · <a href="showcase/README.md">Tutorial &amp; Showcase</a></p>
 
-<h1 align="center">comfyui-workflow-compiler</h1>
+<h1 align="center">comfyui-workflow-compiler (<code>cwc</code>)</h1>
 
 <p align="center">
-  <code>cwc</code> turns a ComfyUI API graph, written by a coding agent or by hand, into a canvas
-  a person can read: grouped, laid out, linked with native reroutes, and checked to export the
-  same prompt it was compiled from.
+  Compile a flat ComfyUI API graph—written by a coding agent, exported from ComfyUI, or crafted by hand—into a clean, grouped, human-readable <code>.ui.json</code> canvas with native reroutes and verified prompt equivalence.
 </p>
 
-<p align="center"><code>pip install .</code> then <code>cwc compile graph.json -o out</code></p>
+<p align="center">
+  <strong>Zero external dependencies</strong> · <strong>702 bundled core nodes</strong> · <strong>377 KB single-file <code>cwc.pyz</code></strong> · <strong>5 layout presets</strong>
+</p>
 
 <p align="center">
   <picture>
@@ -17,15 +17,40 @@
   </picture>
 </p>
 
-The left part of the canvas `cwc compile` writes for the nine-node graph in
-[`docs/images/src/hires.json`](docs/images/src/hires.json), a text-to-image graph with a
-high-res pass. It is a screenshot of the ComfyUI frontend with its menus hidden. Whole canvases
-are under [Five presets](#five-presets).
+The screenshot above shows the left half of the canvas `cwc compile` generates for the nine-node high-res pipeline in [`docs/images/src/hires.json`](docs/images/src/hires.json) (captured directly from ComfyUI frontend 1.59.1 with menus hidden). Full-canvas comparisons are shown under [Five presets](#five-presets), and ready-to-drop example canvases live in [`showcase/`](showcase/README.md).
 
-## Try it
+---
 
-Python 3.10 or newer; the core uses nothing outside the standard library.
+## Why `cwc`?
 
+ComfyUI speaks two different JSON dialects:
+1. **The API format (`Save (API Format)`)**: A compact dictionary of `{class_type, inputs}` that scripts and coding agents (Claude Code, Cursor, Gemini, Codex) can author and diff cleanly—but **cannot be dragged onto the ComfyUI canvas** with a readable layout.
+2. **The UI canvas format (`.ui.json`)**: A visual scene graph requiring pixel coordinates, renderer-specific node dimensions, positional `widgets_values` arrays (including hidden pseudo-widgets like `control_after_generate`), integer link tables, and group bounding boxes.
+
+`cwc` bridges the two. You (or your coding agent) write the declarative API graph with optional `_meta` hints; `cwc` validates every socket and widget, infers stage groups, lays out the canvas without collisions across Classic and Vue renderers, routes long wires through native LiteGraph reroutes, and verifies that the compiled canvas exports the exact same API prompt.
+
+---
+
+## Quickstart (3 Ways to Run)
+
+Requires **Python 3.10+**; the core compiler uses **nothing outside the Python standard library**.
+
+### Option 1: Zero-Install Single File (`cwc.pyz`) or Drag-and-Drop Portable Pack
+Download `cwc.pyz` (`~377 KB`) or `cwc-portable.zip` from Releases (or build them locally in one second with `python3 tools/build_pyz.py --portable -o dist`):
+
+- **Windows Drag & Drop**: Unzip `cwc-portable.zip` and drag any ComfyUI API `.json` file onto **`compile-drop-here.bat`**. An `out/` folder appears right next to your file with `<name>.ui.json` (ready to drag into ComfyUI) and `<name>.svg` (vector preview).
+- **Single-File CLI (Windows / macOS / Linux)**:
+  ```bash
+  python3 dist/cwc.pyz compile showcase/03-optional-style-lora.json -o out
+  python3 dist/cwc.pyz render out/03-optional-style-lora.ui.json -o out/preview.svg
+  ```
+
+### Option 2: One-Line Run with `uvx` (No Clone Needed)
+```bash
+uvx --from git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler cwc compile graph.json -o out
+```
+
+### Option 3: Local Clone & `pip install`
 ```bash
 git clone https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
 cd comfyui-workflow-compiler
@@ -42,24 +67,22 @@ wrote out/hires.api.json
 wrote out/hires.report.json
 ```
 
-Drop `out/hires.ui.json` onto the ComfyUI canvas to open it. `hires.api.json` is the prompt
-the canvas exports, with any optional modules bypassed; `hires.report.json` holds the findings
-and measurements of the checks. The first two lines go to stderr: a layout warning (this
-canvas is wide and flat) and the summary.
+Drag `out/hires.ui.json` straight onto the ComfyUI browser canvas to open it. `hires.api.json` is the verified prompt the canvas exports (with any optional modules bypassed), and `hires.report.json` records all layout measurements and check findings.
 
-## For agents
+> **New to `cwc`?** Read the **[3-Minute Step-by-Step Tutorial & Workflow Showcase (`showcase/README.md`)](showcase/README.md)**.
 
-1. `cwc guide` prints the authoring reference: the input format, every `_meta` and `_workflow`
-   key with its effect, and an example with an optional module.
-2. `cwc node TYPE` shows a node's inputs, its widgets with their defaults, the values of each
-   dropdown, and its outputs; `cwc node --search KW` finds a type.
-3. Write the API prompt and run `cwc compile GRAPH.json -o out`. Errors and warnings go to
-   stderr with a hint each; `--json` gives the same list as `finding_list`, next to the
-   `findings` counts.
-4. Fix and compile again until the summary line says `ok`; `cwc render` draws the canvas as an
-   SVG to look at without ComfyUI.
+---
 
-A typo gets a suggestion:
+## Workflow for Coding Agents
+
+Point your coding agent at [`skills/comfyui-workflow-compiler/SKILL.md`](skills/comfyui-workflow-compiler/SKILL.md). The agent loop takes four fast offline commands:
+
+1. `cwc guide` prints the complete one-page authoring specification: input syntax, every `_meta` and `_workflow` key with its effect, and a worked example.
+2. `cwc node TYPE` shows a node's inputs, widgets with defaults, dropdown options, and outputs; `cwc node --search KW` searches across all 702 bundled core node types.
+3. `cwc compile GRAPH.json -o out` validates and compiles the graph. Errors and warnings go to stderr with an actionable hint each; `--json` emits structured `finding_list` and `findings` counts.
+4. Fix any findings and re-compile until the summary line says `ok`; run `cwc render` to inspect the canvas as an SVG without starting ComfyUI.
+
+Misspelled socket or widget names get an immediate suggestion:
 
 ```text
 E2: node 'sampler': KSampler has no input 'sampler_nme'; did you mean 'sampler_name'?
@@ -69,35 +92,32 @@ cwc compile: 1 error(s); see out/steps.report.json
 wrote out/steps.report.json
 ```
 
-What `compile` leaves in the output folder, for a graph file named `<name>.json`:
+### Output Contract & Exit Codes
 
-- Always `<name>.report.json`. A successful run also writes `<name>.ui.json`, `<name>.api.json`
-  and, with `--all-enabled`, `<name>.full.api.json`.
-- Files of that name that an earlier run left and this run does not write are removed, and one
-  stderr line names them: a failed run leaves only its report, so an old canvas is never taken
-  for the new one.
-- A successful run ends with one summary line on stderr: the preset (and why, under `auto`), the
-  number of groups, optional modules and warnings, and the `cwc render` command that previews
-  the canvas.
+For an input file named `<name>.json`, `cwc compile` guarantees:
+- `<name>.report.json` is always written. A successful run also writes `<name>.ui.json`, `<name>.api.json`, and (with `--all-enabled`) `<name>.full.api.json`.
+- Stale artifacts from an earlier run that the current run does not replace are removed automatically and listed on stderr—so a failed compile never leaves an old `.ui.json` behind to be mistaken for a fresh one.
+- A successful run finishes with one summary line on stderr naming the chosen preset (and the matching rule under `auto`), group count, optional module count, warning count, and the `cwc render` preview command.
 
 Every command uses the same exit codes:
 
 | Code | Meaning |
 |---|---|
-| 0 | done |
-| 1 | a check failed and only the report was written; also `cwc node --search` with no match |
-| 2 | bad command line |
-| 3 | the input is unreadable, malformed or fails the authoring checks; also `cwc node TYPE` with an unknown type |
-| 4 | node definitions are unavailable, unreadable or malformed |
-| 5 | an output could not be written; the run's files were removed where possible |
-| 70 | a bug in cwc, reported on one stderr line |
+| 0 | Done |
+| 1 | A verification check failed (only the report was written); also `cwc node --search` with no match |
+| 2 | Command-line usage error |
+| 3 | Input is unreadable, malformed, or fails authoring checks; also `cwc node TYPE` with an unknown type |
+| 4 | Node definitions are unavailable, unreadable, or malformed |
+| 5 | An output file could not be written (partial outputs from the run are cleaned up where possible) |
+| 70 | Internal bug in `cwc`, reported on one stderr line |
 
-## What goes in
+---
 
-An API graph: each node is a `class_type` and its `inputs`, and a link is `[node, output]`.
-Ids can be names, and an input with a declared default may be left out. The `_meta` hints are
-optional; without them `cwc` infers the groups from the graph, as it did for `hires.json`. One
-node from [`docs/images/src/landscape.json`](docs/images/src/landscape.json):
+## Authoring Format: What Goes In
+
+The input is a standard ComfyUI API graph where each entry has a `class_type` and `inputs`, and links are written as `[node_id, output_name_or_index]`. You can use descriptive string IDs (`"sampler"` instead of `"3"`), omit inputs that have declared defaults, and optionally attach `_meta` hints. Without any `_meta` hints, `cwc` infers stage groups automatically from the graph topology.
+
+Here is one node from [`docs/images/src/landscape.json`](docs/images/src/landscape.json):
 
 ```json
 "lora": {
@@ -111,16 +131,15 @@ node from [`docs/images/src/landscape.json`](docs/images/src/landscape.json):
 }
 ```
 
-`ui_optional` puts a node in an optional module that the canvas ships bypassed (the dimmed
-Style LoRA under Optional models in the pictures below). `cwc guide` lists every key.
+Setting `"ui_optional": true` isolates the node in an **Optional models** group that ships bypassed (`mode: 4` in ComfyUI—shown as the dimmed `Style LoRA` box in the preset screenshots below). Run `cwc guide` for the full list of `_meta` and `_workflow` keys.
 
-## The Controls group
+---
 
-The Controls group is the part a user edits on every run. The positive and negative prompts and
-the empty latent (the image size) go into it by themselves. Any other node goes in with
-`"ui_role": "cockpit"` in its `_meta`, and `"ui_role": "pipeline"` keeps a node out. For
-example, to make the step count a control, feed the sampler from a primitive node
-(`cwc node PrimitiveInt` shows its widget, `value`):
+## The `Controls` Cockpit Group
+
+The **Controls** group on the far left holds the parameters a user edits on every run. Positive/negative prompts and `EmptyLatentImage` (canvas dimensions) enter `Controls` automatically.
+
+You can promote any other node into `Controls` with `"ui_role": "cockpit"`, or keep a prompt/latent out of `Controls` with `"ui_role": "pipeline"`. For example, to expose step count as a cockpit knob, feed your sampler from a `PrimitiveInt` node:
 
 ```json
 "steps": {"class_type": "PrimitiveInt", "inputs": {"value": 28},
@@ -128,14 +147,7 @@ example, to make the step count a control, feed the sampler from a primitive nod
 "sampler": {"class_type": "KSampler", "inputs": {"steps": ["steps", 0], ...}}
 ```
 
-On a plain text-to-image graph, the Controls group then holds the two prompts, the empty latent
-and a node titled Steps. Without the `ui_role` line the same node sits in the Sampling group.
-
-The report of a successful compile says which `_meta` keys show in the canvas. Under
-`metrics.authoring_keys`, each key lists in `nodes` the nodes where the compiled canvas matches
-it, and in `no_effect_on` the nodes where the key was set and the canvas does not show it. A key
-that repeats what `cwc` does anyway, such as `"ui_role": "cockpit"` on a prompt, is listed in
-`nodes` too. The report of the graph above has:
+The compile report confirms which `_meta` keys took effect on the canvas under `metrics.authoring_keys` (`nodes` lists where the compiled canvas reflects the key; `no_effect_on` flags where a key was overridden or had no effect):
 
 ```json
 "authoring_keys": [
@@ -144,78 +156,73 @@ that repeats what `cwc` does anyway, such as `"ui_role": "cockpit"` on a prompt,
 ]
 ```
 
-The keys that have no effect yet are not listed there; they are in the E8 finding.
+Keys that are accepted for forward compatibility but not yet rendered on the canvas are reported once per run in the `E8` info finding.
 
-## Five presets
+---
 
-`--preset` picks the arrangement, and `cwc presets` describes each and says when to pick it.
-The same twelve-node graph, `landscape.json`, in each:
+## Five Presets
 
-### bento
+Use `--preset <name>` (or `_workflow.layout.preset`) to pick a layout architecture, or run `cwc presets` to see when to use each. Here is the same twelve-node graph (`landscape.json`) compiled across all five presets:
+
+### `bento`
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/bento-dark.png">
   <img src="docs/images/bento-light.png" width="830" alt="The bento preset">
 </picture>
 
-The default. Controls first, then models and prompts side by side, sampling, post-processing
-and output in one main row; control branches and optional modules in a second row below it.
-The main row wraps onto a new row when it gets wider than 2.4 times its height.
+**The default.** Places `Controls` on the left, followed by models, prompts, sampling, post-processing, and output along one main row, with control branches and optional modules neatly aligned in a second row underneath. When the main row exceeds 2.4× its height, it wraps cleanly onto a new row.
 
-### swimlanes
+### `swimlanes`
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/swimlanes-dark.png">
   <img src="docs/images/swimlanes-light.png" width="830" alt="The swimlanes preset">
 </picture>
 
-Controls first, then every other group in one row of columns in data-flow order, with a
-control branch in the column of the stage it steers.
+Places `Controls` first, then arranges every pipeline stage into strict left-to-right data-flow columns, docking each ControlNet or mask branch directly inside the column of the stage it steers.
 
-### cockpit-split
+### `cockpit-split`
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/cockpit-split-dark.png">
   <img src="docs/images/cockpit-split-light.png" width="830" alt="The cockpit-split preset">
 </picture>
 
-Like swimlanes, but when the Controls group holds more than the core controls (prompts,
-reference image, size, seed), the rest go in a second box under them.
+Like `swimlanes`, except when `Controls` contains both core controls (prompts, reference image, size, seed) and secondary tuning knobs, it splits them into an upper primary cockpit and a lower tuning box.
 
-### tower-preview
+### `tower-preview`
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/tower-preview-dark.png">
   <img src="docs/images/tower-preview-light.png" width="830" alt="The tower-preview preset">
 </picture>
 
-Bento, with a large image preview: when the output group holds a node that shows a preview,
-the group is at least 880 by 680 pixels and the preview fills it.
+Uses the `bento` arrangement with an enlarged right-hand gallery box: whenever the output group holds a preview/save node, the group expands to at least `880 × 680 px` so the generated image fills the right side of the screen.
 
-### stepped
+### `stepped`
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/stepped-dark.png">
   <img src="docs/images/stepped-light.png" width="830" alt="The stepped preset">
 </picture>
 
-Groups titled Step 1, Step 2 and so on, with the models and Controls groups in the first
-column. For a graph meant to be followed in order, like a tutorial.
+Titles stage groups `Step 1`, `Step 2`, `Step 3`, and stacks `Models` and `Controls` in the first column—ideal for teaching workflows and step-by-step tutorials.
 
-### auto
+### `auto`
 
-`--preset auto` takes the first rule that holds, and the summary line and the report say which:
+`--preset auto` evaluates the graph topology and picks the first matching rule (recording both the choice and the reason in the stderr summary and `.report.json`):
 
-| Graph | Preset |
+| Graph topology | Selected preset |
 |---|---|
-| at most 16 nodes and no optional module | `tower-preview` |
-| three or more control or mask branches | `swimlanes` |
+| At most 16 nodes and no optional module | `tower-preview` |
+| Three or more control or mask branches | `swimlanes` |
 | 60 nodes or more | `cockpit-split` |
-| anything else | `bento` |
+| Anything else | `bento` |
 
-Without `--preset`, `cwc` uses the graph's `_workflow.layout.preset`, else `bento`.
+---
 
-## Commands
+## CLI Reference
 
 ```text
 cwc node     [TYPE | --search KW] [--nodedefs FILE|URL] [--json]
@@ -227,20 +234,16 @@ cwc learn    FILE [FILE ...] -o FILE [--nodedefs FILE|URL] [--json]
 cwc render   GRAPH.ui.json -o OUT.svg [--nodedefs FILE|URL] [--json]
 ```
 
-| Command | Does |
+| Command | Description |
 |---|---|
-| `node` | Shows one node definition (inputs, widgets with defaults, the values of each dropdown, outputs), or searches them by name, display name or category. An unknown TYPE exits 3 and names the closest types on stderr; a search with no match exits 1 with nothing on stdout, or `[]` under `--json`. |
-| `compile` | Turns an API graph into a canvas and its API prompt. `--all-enabled` also writes `<name>.full.api.json`, the prompt with every optional module switched on. |
-| `presets` | Lists the presets, what each looks like, when to pick it, and the rules of `auto`. |
-| `guide` | Prints the authoring guide. |
-| `learn` | Learns widget templates from canvases paired with their API prompts. |
-| `render` | Draws a canvas as an SVG, without a browser. |
+| `node` | Inspect one node definition (inputs, widgets with defaults, combo options, outputs), or search by class name, display name, or category. Unknown `TYPE` exits `3` with closest matches; an empty search exits `1` (`[]` under `--json`). |
+| `compile` | Compile an API graph into `<name>.ui.json`, `<name>.api.json`, and `<name>.report.json`. Pass `--all-enabled` to also emit `<name>.full.api.json` with all optional modules switched on. |
+| `presets` | List layout presets, their visual structure, when to choose each, and the `auto` selection rules. |
+| `guide` | Print the one-page authoring reference. |
+| `learn` | Learn widget templates for custom nodes from paired `.ui.json` + `.api.json` exports. |
+| `render` | Render a `.ui.json` canvas to a standalone `.svg` diagram without a browser. |
 
-Node definitions for the core nodes are bundled. For custom nodes, pass `--nodedefs` with an
-`/object_info` export or the URL of a running ComfyUI server. A URL is read at
-`<URL>/api/object_info`, following at most three redirects, only to `http` or `https`, and never
-from `https` to `http`. `cwc` does not judge where the server or a redirect points: a server on
-this machine or the local network is the usual source, so name only a server you trust.
+Definitions for all **702 core ComfyUI nodes** are bundled inside `cwc`. For custom node packs, pass `--nodedefs` with either a saved `/object_info` JSON file or the base URL of a running ComfyUI server (fetched from `<URL>/api/object_info`, following at most 3 `http`/`https` redirects without downgrading `https` to `http`; only point at servers you trust).
 
 <details>
 <summary>Finding codes of the authoring checks</summary>
@@ -316,34 +319,20 @@ usual range finding, in a canvas coordinate it is past the limit above.
 
 </details>
 
-## Status
+---
 
-Pre-alpha. Working now: the whole compile pipeline (normalize, instantiate, annotate, layout,
-route, verify), the five presets, and the six commands above.
+## Architecture & Project Status
 
-Planned, not in `cwc --help` yet: tidying an existing canvas without changing anything but
-geometry, in-canvas notes and an in-canvas guide, PNG embedding and extraction, and live checks
-against a running frontend.
+- **Working today**: The complete compilation pipeline (`normalize` → `instantiate` → `annotate` → `layout` → `route` → `verify`), all five layout presets, single-file `cwc.pyz` / portable zip packaging (`tools/build_pyz.py`), agent skill package (`skills/`), and the [`showcase/`](showcase/README.md) tutorial workflows.
+- **Planned next (M3)**: Lossless geometry tidying of existing canvases (`cwc beautify`), in-canvas Markdown notes (`cwc check`), and PNG workflow embedding/extraction (`cwc embed` / `cwc extract`).
 
-```text
-cwc beautify messy.ui.json [--preset ...] [--regroup] -o out/
-cwc check    x.ui.json [--api x.api.json] [--live URL] [--publish]
-cwc embed    x.ui.json --image cover.png -o x.workflow.png
-cwc extract  image.png -o out/
-cwc snapshot --from URL [--via-frontend] -o nodedefs.json
-```
+Deep-dive engineering docs:
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — Module topology, layout math, and verification rules.
+- [`docs/m0-findings.md`](docs/m0-findings.md) — Empirical measurements from live ComfyUI 0.45.0 / frontend 1.59.1.
+- [`docs/m1-templates.md`](docs/m1-templates.md) — Positional widget templates and pseudo-widget handling.
+- [`docs/m2-frontend-facts.md`](docs/m2-frontend-facts.md) — Exact group membership, node boxes, and reroute geometry in the real frontend.
 
-How it works: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (modules, layout rules, exit
-codes), [`docs/m0-findings.md`](docs/m0-findings.md) (what the real frontend does),
-[`docs/m1-templates.md`](docs/m1-templates.md) (widget templates and their evaluation) and
-[`docs/m2-frontend-facts.md`](docs/m2-frontend-facts.md) (groups, node boxes and links as the
-frontend stores them).
-
-Paths on this page and in `docs/` (`src/`, `tests/`, `tools/`) are relative to the repository
-root, and the commands in them run from there. `python3 -m unittest discover -s tests` runs the
-tests. Playwright is needed only for the real-frontend checks in `tools/oracle/` and for
-[`tools/make_readme_images.py`](tools/make_readme_images.py), which makes the pictures on this
-page from a running ComfyUI server.
+Run the test suite with `python3 -m unittest discover -s tests`. Playwright is only required if you run the live browser oracle in `tools/oracle/` or regenerate README screenshots with [`tools/make_readme_images.py`](tools/make_readme_images.py).
 
 <details>
 <summary>Milestones</summary>
@@ -354,17 +343,13 @@ page from a running ComfyUI server.
 | M1 | Instantiation and equivalence; an API graph becomes a canvas that exports the same prompt (`docs/m1-templates.md`) | done |
 | M2 | The five presets, layout and native link routing checks (`docs/ARCHITECTURE.md`, `docs/m2-frontend-facts.md`) | done |
 | M3 | Reroute routing second round, in-canvas notes and guide, lossless tidy of an existing canvas, embed and extract | planned |
-| M4 | A skill package for coding agents (done, in [`skills/`](skills/comfyui-workflow-compiler/SKILL.md)) and a showcase of workflows (planned) | partly done |
+| M4 | Agent skill package ([`skills/`](skills/comfyui-workflow-compiler/SKILL.md)), standalone `cwc.pyz` packaging (`tools/build_pyz.py`), and [`showcase/`](showcase/README.md) workflows | done |
 | M5 | Optional extensions after the first release | planned |
 
 </details>
 
 ## Licence
 
-Apache License 2.0 ([`LICENSE`](LICENSE)). The files `cwc` writes for you (`.ui.json`,
-`.api.json`, `.svg` and reports today; `.guide.md` and `.png` with an embedded workflow once
-those commands exist) belong to the author of the workflow and are not covered by it: see
-[`LICENSE-OUTPUTS.md`](LICENSE-OUTPUTS.md).
+Apache License 2.0 ([`LICENSE`](LICENSE)). The files `cwc` writes for you (`.ui.json`, `.api.json`, `.svg`, and reports) belong to the author of the workflow and are not covered by it: see [`LICENSE-OUTPUTS.md`](LICENSE-OUTPUTS.md).
 
-No code or copyrighted data from GPL or AGPL projects is copied into this repository. The bundled
-core node snapshot keeps only interoperability facts (names, types, order).
+No code or copyrighted data from GPL or AGPL projects is copied into this repository. The bundled core node snapshot keeps only interoperability facts (names, types, order).
