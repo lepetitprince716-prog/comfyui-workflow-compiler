@@ -18,7 +18,6 @@ import argparse
 import json
 import stat
 import sys
-import tempfile
 import zipapp
 import zipfile
 from pathlib import Path
