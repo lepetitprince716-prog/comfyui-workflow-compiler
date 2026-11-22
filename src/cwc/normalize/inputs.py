@@ -64,7 +64,15 @@ def _split(node: RawNode, out: Findings) -> _Split:
     return split
 
 
-def check_node(node: RawNode, nodedef: NodeDef, intent: NodeIntent, sources: Sources, out: Findings) -> NodeOutput:
+def check_node(
+    node: RawNode,
+    nodedef: NodeDef,
+    intent: NodeIntent,
+    sources: Sources,
+    out: Findings,
+    *,
+    portable: bool = False,
+) -> NodeOutput:
     aid = node.author_id
     split = _split(node, out)
     surf = surface(nodedef, split.literals)
@@ -93,7 +101,7 @@ def check_node(node: RawNode, nodedef: NodeDef, intent: NodeIntent, sources: Sou
                 linked[name] = link
                 result.sources.add(split.links[name].source)
         elif name in split.literals:
-            value = _literal(target, split.literals[name], aid, out)
+            value = _literal(target, split.literals[name], aid, out, portable=portable)
             if value is not INVALID:
                 accepted[name] = value
 
@@ -176,7 +184,7 @@ def _link(target: Target, ref: Any, sources: Sources, aid: str, out: Findings) -
     return [resolved.numeric, resolved.index]
 
 
-def _literal(target: Target, value: Any, aid: str, out: Findings) -> Any:
+def _literal(target: Target, value: Any, aid: str, out: Findings, *, portable: bool = False) -> Any:
     if target.kind is Kind.SOCKET:
         out.error(
             Code.E5,
@@ -194,7 +202,7 @@ def _literal(target: Target, value: Any, aid: str, out: Findings) -> Any:
         return INVALID
     if target.kind is Kind.COMPANION or target.spec is None:
         return copy.deepcopy(value)
-    return copy.deepcopy(check_literal(target.spec, value, aid, out))
+    return copy.deepcopy(check_literal(target.spec, value, aid, out, portable=portable))
 
 
 def _check_omitted(node: RawNode, nodedef: NodeDef, surf: Surface, aid: str, out: Findings, meant: set[str]) -> None:

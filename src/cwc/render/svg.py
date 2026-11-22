@@ -23,11 +23,12 @@ from dataclasses import dataclass
 from typing import Any
 from xml.sax.saxutils import escape
 
-from cwc.canvas.envelope import BoxFacts, Point, Renderer, box_facts, classic_box, slot_anchors, title_text, vue_box
+from cwc.canvas.envelope import BoxFacts, Point, Renderer, box_facts, classic_box, shows_preview, slot_anchors, title_text, vue_box
 from cwc.canvas.geometry import TITLE_HEIGHT, Rect, bounding
 from cwc.canvas.links import Spline
 from cwc.canvas.model import Canvas, Node, NodeMode, id_order
 from cwc.canvas.reroutes import LinkPath, Reroutes, SegmentKey, link_paths
+from cwc.nodedefs.types import Behavior, NodeDef
 from cwc.prompt.slots import DefLookup
 
 FIRST_SCREEN = Rect(0, 0, 1600, 900)
@@ -36,7 +37,11 @@ BACKGROUND = "#222222"  # the frontend's canvas clear colour
 GROUP_COLOR = "#3f789e"  # the frontend's default group colour
 TEXT = "#dddddd"
 MUTED_TEXT = "#aaaaaa"
+VALUE_TEXT = "#f0d98c"
 NODE_FILL = "#353535"
+NOTE_FILL = "#3a3122"
+NOTE_STROKE = "#c8a858"
+NOTE_HEADING = "#f5e3a4"
 CLASSIC_STROKE = "#999999"
 VUE_STROKE = "#66ccff"
 LINK_STROKE = "#99aaaa"
@@ -45,10 +50,13 @@ BYPASS_OPACITY = 0.4
 GROUP_OPACITY = 0.2
 TITLE_SIZE = 14
 WIDGET_SIZE = 12
+NOTE_TEXT_SIZE = 12
+NOTE_LINE_HEIGHT = 18
 SLOT_RADIUS = 3.5
 REROUTE_RADIUS = 4
 DASH = "6 4"
 FONT = "sans-serif"
+_MAX_VALUE_CHARS = 30
 
 _COLOR = re.compile(r"^(#[0-9a-fA-F]{3,8}|[a-zA-Z]{3,20})$")
 # What XML 1.0 refuses in text: C0 controls other than tab, newline and carriage return, lone
@@ -70,12 +78,12 @@ class Rendering:
     reroutes: int  # reroute points drawn
 
 
-def render_svg(canvas: Canvas, defs: DefLookup) -> str:
+def render_svg(canvas: Canvas, defs: DefLookup, *, show_values: bool = False) -> str:
     """The SVG text for ``canvas``; deterministic, standard library only."""
-    return render(canvas, defs).svg
+    return render(canvas, defs, show_values=show_values).svg
 
 
-def render(canvas: Canvas, defs: DefLookup) -> Rendering:
+def render(canvas: Canvas, defs: DefLookup, *, show_values: bool = False) -> Rendering:
     nodes = sorted(canvas.nodes, key=lambda node: id_order(node.key))
     facts = {node.key: box_facts(node, defs.get(node.type)) for node in nodes}
     reroutes = Reroutes.read(canvas)
@@ -109,7 +117,7 @@ def render(canvas: Canvas, defs: DefLookup) -> Rendering:
         ),
         "</g>",
         '<g id="nodes">',
-        *(_node(node, facts[node.key], defs) for node in nodes),
+        *(_node(node, facts[node.key], defs, show_values=show_values) for node in nodes),
         "</g>",
     ]
     view = (box.x, box.y, box.w, box.h)
@@ -171,34 +179,151 @@ def _group(index: int, title: str, rect: Rect, color: Any) -> str:
     )
 
 
-def _node(node: Node, facts: BoxFacts, defs: DefLookup) -> str:
+def _widget_value_map(node: Node, nodedef: NodeDef | None) -> dict[str, Any]:
+    if isinstance(node.widgets_values_named, dict):
+        return dict(node.widgets_values_named)
+    if isinstance(node.widgets_values, list) and nodedef is not None:
+        out: dict[str, Any] = {}
+        for spec, val in zip(nodedef.widgets, node.widgets_values):
+            if spec.name:
+                out[spec.name] = val
+        return out
+    return {}
+
+
+def _fmt_widget_value(val: Any) -> str | None:
+    if val is None or isinstance(val, (dict, list)):
+        return None
+    if isinstance(val, bool):
+        return "true" if val else "false"
+    if isinstance(val, float):
+        text = f"{val:.4f}".rstrip("0").rstrip(".")
+        return "0" if text in ("-0", "") else text
+    text = " ".join(str(val).split())
+    if not text:
+        return None
+    if len(text) > _MAX_VALUE_CHARS:
+        return text[: _MAX_VALUE_CHARS - 1] + "…"
+    return text
+
+
+def _wrap_note_lines(raw_text: str, width: float) -> list[tuple[str, bool]]:
+    max_units = max(20, int((width - 28) / 7.2))
+    out: list[tuple[str, bool]] = []
+    for raw in raw_text.splitlines():
+        s = raw.strip()
+        if not s:
+            out.append(("", False))
+            continue
+        is_head = s.startswith("#")
+        clean = re.sub(r"^#+\s*", "", s).replace("**", "").replace("`", "")
+        cur = ""
+        units = 0
+        for token in re.findall(r"\s+|\S+", clean):
+            tok_u = sum(2 if ord(ch) > 0x2E7F else 1 for ch in token)
+            if cur and units + tok_u > max_units:
+                out.append((cur.rstrip(), is_head))
+                cur = ""
+                units = 0
+                if token.isspace():
+                    continue
+            if tok_u > max_units:
+                for ch in token:
+                    ch_u = 2 if ord(ch) > 0x2E7F else 1
+                    if cur and units + ch_u > max_units:
+                        out.append((cur.rstrip(), is_head))
+                        cur = ""
+                        units = 0
+                    cur += ch
+                    units += ch_u
+            else:
+                cur += token
+                units += tok_u
+        if cur.strip():
+            out.append((cur.rstrip(), is_head))
+    return out
+
+
+def _node(node: Node, facts: BoxFacts, defs: DefLookup, *, show_values: bool = False) -> str:
     x, y = node.pos
     classic, vue = classic_box(node, facts), vue_box(node, facts)
+    nodedef = defs.get(node.type)
+    is_note = nodedef is not None and nodedef.behavior is Behavior.NOTE
     classes = ["node"]
+    if is_note:
+        classes.append("note")
     if node.collapsed:
         classes.append("collapsed")
     dim = node.mode == NodeMode.BYPASS
     if dim:
         classes.append("bypassed")
     opacity = f' opacity="{BYPASS_OPACITY}"' if dim else ""
+    fill = NOTE_FILL if is_note else NODE_FILL
+    stroke = NOTE_STROKE if is_note else CLASSIC_STROKE
     parts = [
         f'<g class="{" ".join(classes)}" id="node-{_attr(node.key)}"{opacity}>',
         f"<title>{_text(f'{node.type} (id {node.key})')}</title>",
-        _rect("classic", classic, f'fill="{NODE_FILL}" fill-opacity="0.85" stroke="{CLASSIC_STROKE}" stroke-width="1.5"'),
+        _rect("classic", classic, f'fill="{fill}" fill-opacity="0.9" stroke="{stroke}" stroke-width="1.5"'),
         _rect("vue", vue, f'fill="none" stroke="{VUE_STROKE}" stroke-width="1.5" stroke-dasharray="{DASH}"'),
         f'<text class="title" x="{_n(x + 10)}" y="{_n(y - 10)}" font-size="{TITLE_SIZE}" fill="{TEXT}">'
-        f"{_text(title_text(node, defs.get(node.type)))}</text>",
+        f"{_text(title_text(node, nodedef))}</text>",
     ]
     inputs, outputs = slot_anchors(node, facts, Renderer.CLASSIC)
     for kind, points in (("in", inputs), ("out", outputs)):
         for point in dict.fromkeys(points):  # a collapsed node anchors every slot at one point
             parts.append(f'<circle class="slot {kind}" cx="{_n(point[0])}" cy="{_n(point[1])}" r="{SLOT_RADIUS}" fill="{SLOT_FILL}"/>')
     if not node.collapsed:
-        for name, offset in facts.classic_widgets.items():
-            parts.append(
-                f'<text class="widget" x="{_n(x + 15)}" y="{_n(y + offset + WIDGET_SIZE / 3)}" '
-                f'font-size="{WIDGET_SIZE}" fill="{MUTED_TEXT}">{_text(name)}</text>'
-            )
+        if is_note:
+            note_text = ""
+            if isinstance(node.widgets_values, list) and node.widgets_values and isinstance(node.widgets_values[0], str):
+                note_text = node.widgets_values[0]
+            elif isinstance(node.widgets_values_named, dict):
+                first = next(iter(node.widgets_values_named.values()), "")
+                note_text = first if isinstance(first, str) else ""
+            cursor_y = y + 20
+            max_y = y + classic.h - TITLE_HEIGHT - 8
+            for line, is_head in _wrap_note_lines(note_text, classic.w):
+                if cursor_y > max_y:
+                    break
+                if line:
+                    weight = ' font-weight="bold"' if is_head else ""
+                    color = NOTE_HEADING if is_head else TEXT
+                    parts.append(
+                        f'<text class="note-line" x="{_n(x + 14)}" y="{_n(cursor_y)}" '
+                        f'font-size="{NOTE_TEXT_SIZE}" fill="{color}"{weight}>{_text(line)}</text>'
+                    )
+                cursor_y += NOTE_LINE_HEIGHT
+        else:
+            val_map = _widget_value_map(node, nodedef) if show_values else {}
+            linked_inputs = {slot.get("name") for slot in node.inputs if slot.get("link") is not None}
+            for name, offset in facts.classic_widgets.items():
+                label = name
+                fill_color = MUTED_TEXT
+                if show_values and name not in linked_inputs and name in val_map:
+                    shown = _fmt_widget_value(val_map[name])
+                    if shown is not None:
+                        label = f"{name}: {shown}"
+                        fill_color = VALUE_TEXT
+                parts.append(
+                    f'<text class="widget" x="{_n(x + 15)}" y="{_n(y + offset + WIDGET_SIZE / 3)}" '
+                    f'font-size="{WIDGET_SIZE}" fill="{fill_color}">{_text(label)}</text>'
+                )
+            preview_h = max(classic.h, vue.h)
+            if show_values and nodedef is not None and shows_preview(nodedef) and preview_h >= 200:
+                vp_top = y + max((facts.classic_widgets.values()), default=20) + 26
+                vp_h = (y + preview_h - TITLE_HEIGHT) - vp_top - 12
+                if vp_h >= 90:
+                    vp_w = classic.w - 28
+                    vp_label = "IMAGE PREVIEW" if nodedef.output_node else "INPUT IMAGE"
+                    parts.append(
+                        f'<rect class="preview-viewport" x="{_n(x + 14)}" y="{_n(vp_top)}" '
+                        f'width="{_n(vp_w)}" height="{_n(vp_h)}" rx="4" '
+                        f'fill="#1b1f26" stroke="#586578" stroke-width="1" stroke-dasharray="5 4"/>'
+                    )
+                    parts.append(
+                        f'<text class="preview-label" x="{_n(x + 14 + vp_w / 2)}" y="{_n(vp_top + vp_h / 2 + 4)}" '
+                        f'text-anchor="middle" font-size="13" fill="#7d8da6">{vp_label}</text>'
+                    )
     parts.append("</g>")
     return "".join(parts)
 

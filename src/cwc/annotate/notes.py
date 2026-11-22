@@ -118,7 +118,7 @@ def make_notes(
         slot = (claim.cockpit or CockpitSlot.OTHER) if cockpit else None
         node = view.nodes[key]
         if compile_mode:
-            collapsed, colour = plumbing, classified.polarity.get(key)
+            collapsed, colour = plumbing or intent.ui_collapsed, classified.polarity.get(key)
         else:
             collapsed, colour = node.collapsed, None
         notes[key] = NodeNote(

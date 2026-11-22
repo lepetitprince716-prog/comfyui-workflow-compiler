@@ -509,13 +509,16 @@ class _Rules:
             return CockpitSlot.POSITIVE if polarity == POSITIVE else CockpitSlot.NEGATIVE
         if LATENT in view.out_types(key):
             return CockpitSlot.SIZE
+        if IMAGE in view.out_types(key) and view.is_source(key):
+            return CockpitSlot.REFERENCE
+        intent = self.intents.get(key)
+        if intent is not None and intent.ui_order is not None:
+            return CockpitSlot.OTHER
         names = {e.input_name.lower() for e in view.outgoing[key]}
         if any(SEED_WORD in name for name in names):
             return CockpitSlot.SEED
         if names & SIZE_WORDS:
             return CockpitSlot.SIZE
-        if IMAGE in view.out_types(key) and view.is_source(key):
-            return CockpitSlot.REFERENCE
         return CockpitSlot.OTHER
 
 

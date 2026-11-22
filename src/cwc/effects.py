@@ -14,7 +14,7 @@ from cwc.canvas.model import Canvas, id_order
 from cwc.normalize.types import Authoring, NodeIntent, Role
 from cwc.report import Code, Finding, Severity
 
-EFFECT_KEYS = ("title", "ui_group", "ui_role", "ui_optional", "ui_seed", "ui_order")
+EFFECT_KEYS = ("title", "ui_group", "ui_role", "ui_optional", "ui_seed", "ui_order", "ui_note")
 
 
 def _group_applies(intent: NodeIntent, canvas_id: str, plan: Annotations, intents: dict[str, NodeIntent]) -> bool:
@@ -58,6 +58,8 @@ def _took_effect(
         return None if intent.ui_order is None else note.cockpit is not None
     if key == "ui_seed":
         return None if intent.ui_seed is None else True
+    if key == "ui_note":
+        return None if intent.ui_note is None else bool(intent.ui_note.strip())
     raise ValueError(key)
 
 

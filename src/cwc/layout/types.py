@@ -73,19 +73,28 @@ class CorridorRule:
 
 @dataclass(frozen=True)
 class CockpitSplit:
-    """The cockpit as two stacked boxes: the ``core`` slots above, every other slot below."""
+    """The cockpit as two boxes: the ``core`` slots first, every other slot second.
+    ``axis`` is ``Y`` (stacked, default) or ``X`` (side by side); ``min_nodes`` requires at
+    least that many cockpit members before splitting."""
 
     core: tuple[CockpitSlot, ...]
+    axis: Axis = Axis.Y
+    min_nodes: int = 1
 
 
 @dataclass(frozen=True)
 class Preview:
-    """A reserved main preview: the slot of ``zone`` (in band 0) takes at least ``share`` of
-    the first screen's width and ``min_height`` px of height."""
+    """A reserved main preview: the slot of ``zone`` (in band 0) — plus any ``extra_zones`` —
+    takes at least ``share`` of the first screen's width and ``min_height`` px of height for
+    groups holding an expanded preview node. When ``dock_steps`` is true and the preset has a
+    lower band, intermediate output groups fed by earlier stages dock in band 1 under the
+    stages that follow their producer while the final output stays at the end of band 0."""
 
     zone: Zone
     share: float
     min_height: int
+    extra_zones: tuple[Zone, ...] = ()
+    dock_steps: bool = False
 
 
 @dataclass(frozen=True)

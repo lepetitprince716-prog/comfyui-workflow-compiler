@@ -52,10 +52,24 @@ def layout(
     if missing:
         raise NotImplementedError(f"layout: preset {preset.name!r} uses {', '.join(missing)}, which layout does not implement yet")
     graph = Graph.of(canvas, annotations.nodes, defs)
-    units = _units(graph, annotations, preset.cockpit_split.core if preset.cockpit_split is not None else None, _fill_of(preset, defs, graph))
+    cockpit_core = None
+    if preset.cockpit_split is not None:
+        cockpit_plan = next((g for g in annotations.groups if g.key == COCKPIT_KEY), None)
+        if cockpit_plan is not None and len(cockpit_plan.members) >= preset.cockpit_split.min_nodes:
+            cockpit_core = preset.cockpit_split.core
+    units = _units(graph, annotations, cockpit_core, _fill_of(preset, defs, graph))
     tops, top_of, cut = _segments(list(annotations.children(None)), units, _top_of(annotations), graph)
     tops = _frames_after_cockpit(_ranked(tops, top_of, GraphView(canvas, defs)))
     cockpit = frozenset(g.key for g in tops if g.zone is Zone.COCKPIT)
+    preview_groups = frozenset(
+        top_of[key]
+        for key, node in graph.nodes.items()
+        if key in top_of
+        and not node.collapsed
+        and (nodedef := defs.get(node.type)) is not None
+        and nodedef.output_node
+        and shows_preview(nodedef)
+    )
     links: dict[tuple[str, str], int] = {}
     for _, origin, target in graph.edges:
         a, b = top_of.get(origin), top_of.get(target)
@@ -63,7 +77,17 @@ def layout(
             links[(a, b)] = links.get((a, b), 0) + 1
     x0 = float(preset.guide_width + GUIDE_GAP) if annotations.reserve_guide else 0.0
     guide = float(GUIDE_HEIGHT) if annotations.reserve_guide else 0.0
-    placed = place(preset, tops, units, links, x0=x0, exempt=cockpit, fits=_fits(canvas, graph, top_of, cockpit), guide=guide)
+    placed = place(
+        preset,
+        tops,
+        units,
+        links,
+        x0=x0,
+        exempt=cockpit,
+        fits=_fits(canvas, graph, top_of, cockpit),
+        guide=guide,
+        preview_groups=preview_groups,
+    )
     return _write(canvas, annotations, preset, placed, x0, cockpit, cut)
 
 
@@ -226,7 +250,8 @@ def _fill_of(preset: Preset, defs: DefLookup, graph: Graph) -> Callable[[Zone], 
     # rounded first: 0.55 * 1600 is 880.0000000000001 in floating point, which would snap to 900
     fill = Fill(snap_up(round(preview.share * SCREEN_W, 6)), preview.min_height, nodes)
     home = preset.home(preview.zone)
-    return lambda zone: fill if preset.home(zone) == home else None
+    allowed = {z for z in Zone if preset.home(z) == home} | set(preview.extra_zones)
+    return lambda zone: fill if zone in allowed else None
 
 
 def _units(

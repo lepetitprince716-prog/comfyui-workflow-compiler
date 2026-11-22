@@ -24,12 +24,12 @@ from __future__ import annotations
 
 from typing import Callable, Mapping
 
-from cwc.annotate.types import GroupPlan
+from cwc.annotate.types import GroupPlan, Zone
 from cwc.canvas.geometry import Rect
 from cwc.layout.inner import Part
 from cwc.layout.items import Item, _downstream, _slot_items
 from cwc.layout.section import Links, Placed, _at_spine, _Done, _finish, _lay, _settle
-from cwc.layout.types import CorridorKind, Preset
+from cwc.layout.types import Axis, CorridorKind, Preset
 
 WRAP_MIN_MOVED = 0.25  # a cut must move at least this share of the section's width
 
@@ -95,7 +95,13 @@ def _assign(sections: list[list[Item]], lower: list[Item], links: Links) -> dict
     return {item: out.get(item, 0) for item in lower}
 
 
-def _slots(preset: Preset, groups: list[GroupPlan], edges: Mapping[str, set[str]], exempt: frozenset[str]) -> dict[str, tuple[int, int]]:
+def _slots(
+    preset: Preset,
+    groups: list[GroupPlan],
+    edges: Mapping[str, set[str]],
+    exempt: frozenset[str],
+    preview_groups: frozenset[str] = frozenset(),
+) -> dict[str, tuple[int, int]]:
     """The ``(band, slot)`` each of ``groups`` is placed in.
 
     A group goes to its zone's slot (``Preset.home``), with one exception. A main-row group
@@ -137,6 +143,32 @@ def _slots(preset: Preset, groups: list[GroupPlan], edges: Mapping[str, set[str]
         latest = max(upstream, default=slot)
         if latest > slot:
             out[g.key] = (0, latest)
+    if preset.preview is not None and preset.preview.dock_steps and len(preset.bands) >= 2:
+        candidates = [
+            g
+            for g in groups
+            if out[g.key][0] == 0
+            and g.key in preview_groups
+            and g.zone is not Zone.COCKPIT
+            and not edges.get(g.key)
+        ]
+        if len(candidates) >= 2:
+            cand_keys = {c.key for c in candidates}
+            stage_of = {
+                g.key: max(
+                    (
+                        p.stage
+                        for p in groups
+                        if out[p.key][0] == 0 and p.key not in cand_keys and g.key in reach[p.key]
+                    ),
+                    default=-1,
+                )
+                for g in candidates
+            }
+            max_stage = max(stage_of.values(), default=-1)
+            for g in candidates:
+                if 0 <= stage_of[g.key] < max_stage:
+                    out[g.key] = (1, 0)
     return out
 
 
@@ -169,6 +201,7 @@ def place(
     exempt: frozenset[str],
     fits: Callable[[Placed], bool],
     guide: float = 0.0,
+    preview_groups: frozenset[str] = frozenset(),
 ) -> Placed:
     """Place the top-level ``groups`` (plan order), each a row of parts (``units``), by
     ``preset``, each in the slot :func:`_slots` gives it. ``links``: link counts between top-level groups. ``x0``: where every section
@@ -179,13 +212,18 @@ def place(
     edges: dict[str, set[str]] = {}
     for a, b in links:
         edges.setdefault(a, set()).add(b)
-    slots = _slots(preset, groups, edges, exempt)
+    slots = _slots(preset, groups, edges, exempt, preview_groups)
     by_slot: dict[tuple[int, int], list[GroupPlan]] = {}
     for group in groups:
         by_slot.setdefault(slots[group.key], []).append(group)
+    tier_axis = preset.cockpit_split.axis if preset.cockpit_split is not None else Axis.Y
     preset_bands: list[list[Item]] = []
     for b, band in enumerate(preset.bands):
-        items = [item for s, slot in enumerate(band.slots) for item in _slot_items(b, s, slot, by_slot.get((b, s), []), units, edges, exempt)]
+        items = [
+            item
+            for s, slot in enumerate(band.slots)
+            for item in _slot_items(b, s, slot, by_slot.get((b, s), []), units, edges, exempt, tier_axis)
+        ]
         if items:
             preset_bands.append(items)
     if not preset_bands:

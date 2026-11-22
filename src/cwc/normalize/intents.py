@@ -58,7 +58,7 @@ def _seed(value: Any) -> SeedMode | None:
 
 
 # Keys parsed and checked, but read by nothing that shapes the canvas or the prompts yet.
-NO_EFFECT_KEYS = ("ui_locked", "ui_expose", "ui_note")
+NO_EFFECT_KEYS = ("ui_locked", "ui_expose")
 
 # key -> (parser returning None on a bad value, expected-value text)
 _KEYS: dict[str, tuple[Callable[[Any], Any], str]] = {
@@ -66,6 +66,7 @@ _KEYS: dict[str, tuple[Callable[[Any], Any], str]] = {
     "ui_group": (_nonempty, "a non-empty group id string"),
     "ui_role": (_role, " | ".join(r.value for r in Role)),
     "ui_optional": (_boolean, "true or false"),
+    "ui_collapsed": (_boolean, "true or false"),
     "ui_locked": (_locked, "true or a list of widget names"),
     "ui_note": (_string, "a string"),
     "ui_order": (_integer, "an integer"),

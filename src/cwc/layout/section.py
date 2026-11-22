@@ -349,8 +349,16 @@ def _lay(done: _Done, row: list[Item], mine: list[list[Item]], links: Links, exe
     want = _docks(row, wiring, x0, floor)
     first = len(bands)
     rows = list(done.band_rows)
+    spine_idx = next((idx for idx in range(len(row) - 1) if _at_spine(row[idx], row[idx + 1], done.spine)), None)
+    spine_right = row[spine_idx + 1].x if spine_idx is not None else None
     for b, members in enumerate([row] + _pack([band for band in mine if band], row, wiring, want)):
-        top = float(snap_up(bands[-1].bottom + BAND_GAP)) if bands else 0.0
+        if b == 1 and spine_idx is not None and spine_right is not None and min(m.x for m in members) >= spine_right:
+            band_left = min(m.x for m in members)
+            above_span = [item for item in row[spine_idx + 1 :] if item.x + item.w > band_left]
+            pipe_bottom = max((item.y + item.h for item in above_span), default=bands[-1].bottom)
+            top = float(snap_up(pipe_bottom + BAND_GAP))
+        else:
+            top = float(snap_up(bands[-1].bottom + BAND_GAP)) if bands else 0.0
         top += 0 if b else sky
         for item in members:
             item.y = top + (item.y if b else 0.0)
@@ -379,9 +387,16 @@ def _finish(done: _Done) -> Placed:
     band_of = [b for b, members in enumerate(done.band_rows) for _ in members]
     gaps = []
     tops = {sky.bottom: sky.y for sky in done.skybridges}  # a gap ends where a skybridge starts
-    for above, below in zip(done.bands, done.bands[1:]):
-        left, right = min(above.x, below.x), max(above.right, below.right)
-        gaps.append(Rect(left, above.bottom, right - left, tops.get(below.y, below.y) - above.bottom))
+    for above, below, above_row in zip(done.bands, done.bands[1:], done.band_rows):
+        if below.y < above.bottom:
+            overlap = [item for item in above_row if item.x + item.w > below.x]
+            gap_top = max((item.y + item.h for item in overlap), default=above.bottom)
+            left = min([below.x, *(item.x for item in overlap)])
+            right = max(above.right, below.right)
+            gaps.append(Rect(left, gap_top, right - left, tops.get(below.y, below.y) - gap_top))
+        else:
+            left, right = min(above.x, below.x), max(above.right, below.right)
+            gaps.append(Rect(left, above.bottom, right - left, tops.get(below.y, below.y) - above.bottom))
     return Placed(
         parts=parts,
         bands=done.bands,

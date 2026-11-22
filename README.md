@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <strong>Zero external dependencies</strong> · <strong>702 bundled core nodes</strong> · <strong>377 KB single-file <code>cwc.pyz</code></strong> · <strong>5 layout presets</strong>
+  <strong>Zero external dependencies</strong> · <strong>702 bundled core nodes</strong> · <strong>Single-file <code>cwc.pyz</code></strong> · <strong>6 layout presets</strong> · <strong>In-canvas Quick Guide</strong>
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
   </picture>
 </p>
 
-The screenshot above shows the left half of the canvas `cwc compile` generates for the nine-node high-res pipeline in [`docs/images/src/hires.json`](docs/images/src/hires.json) (captured directly from ComfyUI frontend 1.59.1 with menus hidden). Full-canvas comparisons are shown under [Five presets](#five-presets), and ready-to-drop example canvases live in [`showcase/`](showcase/README.md).
+The screenshot above shows the left half of the canvas `cwc compile` generates for the nine-node high-res pipeline in [`docs/images/src/hires.json`](docs/images/src/hires.json) (captured directly from ComfyUI frontend 1.59.1 with menus hidden). Full-canvas comparisons are shown under [Six presets](#six-presets), and ready-to-drop example canvases live in [`showcase/`](showcase/README.md).
 
 ---
 
@@ -160,9 +160,9 @@ Keys that are accepted for forward compatibility but not yet rendered on the can
 
 ---
 
-## Five Presets
+## Six Presets
 
-Use `--preset <name>` (or `_workflow.layout.preset`) to pick a layout architecture, or run `cwc presets` to see when to use each. Here is the same twelve-node graph (`landscape.json`) compiled across all five presets:
+Use `--preset <name>` (or `_workflow.layout.preset`) to pick a layout architecture, or run `cwc presets` to see when to use each. Here is the same twelve-node graph (`landscape.json`) compiled across the five classic presets, plus the new **`gallery`** preset for multi-step workflows:
 
 ### `bento`
 
@@ -209,6 +209,13 @@ Uses the `bento` arrangement with an enlarged right-hand gallery box: whenever t
 
 Titles stage groups `Step 1`, `Step 2`, `Step 3`, and stacks `Models` and `Controls` in the first column—ideal for teaching workflows and step-by-step tutorials.
 
+### `gallery`
+
+Designed for **multi-step pipelines with intermediate step previews or optional A/B comparisons**:
+- Keeps `Controls` anchored on the top-left (automatically splitting tall 5+ control cockpits into two side-by-side columns) separated from the main pipeline rail by an 80 px vertical spine, with the final output preview flush on the top-right.
+- Automatically docks intermediate dead-end preview groups (such as Stage 1 layout previews or ROI crop checks) and optional comparison branches tightly underneath the pipeline rail (`dock_steps` + spine-aware lower-band tucking) instead of wasting vertical dead space below a tall control sidebar.
+- Enlarges preview viewports uniformly across output, optional, and intermediate preview groups (`>= 560 × 540 px`). Combine with `_meta.ui_collapsed: true` to fold zero-widget plumbing nodes (`VAEDecode`, `BasicGuider`, `DisableNoise`) inside named stages for compact, studio-grade panels.
+
 ### `auto`
 
 `--preset auto` evaluates the graph topology and picks the first matching rule (recording both the choice and the reason in the stderr summary and `.report.json`):
@@ -227,21 +234,21 @@ Titles stage groups `Step 1`, `Step 2`, `Step 3`, and stacks `Models` and `Contr
 ```text
 cwc node     [TYPE | --search KW] [--nodedefs FILE|URL] [--json]
 cwc compile  GRAPH.json -o DIR [--nodedefs FILE|URL] [--preset NAME]
-             [--all-enabled] [--allow-unknown] [--json]
+             [--all-enabled] [--portable] [--allow-unknown] [--json]
 cwc presets  [--json]
 cwc guide
 cwc learn    FILE [FILE ...] -o FILE [--nodedefs FILE|URL] [--json]
-cwc render   GRAPH.ui.json -o OUT.svg [--nodedefs FILE|URL] [--json]
+cwc render   GRAPH.ui.json -o OUT.svg [--nodedefs FILE|URL] [--values] [--json]
 ```
 
 | Command | Description |
 |---|---|
 | `node` | Inspect one node definition (inputs, widgets with defaults, combo options, outputs), or search by class name, display name, or category. Unknown `TYPE` exits `3` with closest matches; an empty search exits `1` (`[]` under `--json`). |
-| `compile` | Compile an API graph into `<name>.ui.json`, `<name>.api.json`, and `<name>.report.json`. Pass `--all-enabled` to also emit `<name>.full.api.json` with all optional modules switched on. |
-| `presets` | List layout presets, their visual structure, when to choose each, and the `auto` selection rules. |
+| `compile` | Compile an API graph into `<name>.ui.json`, `<name>.api.json`, and `<name>.report.json`. Pass `--all-enabled` to also emit `<name>.full.api.json` with all optional modules switched on, and `--portable` to suppress machine-local file-picker combo warnings (checkpoints, LoRAs, VAEs, images) when compiling shareable workflows against a live `/object_info` while keeping enum and range checks strict. |
+| `presets` | List all six layout presets, their visual structure, when to choose each, and the `auto` selection rules. |
 | `guide` | Print the one-page authoring reference. |
 | `learn` | Learn widget templates for custom nodes from paired `.ui.json` + `.api.json` exports. |
-| `render` | Render a `.ui.json` canvas to a standalone `.svg` diagram without a browser. |
+| `render` | Render a `.ui.json` canvas to a standalone `.svg` diagram without a browser. Pass `--values` to display inline widget parameter values, formatted Quick Guide cards, and dashed `IMAGE PREVIEW` / `INPUT IMAGE` viewports. |
 
 Definitions for all **702 core ComfyUI nodes** are bundled inside `cwc`. For custom node packs, pass `--nodedefs` with either a saved `/object_info` JSON file or the base URL of a running ComfyUI server (fetched from `<URL>/api/object_info`, following at most 3 `http`/`https` redirects without downgrading `https` to `http`; only point at servers you trust).
 
@@ -267,11 +274,11 @@ node overrides is an E7 warning that names both keys and says what to remove; th
 `ok` do not change. `ui_role: cockpit` beats `ui_group`, `ui_group` beats `ui_role: plumbing`,
 and `ui_optional` beats `ui_role` `cockpit` and `plumbing`.
 
-A key `cwc` accepts but does not use yet (`ui_locked`, `ui_expose`, `ui_note`,
-`_workflow.title`, `_workflow.locale`, `_workflow.groups.<id>.note`) is named in one info
+A key `cwc` accepts but does not use yet (`ui_locked`, `ui_expose`, `_workflow.locale`) is named in one info
 finding, E8, per compile: one stderr line that lists the keys and the nodes that set them, and,
 in the report of a successful compile, the keys one by one in `data.keys`. The exit code and
-`ok` do not change.
+`ok` do not change. (`_workflow.title`, `_workflow.groups.<id>.note`, and `_meta.ui_note` now
+render into the in-canvas `MarkdownNote` Quick Guide card placed in the reserved top-left guide lane.)
 
 </details>
 
@@ -323,8 +330,8 @@ usual range finding, in a canvas coordinate it is past the limit above.
 
 ## Architecture & Project Status
 
-- **Working today**: The complete compilation pipeline (`normalize` → `instantiate` → `annotate` → `layout` → `route` → `verify`), all five layout presets, single-file `cwc.pyz` / portable zip packaging (`tools/build_pyz.py`), agent skill package (`skills/`), and the [`showcase/`](showcase/README.md) tutorial workflows.
-- **Planned next (M3)**: Lossless geometry tidying of existing canvases (`cwc beautify`), in-canvas Markdown notes (`cwc check`), and PNG workflow embedding/extraction (`cwc embed` / `cwc extract`).
+- **Working today**: The complete compilation pipeline (`normalize` → `instantiate` → `annotate` → `layout` → `route` → `notes` → `verify`), all six layout presets (including `gallery` for multi-step previews & comparisons), in-canvas `MarkdownNote` Quick Guide cards (`C5`/`G8` verified), `--portable` compilation, `_meta.ui_collapsed` per-node plumbing folding, `render --values` visual inspection, single-file `cwc.pyz` / portable zip packaging (`tools/build_pyz.py`), agent skill package (`skills/`), and the [`showcase/`](showcase/README.md) tutorial workflows.
+- **Planned next (M3)**: Lossless geometry tidying of existing canvases (`cwc beautify`), second-round corridor widening, and PNG workflow embedding/extraction (`cwc embed` / `cwc extract`).
 
 Deep-dive engineering docs:
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — Module topology, layout math, and verification rules.
@@ -341,8 +348,8 @@ Run the test suite with `python3 -m unittest discover -s tests`. Playwright is o
 |---|---|---|
 | M0 | Real-frontend oracle; measures the constants the layout depends on (`tools/oracle/`, `docs/m0-findings.md`) | done |
 | M1 | Instantiation and equivalence; an API graph becomes a canvas that exports the same prompt (`docs/m1-templates.md`) | done |
-| M2 | The five presets, layout and native link routing checks (`docs/ARCHITECTURE.md`, `docs/m2-frontend-facts.md`) | done |
-| M3 | Reroute routing second round, in-canvas notes and guide, lossless tidy of an existing canvas, embed and extract | planned |
+| M2 | The layout presets (`bento`, `swimlanes`, `cockpit-split`, `tower-preview`, `stepped`, `gallery`), dual-renderer layout and native link routing checks (`docs/ARCHITECTURE.md`, `docs/m2-frontend-facts.md`) | done |
+| M3 | In-canvas `MarkdownNote` Quick Guide (`notes`, done); reroute second round, lossless tidy (`beautify`), PNG embed and extract | in progress |
 | M4 | Agent skill package ([`skills/`](skills/comfyui-workflow-compiler/SKILL.md)), standalone `cwc.pyz` packaging (`tools/build_pyz.py`), and [`showcase/`](showcase/README.md) workflows | done |
 | M5 | Optional extensions after the first release | planned |
 

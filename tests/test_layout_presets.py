@@ -16,8 +16,8 @@ def band0(name):
 
 
 class BundledPresetsTest(unittest.TestCase):
-    def test_all_five_load(self):
-        self.assertEqual(set(load_presets()), {"bento", "swimlanes", "cockpit-split", "tower-preview", "stepped"})
+    def test_all_six_load(self):
+        self.assertEqual(set(load_presets()), {"bento", "swimlanes", "cockpit-split", "tower-preview", "stepped", "gallery"})
         self.assertEqual(DEFAULT, "bento")
 
     def test_every_zone_has_one_home(self):
@@ -74,6 +74,19 @@ class BundledPresetsTest(unittest.TestCase):
         preset = get_preset("stepped")
         self.assertEqual((preset.home(Z.CONTROL), preset.home(Z.OPTIONAL)), ((1, 0), (1, 0)))
         self.assertEqual((preset.numbering, preset.palette, preset.guide_width), (Numbering.STEP, "official", 480))
+
+    def test_gallery(self):
+        preset = get_preset("gallery")
+        self.assertEqual(
+            band0("gallery"),
+            [(Z.COCKPIT,), (Z.MODEL, Z.PROMPT), (Z.SAMPLING, Z.STAGE), (Z.POSTPROCESS,), (Z.OUTPUT,)],
+        )
+        self.assertEqual([(c.kind, c.after_slot) for c in preset.corridors], [(CorridorKind.BUS, None), (CorridorKind.SPINE, 0)])
+        self.assertIsNotNone(preset.preview)
+        self.assertTrue(preset.preview.dock_steps)
+        self.assertIn(Z.OPTIONAL, preset.preview.extra_zones)
+        self.assertIsNotNone(preset.cockpit_split)
+        self.assertEqual((preset.cockpit_split.axis, preset.cockpit_split.min_nodes), (Axis.X, 5))
 
 
 class RejectedPresetsTest(unittest.TestCase):

@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <strong>零第三方依赖</strong> · <strong>内置 702 个核心节点定义</strong> · <strong>377 KB 免安装单文件 <code>cwc.pyz</code></strong> · <strong>5 套专业布局预设</strong>
+  <strong>零第三方依赖</strong> · <strong>内置 702 个核心节点定义</strong> · <strong>免安装单文件 <code>cwc.pyz</code></strong> · <strong>6 套专业布局预设</strong> · <strong>画布内嵌使用指南卡</strong>
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
   </picture>
 </p>
 
-上图是 `cwc compile` 将 9 节点高清放大工作流 [`docs/images/src/hires.json`](docs/images/src/hires.json) 编译为 `.ui.json` 后，直接拖入真实 ComfyUI 前端（1.59.1，仅隐藏顶部菜单栏）截取的左半侧画布。完整全画布效果见下方[五套布局预设](#五套布局预设)，开箱即用的示例画布见 [`showcase/`](showcase/README.zh-CN.md)。
+上图是 `cwc compile` 将 9 节点高清放大工作流 [`docs/images/src/hires.json`](docs/images/src/hires.json) 编译为 `.ui.json` 后，直接拖入真实 ComfyUI 前端（1.59.1，仅隐藏顶部菜单栏）截取的左半侧画布。完整全画布效果见下方[六套布局预设](#六套布局预设)，开箱即用的示例画布见 [`showcase/`](showcase/README.zh-CN.md)。
 
 ---
 
@@ -160,9 +160,9 @@ wrote out/steps.report.json
 
 ---
 
-## 五套布局预设
+## 六套布局预设
 
-通过 `--preset <名称>`（或 JSON 顶层的 `_workflow.layout.preset`）即可切换排版架构；运行 `cwc presets` 可查看每种预设的适用场景。下面是同一个 12 节点工作流 `landscape.json` 在五套预设下的实机编译效果：
+通过 `--preset <名称>`（或 JSON 顶层的 `_workflow.layout.preset`）即可切换排版架构；运行 `cwc presets` 可查看每种预设的适用场景。下面是同一个 12 节点工作流 `landscape.json` 在五套经典预设下的实机编译效果，以及新增的 **`gallery`** 多步预览与对比预设：
 
 ### `bento`（默认便当盒网格）
 
@@ -209,6 +209,13 @@ wrote out/steps.report.json
 
 将第一列固定为上下堆叠的 `Models` 与 `Controls`，后续处理阶段依次命名为 `Step 1`、`Step 2`、`Step 3`，专为教学文章与分步演示工作流打造。
 
+### `gallery`（多步预览与对照画廊）
+
+专为**带中间步骤预览或可选 A/B 对比分支的多阶段工作流**打造：
+- 左侧固定 `Controls` 驾驶舱（超过 5 个控件时自动拆为紧凑的左右双列，不再把整张画布拉出纵向大空洞），经 80 px 竖向中轴通道与右侧主干流水线齐平展开，最终成品预览紧贴右上角。
+- 自动识别并把中间阶段的预览组（如一阶段构图预览、ROI 裁剪框预览）及可选对照模块紧贴停靠在对应主干步骤正下方（`dock_steps` + 中轴右侧紧凑吸顶），彻底消除传统排版中主干下方的大片死空间。
+- 统一放大输出、中间预览与可选对照区的预览窗口（至少 `560 × 540` 像素）；配合节点级 `_meta.ui_collapsed: true`，可在保留阶段分组的前提下折叠纯连线节点（如 `VAEDecode`、`BasicGuider`、`DisableNoise`），让整张画布紧凑且条理清晰。
+
 ### `auto`（根据图规模自动选型）
 
 传入 `--preset auto` 时，`cwc` 按顺序匹配第一条成立的规则（并在摘要行和报告中写明命中原因）：
@@ -227,21 +234,21 @@ wrote out/steps.report.json
 ```text
 cwc node     [TYPE | --search KW] [--nodedefs FILE|URL] [--json]
 cwc compile  GRAPH.json -o DIR [--nodedefs FILE|URL] [--preset NAME]
-             [--all-enabled] [--allow-unknown] [--json]
+             [--all-enabled] [--portable] [--allow-unknown] [--json]
 cwc presets  [--json]
 cwc guide
 cwc learn    FILE [FILE ...] -o FILE [--nodedefs FILE|URL] [--json]
-cwc render   GRAPH.ui.json -o OUT.svg [--nodedefs FILE|URL] [--json]
+cwc render   GRAPH.ui.json -o OUT.svg [--nodedefs FILE|URL] [--values] [--json]
 ```
 
 | 命令 | 功能说明 |
 |---|---|
 | `node` | 查看单个节点定义（输入、控件与默认值、下拉框可选枚举、输出），或按类名/显示名/分类搜索。未知 `TYPE` 退出码为 `3` 并在 stderr 提示最接近的类型；搜索无结果退出码为 `1`（`--json` 下输出 `[]`）。 |
-| `compile` | 将 API 图编译为 `<name>.ui.json` 画布与 `<name>.api.json`。加 `--all-enabled` 会额外写出所有可选模块开启时的 `<name>.full.api.json`。 |
-| `presets` | 列出五套预设的结构特点、适用场景以及 `auto` 的选型规则。 |
+| `compile` | 将 API 图编译为 `<name>.ui.json` 画布与 `<name>.api.json`。加 `--all-enabled` 会额外写出所有可选模块开启时的 `<name>.full.api.json`；加 `--portable` 可在编译公开/可移植工作流时跳过本机模型文件名下拉框的缺失警告，同时保留枚举值与数值范围的严格校验。 |
+| `presets` | 列出六套预设的结构特点、适用场景以及 `auto` 的选型规则。 |
 | `guide` | 打印单页编写指南。 |
 | `learn` | 从成对的 `.ui.json` 画布与 API prompt 中自动学习自定义节点的控件排列模板。 |
-| `render` | 无需启动浏览器或 ComfyUI，直接把 `.ui.json` 画布渲染成 `.svg` 矢量图。 |
+| `render` | 无需启动浏览器或 ComfyUI，直接把 `.ui.json` 画布渲染成 `.svg` 矢量图；加 `--values` 可在节点内直出关键参数值、导览说明卡排版与 `IMAGE PREVIEW` / `INPUT IMAGE` 预览框占位。 |
 
 ComfyUI 的 **702 个核心节点定义**已直接打包在 `cwc` 内部。若工作流包含第三方自定义节点（Custom Nodes），只需用 `--nodedefs` 传入导出的 `/object_info` JSON 文件，或正在运行的 ComfyUI 服务器地址（自动读取 `<URL>/api/object_info`，最多跟随 3 次 `http`/`https` 重定向且绝不从 `https` 降级到 `http`；请仅填入你信任的服务器地址）。
 
@@ -263,7 +270,7 @@ ComfyUI 的 **702 个核心节点定义**已直接打包在 `cwc` 内部。若�
 
 E7 也涵盖 `cwc` 不认识的 `_meta` 键：以 `ui_` 开头的是错误并提示最接近的键；其他的是警告。同一个节点上一个 `_meta` 键被另一个键覆盖时，会给出一条 E7 警告，点出两个键并提示该删哪个（退出码和 `ok` 不变）。优先级顺序：`ui_role: cockpit` 高于 `ui_group`，`ui_group` 高于 `ui_role: plumbing`，`ui_optional` 高于 `ui_role` 的 `cockpit` 和 `plumbing`。
 
-`cwc` 已接受但当前暂不渲染的预留键（`ui_locked`、`ui_expose`、`ui_note`、`_workflow.title`、`_workflow.locale`、`_workflow.groups.<id>.note`）每次编译汇总为一条 `E8` info 结论（退出码和 `ok` 不变）。
+`cwc` 已接受但当前暂不渲染的预留键（`ui_locked`、`ui_expose`、`_workflow.locale`）每次编译汇总为一条 `E8` info 结论（退出码和 `ok` 不变）。（`_workflow.title`、`_workflow.groups.<id>.note` 与 `_meta.ui_note` 现已直接渲染为画布左上角首屏的 `MarkdownNote` 快速使用指南卡。）
 
 </details>
 
@@ -305,8 +312,8 @@ E7 也涵盖 `cwc` 不认识的 `_meta` 键：以 `ui_` 开头的是错误并提
 
 ## 架构文档与项目状态
 
-- **当前已就绪**：完整编译管线（`normalize` → `instantiate` → `annotate` → `layout` → `route` → `verify`）、五套布局预设、六个核心命令、单文件免安装包构建器（`tools/build_pyz.py`）、Agent 技能包（[`skills/`](skills/comfyui-workflow-compiler/SKILL.md)）以及 [`showcase/`](showcase/README.zh-CN.md) 教程样板间。
-- **下一阶段计划（M3）**：保持拓扑不变的无损画布整理（`cwc beautify`）、画布内嵌注释与导览卡、以及 PNG 工作流元数据嵌入与提取（`cwc embed` / `cwc extract`）。
+- **当前已就绪**：完整编译管线（`normalize` → `instantiate` → `annotate` → `layout` → `route` → `notes` → `verify`）、六套布局预设（含多步预览与对比专用 `gallery`）、画布内嵌 `MarkdownNote` 使用指南卡（通过 `C5`/`G8` 校验）、`--portable` 可移植编译、`_meta.ui_collapsed` 组内管道节点折叠、`render --values` 参数与预览框可视化、六个核心命令、单文件免安装包构建器（`tools/build_pyz.py`）、Agent 技能包（[`skills/`](skills/comfyui-workflow-compiler/SKILL.md)）以及 [`showcase/`](showcase/README.zh-CN.md) 教程样板间。
+- **下一阶段计划（M3）**：保持拓扑不变的无损画布整理（`cwc beautify`）、二阶段通道加宽路由、以及 PNG 工作流元数据嵌入与提取（`cwc embed` / `cwc extract`）。
 
 深度工程与前端实测文档（英文）：
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — 模块边界、排版算法与校验规则。
@@ -323,8 +330,8 @@ E7 也涵盖 `cwc` 不认识的 `_meta` 键：以 `ui_` 开头的是错误并提
 |---|---|---|
 | M0 | 真实前端浏览器校验台；测量布局算法依赖的底层常数（`tools/oracle/`、`docs/m0-findings.md`） | 已完成 |
 | M1 | 节点实例化与等价性证明；将 API 图编译为导出相同 Prompt 的画布（`docs/m1-templates.md`） | 已完成 |
-| M2 | 五套布局预设、双渲染器排版与原生连线路由检查（`docs/ARCHITECTURE.md`、`docs/m2-frontend-facts.md`） | 已完成 |
-| M3 | 二阶段拐点走线优化、画布内嵌导览说明、已有画布无损整理（`beautify`）、PNG 嵌入与提取 | 计划中 |
+| M2 | 六套布局预设（含 `gallery`）、双渲染器排版与原生连线路由检查（`docs/ARCHITECTURE.md`、`docs/m2-frontend-facts.md`） | 已完成 |
+| M3 | 画布内嵌 `MarkdownNote` 导览指南卡（已完成）；二阶段拐点走线优化、已有画布无损整理（`beautify`）、PNG 嵌入与提取 | 进行中 |
 | M4 | 编程 Agent 技能包（[`skills/`](skills/comfyui-workflow-compiler/SKILL.md)）、`cwc.pyz` 免安装懒人打包（`tools/build_pyz.py`）与 [`showcase/`](showcase/README.zh-CN.md) 样板间 | 已完成 |
 | M5 | 首个正式版之后的可选扩展 | 计划中 |
 

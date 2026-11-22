@@ -23,6 +23,7 @@ from cwc.layout.types import LayoutResult
 from cwc.nodedefs.registry import NodeDefs
 from cwc.normalize import normalize
 from cwc.normalize.types import Authoring
+from cwc.notes import place_guide
 from cwc.report import Code, CwcError, ExitCode, Finding, Mode, Report, Severity
 from cwc.route import RouteResult, route
 from cwc.verify import verify_compile
@@ -86,6 +87,15 @@ def preset_guide() -> dict[str, tuple[str, str]]:
             "branches and optional modules in a second row.",
             "a graph meant to be followed in order, like a tutorial",
         ),
+        "gallery": (
+            f"Controls stays paired with the top pipeline row (separated by {BAND_GAP} px; tall "
+            "cockpits of 5+ controls split side by side) with the final output flush on the right; "
+            "intermediate step previews, control branches and optional comparisons dock below the "
+            f"stages that feed them with enlarged preview viewports (at least "
+            f"{snap_up(round(presets['gallery'].preview.share * SCREEN_W, 6))} px wide and "
+            f"{presets['gallery'].preview.min_height} px high).",
+            "multi-step workflows with intermediate step previews or side-by-side comparisons",
+        ),
         AUTO: (
             f"Picks a preset from the graph's counts, the first rule that holds: at most {AUTO_SMALL_NODES} "
             f"nodes and no optional module: tower-preview; {AUTO_PARALLEL_BRANCHES} or more control or mask "
@@ -113,7 +123,12 @@ class Compiled:
 
 
 def compile_document(
-    doc: dict[str, Any], defs: NodeDefs, *, allow_unknown: bool = False, preset: str | None = None
+    doc: dict[str, Any],
+    defs: NodeDefs,
+    *,
+    allow_unknown: bool = False,
+    preset: str | None = None,
+    portable: bool = False,
 ) -> Compiled:
     """Compile a parsed authoring document.
 
@@ -125,7 +140,7 @@ def compile_document(
     and geometry failures do not raise: they are errors in the returned report, and
     ``report.ok`` is false.
     """
-    authoring, warnings = normalize(doc, defs, allow_unknown=allow_unknown)
+    authoring, warnings = normalize(doc, defs, allow_unknown=allow_unknown, portable=portable)
     name = _choose(preset, authoring.workflow.preset)
     canvas = instantiate(authoring)
     plan = annotate(canvas, defs, authoring)
@@ -143,6 +158,7 @@ def compile_document(
                 f"({auto.rule}; {_counts_text(plan.counts)}), and {exc}"
             )
         raise CwcError(ExitCode.INPUT_ERROR, [_preset_error(message)]) from None
+    _, laid = place_guide(canvas, authoring, plan, laid, chosen, defs)
     routes = route(canvas, laid, defs)
     report = verify_compile(canvas, authoring, defs)
     geometry = check_geometry(

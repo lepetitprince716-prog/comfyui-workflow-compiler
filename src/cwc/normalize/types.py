@@ -36,6 +36,7 @@ class NodeIntent:
     ui_group: str | None = None
     ui_role: Role | None = None
     ui_optional: bool = False
+    ui_collapsed: bool = False
     ui_locked: tuple[str, ...] = ()  # widget names; ("*",) when the author wrote true
     ui_note: str | None = None
     ui_order: int | None = None

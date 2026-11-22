@@ -188,26 +188,39 @@ def _corridor(entry: Any, bands: tuple[Band, ...], where: str) -> CorridorRule:
 def _cockpit_split(entry: Any, where: str) -> CockpitSplit | None:
     if entry is None:
         return None
-    _object(entry, {"core"}, set(), f"{where} cockpit_split")
+    _object(entry, {"core"}, {"axis", "min_nodes"}, f"{where} cockpit_split")
     core = tuple(_enum(CockpitSlot, c, f"{where} cockpit_split core") for c in _list(entry["core"], f"{where} cockpit_split core"))
     if not core or len(set(core)) != len(core):
         raise ValueError(f"{where}: cockpit_split core must be non-empty without repeats")
-    return CockpitSplit(core)
+    axis = _enum(Axis, entry.get("axis", Axis.Y.value), f"{where} cockpit_split axis")
+    min_nodes = entry.get("min_nodes", 1)
+    if not isinstance(min_nodes, int) or isinstance(min_nodes, bool) or min_nodes < 1:
+        raise ValueError(f"{where}: cockpit_split min_nodes must be a positive integer")
+    return CockpitSplit(core, axis, min_nodes)
 
 
 def _preview(entry: Any, bands: tuple[Band, ...], where: str) -> Preview | None:
     if entry is None:
         return None
-    _object(entry, {"zone", "share", "min_height"}, set(), f"{where} preview")
+    _object(entry, {"zone", "share", "min_height"}, {"extra_zones", "dock_steps"}, f"{where} preview")
     zone = _enum(Zone, entry["zone"], f"{where} preview zone")
     if zone not in _band0_zones(bands):
         raise ValueError(f"{where}: preview zone must sit in band 0")
+    extra_raw = entry.get("extra_zones", [])
+    extra = tuple(_enum(Zone, z, f"{where} preview extra_zones") for z in _list(extra_raw, f"{where} preview extra_zones"))
+    if len(set(extra)) != len(extra):
+        raise ValueError(f"{where}: preview extra_zones must not contain repeats")
+    dock_steps = entry.get("dock_steps", False)
+    if not isinstance(dock_steps, bool):
+        raise ValueError(f"{where}: preview dock_steps must be true or false")
+    if dock_steps and len(bands) < 2:
+        raise ValueError(f"{where}: preview dock_steps needs at least two bands")
     share, height = entry["share"], entry["min_height"]
     if not _number(share) or not 0 < share < 1:
         raise ValueError(f"{where}: preview share must be between 0 and 1")
     if not isinstance(height, int) or isinstance(height, bool) or height <= 0:
         raise ValueError(f"{where}: preview min_height must be a positive integer")
-    return Preview(zone, float(share), height)
+    return Preview(zone, float(share), height, extra, dock_steps)
 
 
 def _tray(entry: Any, bands: tuple[Band, ...], preview: Preview | None, where: str) -> Tray | None:
