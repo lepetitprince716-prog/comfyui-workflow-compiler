@@ -14,7 +14,7 @@ from typing import Mapping
 
 from cwc.annotate.types import AUTHOR_GROUP_PREFIX, Annotations, Zone
 from cwc.canvas.envelope import TITLE_FONT, TITLE_ROOM, title_text
-from cwc.canvas.geometry import GRID, snap_up
+from cwc.canvas.geometry import snap_up
 from cwc.canvas.model import Canvas, NodeMode, id_order
 from cwc.canvas.textwidth import text_width
 from cwc.layout.types import LayoutResult, Preset
