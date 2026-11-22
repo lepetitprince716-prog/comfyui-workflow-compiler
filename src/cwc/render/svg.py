@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from typing import Any
 from xml.sax.saxutils import escape
 
-from cwc.canvas.envelope import BoxFacts, Point, Renderer, box_facts, classic_box, slot_anchors, title_text, vue_box
+from cwc.canvas.envelope import BoxFacts, Point, Renderer, box_facts, classic_box, shows_preview, slot_anchors, title_text, vue_box
 from cwc.canvas.geometry import TITLE_HEIGHT, Rect, bounding
 from cwc.canvas.links import Spline
 from cwc.canvas.model import Canvas, Node, NodeMode, id_order
@@ -308,6 +308,22 @@ def _node(node: Node, facts: BoxFacts, defs: DefLookup, *, show_values: bool = F
                     f'<text class="widget" x="{_n(x + 15)}" y="{_n(y + offset + WIDGET_SIZE / 3)}" '
                     f'font-size="{WIDGET_SIZE}" fill="{fill_color}">{_text(label)}</text>'
                 )
+            preview_h = max(classic.h, vue.h)
+            if show_values and nodedef is not None and shows_preview(nodedef) and preview_h >= 200:
+                vp_top = y + max((facts.classic_widgets.values()), default=20) + 26
+                vp_h = (y + preview_h - TITLE_HEIGHT) - vp_top - 12
+                if vp_h >= 90:
+                    vp_w = classic.w - 28
+                    vp_label = "IMAGE PREVIEW" if nodedef.output_node else "INPUT IMAGE"
+                    parts.append(
+                        f'<rect class="preview-viewport" x="{_n(x + 14)}" y="{_n(vp_top)}" '
+                        f'width="{_n(vp_w)}" height="{_n(vp_h)}" rx="4" '
+                        f'fill="#1b1f26" stroke="#586578" stroke-width="1" stroke-dasharray="5 4"/>'
+                    )
+                    parts.append(
+                        f'<text class="preview-label" x="{_n(x + 14 + vp_w / 2)}" y="{_n(vp_top + vp_h / 2 + 4)}" '
+                        f'text-anchor="middle" font-size="13" fill="#7d8da6">{vp_label}</text>'
+                    )
     parts.append("</g>")
     return "".join(parts)
 

@@ -575,22 +575,21 @@ def _fill(graph: Graph, layers: list[list[Item]], widths: list[float], through: 
     inner_bottom = box.y + max(snap_up(fill.height), box.h) - PAD
     for at in held:
         spare = inner_bottom - bottoms[at]
-        if spare <= 0:
-            continue
         count = len(shows[at])
-        steps = int(spare // GRID)
+        steps = max(0, int(spare // GRID))
         for i, item in enumerate(shows[at]):
             # whole steps dealt out evenly, the earlier nodes taking the odd ones
-            grow: float = GRID * (steps // count + (1 if i < steps % count else 0))
-            if i == count - 1 and item == layers[at][-1]:
+            grow: float = GRID * (steps // count + (1 if i < steps % count else 0)) if spare > 0 else 0.0
+            if spare > 0 and i == count - 1 and item == layers[at][-1]:
                 grow += spare - steps * GRID
-            if grow <= 0:
-                continue
             node = graph.nodes[item[1]]
             rel = _rel_envelope(node, graph.facts[item[1]])
             # the envelope's height below pos is the live or the Vue body, whichever is taller;
-            # sizing from it makes the envelope grow by exactly ``grow``
-            node.set_size(node.size[0], rel.y + rel.h + grow)
+            # sizing from it makes the envelope grow by exactly ``grow`` and lifts classic previews
+            # up to match Vue's viewport even when stacked previews already fill ``fill.height``
+            target = rel.y + rel.h + grow
+            if target > node.size[1]:
+                node.set_size(node.size[0], target)
 
 
 def _rel_envelope(node: Node, facts: BoxFacts) -> Rect:

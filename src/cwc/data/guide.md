@@ -8,10 +8,10 @@ is. This guide lists what cwc accepts beyond that.
 ## Steps
 
 1. Write the graph. Check input names, outputs and the values of each dropdown with `cwc node TYPE`.
-2. `cwc compile GRAPH.json -o out` and read stderr: every error and warning comes with a hint,
+2. `cwc compile GRAPH.json -o out` (add `--portable` for shareable workflows whose model filenames may not exist on the compiling machine) and read stderr: every error and warning comes with a hint,
    one `E8 info` line names the keys that have no effect yet, and a successful run ends with one
    summary line.
-3. `cwc render out/GRAPH.ui.json -o GRAPH.svg` to look at the canvas without ComfyUI.
+3. `cwc render out/GRAPH.ui.json -o GRAPH.svg --values` to look at the canvas (with inline widget values and preview viewports) without ComfyUI.
 
 ## Relaxations of the API format
 
@@ -29,6 +29,7 @@ is. This guide lists what cwc accepts beyond that.
 | `ui_group` | non-empty string, a group id | The node goes into a group of its own with that id. The group's title is `_workflow.groups.<id>.title`, else the id as words (`finish` becomes `Finish`). |
 | `ui_role` | `cockpit`, `pipeline` or `plumbing` | `cockpit` moves the node into the Controls group. `pipeline` keeps it out of Controls (prompts and the empty latent go there by themselves otherwise). `plumbing` collapses the node, and it no longer gets a stage group of its own. |
 | `ui_optional` | `true` or `false` | `true` makes the node part of an optional module: bypassed in the canvas (mode 4), in its own group, and left out of `GRAPH.api.json` with links passed around it. `--all-enabled` also writes `GRAPH.full.api.json` with it on. Linked optional nodes form one module; give them the same `ui_group` to name it. |
+| `ui_collapsed` | `true` or `false` | `true` collapses the node (`flags.collapsed: true`) while keeping it inside its named `ui_group`. Useful for compacting zero-widget plumbing (`VAEDecode`, `BasicGuider`, `DisableNoise`, `ModelSamplingAuraFlow`) without losing stage grouping. |
 | `ui_seed` | `fixed` or `randomize` | Sets the node's `control_after_generate` widget. The default is `randomize`. Only for nodes that have that widget. |
 | `ui_order` | integer | Orders the Controls group's members of one kind, lower first, members without it last. The kinds keep their own order (positive prompt, negative prompt, reference image, size and batch, seed, other), and a member fed by another member stays after it, so `ui_order` decides only among, say, two `other` controls side by side. Elsewhere it matters only when more than 12 nodes of one group sit at the same step of the data flow and are cut into chunks. |
 | `ui_locked` | `true` or a list of widget names | Checked (the names must be widgets of the node), no effect on the canvas yet. |

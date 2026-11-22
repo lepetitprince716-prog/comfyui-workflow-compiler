@@ -71,13 +71,13 @@ class Item:
         self.w, self.h = float(snap_up(w)), float(snap_up(h))
 
 
-def _unit(parts: list[Part]) -> Seq:
-    """A group's parts in a row along x; a tiered cockpit's tiers (``Part.tier``) stacked along
-    y, the upper first, each tier a row of its parts."""
+def _unit(parts: list[Part], tier_axis: Axis = Axis.Y) -> Seq:
+    """A group's parts in a row along x; a tiered cockpit's tiers (``Part.tier``) laid out along
+    ``tier_axis`` (stacked along y by default, side by side along x when requested)."""
     count = max(part.tier for part in parts) + 1
     if count == 1:
         return Seq(Axis.X, list(parts))
-    return Seq(Axis.Y, [Seq(Axis.X, [part for part in parts if part.tier == t]) for t in range(count)])
+    return Seq(tier_axis, [Seq(Axis.X, [part for part in parts if part.tier == t]) for t in range(count)])
 
 
 def _downstream(start: str, edges: Mapping[str, set[str]]) -> set[str]:
@@ -99,7 +99,11 @@ def _segment(units: Mapping[str, list[Part]], key: str) -> tuple[str, int]:
 
 
 def _stack(
-    groups: list[GroupPlan], units: Mapping[str, list[Part]], edges: Mapping[str, set[str]], exempt: frozenset[str]
+    groups: list[GroupPlan],
+    units: Mapping[str, list[Part]],
+    edges: Mapping[str, set[str]],
+    exempt: frozenset[str],
+    tier_axis: Axis = Axis.Y,
 ) -> tuple[Seq, list[list[str]]]:
     """Groups stacked along y, in sub-columns: a group goes one sub-column right of every
     earlier group of the stack that links to it, or reaches it and is not reached back, and one right of
@@ -123,13 +127,20 @@ def _stack(
         column[g.key] = max(after, default=0)
     count = max(column.values(), default=0) + 1
     if count == 1:
-        return Seq(Axis.Y, [_unit(units[g.key]) for g in groups]), []
+        return Seq(Axis.Y, [_unit(units[g.key], tier_axis) for g in groups]), []
     columns = [[g for g in groups if column[g.key] == c] for c in range(count)]
-    return Seq(Axis.X, [Seq(Axis.Y, [_unit(units[g.key]) for g in c]) for c in columns]), [[g.key for g in c] for c in columns]
+    return Seq(Axis.X, [Seq(Axis.Y, [_unit(units[g.key], tier_axis) for g in c]) for c in columns]), [[g.key for g in c] for c in columns]
 
 
 def _slot_items(
-    b: int, s: int, slot: Slot, groups: list[GroupPlan], units: Mapping[str, list[Part]], edges: Mapping[str, set[str]], exempt: frozenset[str] = frozenset()
+    b: int,
+    s: int,
+    slot: Slot,
+    groups: list[GroupPlan],
+    units: Mapping[str, list[Part]],
+    edges: Mapping[str, set[str]],
+    exempt: frozenset[str] = frozenset(),
+    tier_axis: Axis = Axis.Y,
 ) -> list[Item]:
     """The items of one slot. A slot stacked along y lays its groups out by ``_stack``, and so
     does each instance of a repeated slot stacked along y.
@@ -151,8 +162,8 @@ def _slot_items(
 
     def content(members: list[GroupPlan]) -> tuple[Seq, list[list[str]]]:
         if slot.stack is Axis.Y:
-            return _stack(members, units, edges, exempt)
-        return Seq(slot.stack, [_unit(units[g.key]) for g in members]), []
+            return _stack(members, units, edges, exempt, tier_axis)
+        return Seq(slot.stack, [_unit(units[g.key], tier_axis) for g in members]), []
 
     def item(i: int, stage: int | None, members: list[GroupPlan]) -> Item:
         seq, columns = content(members)
@@ -160,7 +171,7 @@ def _slot_items(
 
     if slot.repeat is None:
         if slot.stack is Axis.X:
-            return [Item(b, s, 0, None, [g.key], Seq(Axis.X, [_unit(units[g.key])])) for g in groups]
+            return [Item(b, s, 0, None, [g.key], Seq(Axis.X, [_unit(units[g.key], tier_axis)])) for g in groups]
         return [item(0, None, groups)]
     opening = [g for g in groups if g.zone not in slot.attach]
     if not opening:

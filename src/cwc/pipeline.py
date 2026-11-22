@@ -87,6 +87,15 @@ def preset_guide() -> dict[str, tuple[str, str]]:
             "branches and optional modules in a second row.",
             "a graph meant to be followed in order, like a tutorial",
         ),
+        "gallery": (
+            f"Controls stays paired with the top pipeline row (separated by {BAND_GAP} px; tall "
+            "cockpits of 5+ controls split side by side) with the final output flush on the right; "
+            "intermediate step previews, control branches and optional comparisons dock below the "
+            f"stages that feed them with enlarged preview viewports (at least "
+            f"{snap_up(round(presets['gallery'].preview.share * SCREEN_W, 6))} px wide and "
+            f"{presets['gallery'].preview.min_height} px high).",
+            "multi-step workflows with intermediate step previews or side-by-side comparisons",
+        ),
         AUTO: (
             f"Picks a preset from the graph's counts, the first rule that holds: at most {AUTO_SMALL_NODES} "
             f"nodes and no optional module: tower-preview; {AUTO_PARALLEL_BRANCHES} or more control or mask "

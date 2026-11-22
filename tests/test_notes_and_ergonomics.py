@@ -155,5 +155,113 @@ class RenderValuesAndNoteTest(unittest.TestCase):
             self.assertIn("denoise: 0.72", (p / "demo.svg").read_text(encoding="utf-8"))
 
 
+class GalleryAndCollapsedTest(unittest.TestCase):
+    def test_gallery_docks_intermediate_step_preview_and_keeps_final_in_band0(self) -> None:
+        doc = copy.deepcopy(PLAIN)
+        doc["_workflow"] = {
+            "format": 1,
+            "title": "2-Stage Preview Demo",
+            "layout": {"preset": "gallery"},
+            "groups": {
+                "stage1": {"title": "Stage 1"},
+                "s1_prev": {"title": "Layout Preview"},
+                "stage2": {"title": "Stage 2"},
+                "final_out": {"title": "Final Output"},
+            },
+        }
+        doc["sampler"]["_meta"] = {"ui_group": "stage1"}
+        doc["decode"]["_meta"] = {"ui_group": "stage1", "ui_collapsed": True}
+        doc["preview_s1"] = {
+            "class_type": "PreviewImage",
+            "inputs": {"images": ["decode", 0]},
+            "_meta": {"title": "Layout Preview", "ui_group": "s1_prev"},
+        }
+        doc["sampler2"] = {
+            "class_type": "KSampler",
+            "inputs": {
+                "model": ["ckpt", "MODEL"],
+                "positive": ["pos", 0],
+                "negative": ["neg", 0],
+                "latent_image": ["sampler", 0],
+                "seed": 43,
+                "steps": 10,
+                "cfg": 2.5,
+                "sampler_name": "euler",
+                "scheduler": "simple",
+                "denoise": 0.4,
+            },
+            "_meta": {"ui_group": "stage2"},
+        }
+        doc["decode2"] = {
+            "class_type": "VAEDecode",
+            "inputs": {"samples": ["sampler2", 0], "vae": ["ckpt", "VAE"]},
+            "_meta": {"ui_group": "stage2", "ui_collapsed": True},
+        }
+        doc["save"]["inputs"]["images"] = ["decode2", 0]
+        doc["save"]["_meta"] = {"title": "Final Save", "ui_group": "final_out"}
+
+        defs = NodeDefs.load()
+        compiled = compile_document(doc, defs)
+        self.assertTrue(compiled.report.ok, compiled.report.findings)
+        # ui_collapsed collapses named-group boilerplate nodes without removing them from their group
+        decodes = [n for n in compiled.canvas.nodes if n.type == "VAEDecode"]
+        self.assertTrue(all(n.collapsed for n in decodes))
+        # Intermediate Layout Preview docks in Band 1 below Band 0, while Final Output stays at y = 0
+        by_title = {g["title"]: g["bounding"] for g in compiled.canvas.raw["groups"]}
+        step1_box = next(b for t, b in by_title.items() if "Layout Preview" in t)
+        final_box = next(b for t, b in by_title.items() if "Final Output" in t)
+        self.assertEqual(final_box[1], 0)
+        self.assertGreater(step1_box[1], final_box[1])
+        # Both previews get enlarged classic heights and render IMAGE PREVIEW viewports under --values
+        for n in compiled.canvas.nodes:
+            if n.type in ("PreviewImage", "SaveImage"):
+                self.assertGreaterEqual(n.size[1], 300)
+        svg_vals = render_svg(compiled.canvas, defs, show_values=True)
+        self.assertEqual(svg_vals.count("IMAGE PREVIEW"), 2)
+
+    def test_gallery_splits_tall_cockpit_horizontally_and_tucks_lower_band(self) -> None:
+        doc = copy.deepcopy(PLAIN)
+        doc["_workflow"] = {"format": 1, "layout": {"preset": "gallery"}}
+        # Add 3 extra cockpit knobs (total 6 >= min_nodes 5) plus an optional module
+        for idx, name in enumerate(("k1", "k2", "k3"), start=1):
+            doc[name] = {
+                "class_type": "PrimitiveInt",
+                "inputs": {"value": 10 + idx},
+                "_meta": {"title": f"Knob {idx}", "ui_role": "cockpit", "ui_order": idx},
+            }
+        doc["sampler"]["inputs"]["steps"] = ["k1", 0]
+        doc["latent"]["inputs"]["batch_size"] = ["k2", 0]
+        doc["sampler"]["inputs"]["seed"] = ["k3", 0]
+        doc["opt_lora"] = {
+            "class_type": "LoraLoader",
+            "inputs": {
+                "model": ["ckpt", "MODEL"],
+                "clip": ["ckpt", "CLIP"],
+                "lora_name": "style.safetensors",
+                "strength_model": 0.5,
+                "strength_clip": 0.5,
+            },
+            "_meta": {"title": "Opt LoRA", "ui_optional": True},
+        }
+        doc["sampler"]["inputs"]["model"] = ["opt_lora", "MODEL"]
+        compiled = compile_document(doc, NodeDefs.load(), portable=True)
+        self.assertTrue(compiled.report.ok, compiled.report.findings)
+        ctrl_boxes = [g["bounding"] for g in compiled.canvas.raw["groups"] if "Controls" in g["title"]]
+        self.assertEqual(len(ctrl_boxes), 2)
+        # Side-by-side cockpit split: same y=0, distinct x
+        self.assertEqual(ctrl_boxes[0][1], ctrl_boxes[1][1])
+        self.assertNotEqual(ctrl_boxes[0][0], ctrl_boxes[1][0])
+
+    def test_stacked_previews_in_fill_group_all_get_uniform_classic_height(self) -> None:
+        doc = copy.deepcopy(PLAIN)
+        doc["_workflow"] = {"format": 1, "layout": {"preset": "gallery"}}
+        doc["peek"] = {"class_type": "PreviewImage", "inputs": {"images": ["decode", 0]}}
+        compiled = compile_document(doc, NodeDefs.load())
+        self.assertTrue(compiled.report.ok, compiled.report.findings)
+        heights = [n.size[1] for n in compiled.canvas.nodes if n.type in ("PreviewImage", "SaveImage")]
+        self.assertEqual(len(heights), 2)
+        self.assertTrue(all(h >= 300 for h in heights), heights)
+
+
 if __name__ == "__main__":
     unittest.main()

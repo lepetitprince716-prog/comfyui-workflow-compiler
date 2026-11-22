@@ -186,7 +186,7 @@ def _estimate_lines(lines: list[str], chars_per_line: int = _CHARS_PER_LINE) -> 
     return total
 
 
-def guide_markdown(info: GuideSummary, *, max_visual_lines: int = 28) -> str:
+def guide_markdown(info: GuideSummary, *, max_visual_lines: int = 34) -> str:
     """Render ``info`` into concise Markdown compatible with Classic Tiptap and Vue marked."""
     lines: list[str] = [f"# {_clean_inline(info.title)}"]
     if info.flow:
@@ -218,6 +218,8 @@ def guide_markdown(info: GuideSummary, *, max_visual_lines: int = 28) -> str:
             lines.append(f"- ... (+{len(info.optional_modules) - _MAX_OPTIONALS} more)")
 
     while len(lines) > 3 and _estimate_lines(lines) > max_visual_lines:
+        lines.pop()
+    while len(lines) > 1 and (not lines[-1] or (lines[-1].startswith("**") and lines[-1].endswith(":**"))):
         lines.pop()
     return "\n".join(lines)
 

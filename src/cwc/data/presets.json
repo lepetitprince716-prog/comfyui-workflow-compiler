@@ -115,6 +115,42 @@
         }
       ],
       "corridors": []
+    },
+    "gallery": {
+      "axis": "x",
+      "wrap_ratio": 2.6,
+      "guide_width": 460,
+      "numbering": "number",
+      "palette": "semantic",
+      "bands": [
+        {
+          "slots": [
+            {"zones": ["cockpit"]},
+            {"zones": ["model", "prompt"], "stack": "x"},
+            {"zones": ["sampling", "stage"], "repeat": "x"},
+            {"zones": ["postprocess"], "stack": "x"},
+            {"zones": ["output"], "stack": "x"}
+          ]
+        },
+        {
+          "slots": [
+            {"zones": ["control", "optional"], "stack": "x"}
+          ]
+        }
+      ],
+      "corridors": [{"kind": "bus"}, {"kind": "spine", "after_slot": 0}],
+      "cockpit_split": {
+        "core": ["positive", "negative", "reference", "size", "seed"],
+        "axis": "x",
+        "min_nodes": 5
+      },
+      "preview": {
+        "zone": "output",
+        "extra_zones": ["optional", "sampling", "stage", "postprocess", "control"],
+        "dock_steps": true,
+        "share": 0.34,
+        "min_height": 540
+      }
     }
   }
 }
