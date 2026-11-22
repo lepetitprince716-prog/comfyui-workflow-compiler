@@ -75,6 +75,7 @@ KNOWN: dict[str, dict[tuple[int, str], str]] = {
     "cockpit-split": {(3, "removal"): "wider", (14, "removal"): "wider", (54, "removal"): "wider"},
     "tower-preview": {},
     "gallery": {},
+    "square": {(37, "removal"): "wider"},
 }
 
 
@@ -289,6 +290,10 @@ class TowerPreviewPropertyTest(LayoutPropertyTest):
 
 class GalleryPropertyTest(LayoutPropertyTest):
     PRESET = "gallery"
+
+
+class SquarePropertyTest(LayoutPropertyTest):
+    PRESET = "square"
 
 
 if __name__ == "__main__":

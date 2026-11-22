@@ -262,6 +262,58 @@ class GalleryAndCollapsedTest(unittest.TestCase):
         self.assertEqual(len(heights), 2)
         self.assertTrue(all(h >= 300 for h in heights), heights)
 
+    def test_square_preset_wraps_into_compact_aspect_ratio_without_g5_or_g9_issues(self) -> None:
+        doc = copy.deepcopy(PLAIN)
+        doc["_workflow"] = {
+            "format": 1,
+            "title": "Square 2-Stage Demo",
+            "layout": {"preset": "square"},
+            "groups": {
+                "stage1": {"title": "Stage 1"},
+                "s1_prev": {"title": "Layout Preview"},
+                "stage2": {"title": "Stage 2"},
+                "final_out": {"title": "Final Output"},
+            },
+        }
+        doc["sampler"]["_meta"] = {"ui_group": "stage1"}
+        doc["decode"]["_meta"] = {"ui_group": "stage1", "ui_collapsed": True}
+        doc["preview_s1"] = {
+            "class_type": "PreviewImage",
+            "inputs": {"images": ["decode", 0]},
+            "_meta": {"title": "Layout Preview", "ui_group": "s1_prev"},
+        }
+        doc["sampler2"] = {
+            "class_type": "KSampler",
+            "inputs": {
+                "model": ["ckpt", "MODEL"],
+                "positive": ["pos", 0],
+                "negative": ["neg", 0],
+                "latent_image": ["sampler", 0],
+                "seed": 43,
+                "steps": 10,
+                "cfg": 2.5,
+                "sampler_name": "euler",
+                "scheduler": "simple",
+                "denoise": 0.4,
+            },
+            "_meta": {"ui_group": "stage2"},
+        }
+        doc["decode2"] = {
+            "class_type": "VAEDecode",
+            "inputs": {"samples": ["sampler2", 0], "vae": ["ckpt", "VAE"]},
+            "_meta": {"ui_group": "stage2", "ui_collapsed": True},
+        }
+        doc["save"]["inputs"]["images"] = ["decode2", 0]
+        doc["save"]["_meta"] = {"title": "Final Save", "ui_group": "final_out"}
+
+        compiled = compile_document(doc, NodeDefs.load())
+        self.assertTrue(compiled.report.ok, compiled.report.findings)
+        geom = compiled.report.metrics["geometry"]
+        self.assertEqual(geom["G5"]["right_to_left"], 0)
+        self.assertGreater(geom["G5"].get("row_wrap_links", 0), 0)
+        self.assertLessEqual(geom["G9"]["ratio"], 2.0)
+        self.assertGreaterEqual(geom["G9"]["ratio"], 0.85)
+
 
 if __name__ == "__main__":
     unittest.main()

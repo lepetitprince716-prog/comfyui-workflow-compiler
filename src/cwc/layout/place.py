@@ -28,7 +28,7 @@ from cwc.annotate.types import GroupPlan, Zone
 from cwc.canvas.geometry import Rect
 from cwc.layout.inner import Part
 from cwc.layout.items import Item, _downstream, _slot_items
-from cwc.layout.section import Links, Placed, _at_spine, _Done, _finish, _lay, _settle
+from cwc.layout.section import BAND_GAP, Links, Placed, _at_spine, _Done, _finish, _lay, _settle, _union
 from cwc.layout.types import Axis, CorridorKind, Preset
 
 WRAP_MIN_MOVED = 0.25  # a cut must move at least this share of the section's width
@@ -240,12 +240,22 @@ def place(
     done = _Done(
         skybridge=any(rule.kind is CorridorKind.SKYBRIDGE for rule in preset.corridors),
         spine=next((rule.after_slot for rule in preset.corridors if rule.kind is CorridorKind.SPINE), None),
+        wrap_rows=preset.wrap_rows,
     )
     rest = main
+    def row_x0(state: _Done) -> float:
+        if preset.wrap_rows and state.bands and state.bands[-1].bottom + BAND_GAP >= guide:
+            return 0.0
+        return x0
+
     while True:
         s = len(closed)
-        current = _lay(done, rest, _mine(lower, _assign(closed + [rest], flat, links), s), links, exempt, x0, guide)
-        if len(rest) <= 1 or not _too_wide(current.sections[-1], preset.wrap_ratio):
+        sx0 = row_x0(done)
+        current = _lay(done, rest, _mine(lower, _assign(closed + [rest], flat, links), s), links, exempt, sx0, guide)
+        target_box = _union(current.sections) if preset.wrap_rows else current.sections[-1]
+        if len(rest) <= 1 or not _too_wide(target_box, preset.wrap_ratio):
+            return _finish(current)
+        if preset.wrap_rows and done.sections and current.sections[-1].right <= max(sec.right for sec in done.sections):
             return _finish(current)
         before = current.sections[-1].w
         candidates = []
@@ -254,16 +264,29 @@ def place(
                 continue  # the cockpit and the stages it steers stay in one section
             trial = closed + [rest[:k], rest[k:]]
             assign = _assign(trial, flat, links)
-            head = _lay(done, rest[:k], _mine(lower, assign, s), links, exempt, x0, guide)
-            arranged = _lay(head, rest[k:], _mine(lower, assign, s + 1), links, exempt, x0, guide)
+            head = _lay(done, rest[:k], _mine(lower, assign, s), links, exempt, sx0, guide)
+            arranged = _lay(head, rest[k:], _mine(lower, assign, s + 1), links, exempt, row_x0(head), guide)
             if arranged.sections[-1].w < WRAP_MIN_MOVED * before:
                 continue
-            candidates.append((_too_wide(arranged.sections[-2], preset.wrap_ratio), _crossing(trial, flat, assign, links, exempt), -k, k, arranged))
+            head_sec, tail_sec = arranged.sections[-2], arranged.sections[-1]
+            if preset.wrap_rows:
+                key = (
+                    _too_wide(head_sec, preset.wrap_ratio),
+                    max(head_sec.right, tail_sec.right),
+                    _crossing(trial, flat, assign, links, exempt),
+                )
+            else:
+                key = (
+                    _too_wide(head_sec, preset.wrap_ratio),
+                    _crossing(trial, flat, assign, links, exempt),
+                    -k,
+                )
+            candidates.append((*key, k, arranged))
         candidates.sort(key=lambda c: c[:3])
         chosen = next((k for *_, k, arranged in candidates if fits(_finish(arranged))), None)
         if chosen is None:
             # The trials moved the items ``rest`` shares with them: lay it out again.
-            return _finish(_lay(done, rest, _mine(lower, _assign(closed + [rest], flat, links), s), links, exempt, x0, guide))
+            return _finish(_lay(done, rest, _mine(lower, _assign(closed + [rest], flat, links), s), links, exempt, sx0, guide))
         assign = _assign(closed + [rest[:chosen], rest[chosen:]], flat, links)
-        done = _settle(_lay(done, rest[:chosen], _mine(lower, assign, s), links, exempt, x0, guide))
+        done = _settle(_lay(done, rest[:chosen], _mine(lower, assign, s), links, exempt, sx0, guide))
         closed, rest = closed + [rest[:chosen]], rest[chosen:]

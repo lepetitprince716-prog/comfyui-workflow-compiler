@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <strong>Zero external dependencies</strong> · <strong>702 bundled core nodes</strong> · <strong>Single-file <code>cwc.pyz</code></strong> · <strong>6 layout presets</strong> · <strong>In-canvas Quick Guide</strong>
+  <strong>Zero external dependencies</strong> · <strong>702 bundled core nodes</strong> · <strong>Single-file <code>cwc.pyz</code></strong> · <strong>7 layout presets</strong> · <strong>In-canvas Quick Guide</strong>
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
   </picture>
 </p>
 
-The screenshot above shows the left half of the canvas `cwc compile` generates for the nine-node high-res pipeline in [`docs/images/src/hires.json`](docs/images/src/hires.json) (captured directly from ComfyUI frontend 1.59.1 with menus hidden). Full-canvas comparisons are shown under [Six presets](#six-presets), and ready-to-drop example canvases live in [`showcase/`](showcase/README.md).
+The screenshot above shows the left half of the canvas `cwc compile` generates for the nine-node high-res pipeline in [`docs/images/src/hires.json`](docs/images/src/hires.json) (captured directly from ComfyUI frontend 1.59.1 with menus hidden). Full-canvas comparisons are shown under [Seven presets](#seven-presets), and ready-to-drop example canvases live in [`showcase/`](showcase/README.md).
 
 ---
 
@@ -36,7 +36,7 @@ ComfyUI speaks two different JSON dialects:
 Requires **Python 3.10+**; the core compiler uses **nothing outside the Python standard library**.
 
 ### Option 1: Zero-Install Single File (`cwc.pyz`) or Drag-and-Drop Portable Pack
-Download `cwc.pyz` (`~377 KB`) or `cwc-portable.zip` from Releases (or build them locally in one second with `python3 tools/build_pyz.py --portable -o dist`):
+Download `cwc.pyz` (`~395 KB`) or `cwc-portable.zip` from Releases (or build them locally in one second with `python3 tools/build_pyz.py --portable -o dist`):
 
 - **Windows Drag & Drop**: Unzip `cwc-portable.zip` and drag any ComfyUI API `.json` file onto **`compile-drop-here.bat`**. An `out/` folder appears right next to your file with `<name>.ui.json` (ready to drag into ComfyUI) and `<name>.svg` (vector preview).
 - **Single-File CLI (Windows / macOS / Linux)**:
@@ -69,11 +69,60 @@ wrote out/hires.report.json
 
 Drag `out/hires.ui.json` straight onto the ComfyUI browser canvas to open it. `hires.api.json` is the verified prompt the canvas exports (with any optional modules bypassed), and `hires.report.json` records all layout measurements and check findings.
 
-> **New to `cwc`?** Read the **[3-Minute Step-by-Step Tutorial & Workflow Showcase (`showcase/README.md`)](showcase/README.md)**.
+> **New to `cwc`?** Read the **[3-Minute Step-by-Step Tutorial & Workflow Showcase (`showcase/README.md`)](showcase/README.md)**, or jump straight to **[1-Minute Foolproof Agent Setup](#1-minute-foolproof-agent-setup)** below to let Claude Code, Cursor, Codex, or Antigravity set it up for you.
 
 ---
 
 ## Workflow for Coding Agents
+
+### 1-Minute Foolproof Agent Setup
+
+#### Option A: Zero-Config Copy-Paste Prompt (Fastest)
+Copy and paste this prompt directly into **Claude Code, Antigravity, Codex, Cursor, or Gemini CLI**—your agent will install `cwc`, learn the syntax, and start compiling immediately:
+
+```text
+Install and configure comfyui-workflow-compiler (cwc) for this machine:
+1. Make `cwc` runnable via `uv tool install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler` (or `pip install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler`, or zero-install `uvx --from git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler cwc`).
+2. Install the bundled skill from `skills/comfyui-workflow-compiler/SKILL.md` in https://github.com/lepetitprince716-prog/comfyui-workflow-compiler into your active skills/rules directory.
+3. Verify with `cwc presets` and read `cwc guide` once.
+From now on, whenever I ask for a ComfyUI workflow, author the declarative API JSON first, compile it with `cwc compile --preset square --portable` (or `--preset gallery` for widescreen multi-step comparisons), and render a preview with `cwc render ... --values`.
+```
+
+#### Option B: One-Command Permanent CLI + Skill Install (macOS / Linux)
+Install the `cwc` CLI globally once, then copy the bundled skill into whichever coding agent you use:
+
+```bash
+# 1. Install the cwc CLI (pick ONE: uv tool, pipx, or pip)
+uv tool install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
+# Alternative without uv: pip install --user git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
+
+# 2. Verify installation (should print all 7 layout presets)
+cwc presets
+
+# 3. Install the Agent Skill (clone once, then copy to your agent's folder)
+git clone --depth 1 https://github.com/lepetitprince716-prog/comfyui-workflow-compiler /tmp/cwc-skill
+```
+
+| Coding Agent | Copy the skill folder to |
+|---|---|
+| **Claude Code** | `mkdir -p ~/.claude/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.claude/skills/` |
+| **Codex CLI** | `mkdir -p ~/.codex/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.codex/skills/` |
+| **Antigravity (AGY)** | `mkdir -p ~/.gemini/config/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.gemini/config/skills/` |
+| **OpenCode / Pi / Shared Agents** | `mkdir -p ~/.agents/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.agents/skills/` |
+| **Cursor** | Copy `skills/comfyui-workflow-compiler/SKILL.md` into your project's `.cursor/rules/cwc.mdc` (or reference it with `@SKILL.md`) |
+
+> **Windows / No-Clone Tip:** You don't even need `git` or `pip`—drop `cwc.pyz` anywhere on disk and tell your agent to run `python dist/cwc.pyz guide` and `python dist/cwc.pyz compile ...`.
+
+#### Option C: Ready-to-Use Everyday Prompt
+Once set up, just ask your agent in plain English:
+
+```text
+Build a 2-stage ComfyUI workflow for <your model/task> with an optional LoRA toggle and an in-canvas Quick Guide.
+Use cwc (`--preset square --portable`), fix all warnings until `ok`, and render a `--values` SVG preview for me.
+(If using custom nodes, add: `--nodedefs http://127.0.0.1:8188` or `--nodedefs object_info.json`.)
+```
+
+### The 4-Step Offline Agent Loop
 
 Point your coding agent at [`skills/comfyui-workflow-compiler/SKILL.md`](skills/comfyui-workflow-compiler/SKILL.md). The agent loop takes four fast offline commands:
 
@@ -160,9 +209,9 @@ Keys that are accepted for forward compatibility but not yet rendered on the can
 
 ---
 
-## Six Presets
+## Seven Presets
 
-Use `--preset <name>` (or `_workflow.layout.preset`) to pick a layout architecture, or run `cwc presets` to see when to use each. Here is the same twelve-node graph (`landscape.json`) compiled across the five classic presets, plus the new **`gallery`** preset for multi-step workflows:
+Use `--preset <name>` (or `_workflow.layout.preset`) to pick a layout architecture, or run `cwc presets` to see when to use each. Here is the same twelve-node graph (`landscape.json`) compiled across the five classic presets, plus **`gallery`** (widescreen multi-step preview studio) and **`square`** (compact `~1.0–1.7:1` square / 4:3 dashboard):
 
 ### `bento`
 
@@ -216,6 +265,12 @@ Designed for **multi-step pipelines with intermediate step previews or optional 
 - Automatically docks intermediate dead-end preview groups (such as Stage 1 layout previews or ROI crop checks) and optional comparison branches tightly underneath the pipeline rail (`dock_steps` + spine-aware lower-band tucking) instead of wasting vertical dead space below a tall control sidebar.
 - Enlarges preview viewports uniformly across output, optional, and intermediate preview groups (`>= 560 × 540 px`). Combine with `_meta.ui_collapsed: true` to fold zero-widget plumbing nodes (`VAEDecode`, `BasicGuider`, `DisableNoise`) inside named stages for compact, studio-grade panels.
 
+### `square`
+
+Designed for **compact square / 4:3 dashboards (`~1.0–1.7:1`)** without wide horizontal scrolling:
+- Automatically folds wide multi-stage pipelines into balanced stacked rows once total canvas aspect ratio exceeds `1.85:1`, using clean horizontal bus-corridor carriage returns (`wrap_rows: true`) while keeping strict left-to-right flow within every row (`G2 = 0` crossings, `C3 = 0`, `G9` green).
+- Keeps intermediate step previews and optional A/B comparison branches docked inside each row's width (`>= 560 × 540 px`) and reclaims the full width below the top-left Quick Guide lane on wrapped rows—ideal for laptops, 4:3 showcase screenshots, and dense multi-stage workflows.
+
 ### `auto`
 
 `--preset auto` evaluates the graph topology and picks the first matching rule (recording both the choice and the reason in the stderr summary and `.report.json`):
@@ -245,7 +300,7 @@ cwc render   GRAPH.ui.json -o OUT.svg [--nodedefs FILE|URL] [--values] [--json]
 |---|---|
 | `node` | Inspect one node definition (inputs, widgets with defaults, combo options, outputs), or search by class name, display name, or category. Unknown `TYPE` exits `3` with closest matches; an empty search exits `1` (`[]` under `--json`). |
 | `compile` | Compile an API graph into `<name>.ui.json`, `<name>.api.json`, and `<name>.report.json`. Pass `--all-enabled` to also emit `<name>.full.api.json` with all optional modules switched on, and `--portable` to suppress machine-local file-picker combo warnings (checkpoints, LoRAs, VAEs, images) when compiling shareable workflows against a live `/object_info` while keeping enum and range checks strict. |
-| `presets` | List all six layout presets, their visual structure, when to choose each, and the `auto` selection rules. |
+| `presets` | List all seven layout presets, their visual structure, when to choose each, and the `auto` selection rules. |
 | `guide` | Print the one-page authoring reference. |
 | `learn` | Learn widget templates for custom nodes from paired `.ui.json` + `.api.json` exports. |
 | `render` | Render a `.ui.json` canvas to a standalone `.svg` diagram without a browser. Pass `--values` to display inline widget parameter values, formatted Quick Guide cards, and dashed `IMAGE PREVIEW` / `INPUT IMAGE` viewports. |
@@ -330,7 +385,7 @@ usual range finding, in a canvas coordinate it is past the limit above.
 
 ## Architecture & Project Status
 
-- **Working today**: The complete compilation pipeline (`normalize` → `instantiate` → `annotate` → `layout` → `route` → `notes` → `verify`), all six layout presets (including `gallery` for multi-step previews & comparisons), in-canvas `MarkdownNote` Quick Guide cards (`C5`/`G8` verified), `--portable` compilation, `_meta.ui_collapsed` per-node plumbing folding, `render --values` visual inspection, single-file `cwc.pyz` / portable zip packaging (`tools/build_pyz.py`), agent skill package (`skills/`), and the [`showcase/`](showcase/README.md) tutorial workflows.
+- **Working today**: The complete compilation pipeline (`normalize` → `instantiate` → `annotate` → `layout` → `route` → `notes` → `verify`), all seven layout presets (including `gallery` for widescreen multi-step previews and `square` for compact square/4:3 dashboards), in-canvas `MarkdownNote` Quick Guide cards (`C5`/`G8` verified), `--portable` compilation, `_meta.ui_collapsed` per-node plumbing folding, `render --values` visual inspection, single-file `cwc.pyz` / portable zip packaging (`tools/build_pyz.py`), agent skill package (`skills/`), and the [`showcase/`](showcase/README.md) tutorial workflows.
 - **Planned next (M3)**: Lossless geometry tidying of existing canvases (`cwc beautify`), second-round corridor widening, and PNG workflow embedding/extraction (`cwc embed` / `cwc extract`).
 
 Deep-dive engineering docs:
@@ -348,7 +403,7 @@ Run the test suite with `python3 -m unittest discover -s tests`. Playwright is o
 |---|---|---|
 | M0 | Real-frontend oracle; measures the constants the layout depends on (`tools/oracle/`, `docs/m0-findings.md`) | done |
 | M1 | Instantiation and equivalence; an API graph becomes a canvas that exports the same prompt (`docs/m1-templates.md`) | done |
-| M2 | The layout presets (`bento`, `swimlanes`, `cockpit-split`, `tower-preview`, `stepped`, `gallery`), dual-renderer layout and native link routing checks (`docs/ARCHITECTURE.md`, `docs/m2-frontend-facts.md`) | done |
+| M2 | The layout presets (`bento`, `swimlanes`, `cockpit-split`, `tower-preview`, `stepped`, `gallery`, `square`), dual-renderer layout and native link routing checks (`docs/ARCHITECTURE.md`, `docs/m2-frontend-facts.md`) | done |
 | M3 | In-canvas `MarkdownNote` Quick Guide (`notes`, done); reroute second round, lossless tidy (`beautify`), PNG embed and extract | in progress |
 | M4 | Agent skill package ([`skills/`](skills/comfyui-workflow-compiler/SKILL.md)), standalone `cwc.pyz` packaging (`tools/build_pyz.py`), and [`showcase/`](showcase/README.md) workflows | done |
 | M5 | Optional extensions after the first release | planned |
