@@ -36,7 +36,7 @@ ComfyUI 存在两套截然不同、默认互不相通的 JSON 格式：
 需要 **Python 3.10+**；核心编译器**只使用 Python 标准库，零第三方依赖**。
 
 ### 方式一：免安装单文件 (`cwc.pyz`) 或 Windows/Mac 拖拽懒人包（推荐普通玩家）
-从 Releases 下载 `cwc.pyz`（仅 `377 KB`）或 `cwc-portable.zip`（也可以在本地用 `python3 tools/build_pyz.py --portable -o dist` 一秒生成）：
+从 Releases 下载 `cwc.pyz`（仅 `~395 KB`）或 `cwc-portable.zip`（也可以在本地用 `python3 tools/build_pyz.py --portable -o dist` 一秒生成）：
 
 - **Windows 鼠标拖拽一键编译**：解压 `cwc-portable.zip`，直接把任意 ComfyUI API `.json` 文件拖到 **`compile-drop-here.bat`** 图标上松手。同目录下会立刻生成 `out/` 文件夹，里面包含可直接拖进 ComfyUI 网页的 `<名称>.ui.json` 和无需开 ComfyUI 就能预览的 `<名称>.svg` 矢量图！
 - **单文件命令行（Windows / macOS / Linux 免 `pip install`）**：
@@ -69,11 +69,60 @@ wrote out/hires.report.json
 
 直接把生成的 `out/hires.ui.json` 拖进 ComfyUI 画布即可打开。`hires.api.json` 是该画布导出的等价 API Prompt（可选模块默认旁路），`hires.report.json` 记录了所有几何测量值与检查结论。
 
-> **想看手把手图文教程？** 请打开 **[3 分钟手把手教程与工作流样板间 (`showcase/README.zh-CN.md`)](showcase/README.zh-CN.md)**。
+> **想看手把手图文教程？** 请打开 **[3 分钟手把手教程与工作流样板间 (`showcase/README.zh-CN.md`)](showcase/README.zh-CN.md)**；如果你平时用 Claude Code / Cursor / Codex / Antigravity 写工作流，直接看下方 **[1 分钟防呆快速配置（Agent 一键上手）](#1-分钟防呆快速配置agent-一键上手)**。
 
 ---
 
 ## 给 AI 编程助手（Coding Agents）使用
+
+### 1 分钟防呆快速配置（Agent 一键上手）
+
+#### 方式 A：全自动复制粘贴提示词（最省心，零手动配置）
+直接把下面这段话原样发给 **Claude Code、Antigravity、Codex、Cursor 或 Gemini CLI**，让 Agent 自己把工具和 Skill 一次配齐：
+
+```text
+请帮我配置 comfyui-workflow-compiler (cwc) 并接入你的技能库：
+1. 安装 `cwc` 命令：优先运行 `uv tool install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler`（没有 uv 可改用 `pip install --user git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler`，或免安装使用 `uvx --from git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler cwc`）。
+2. 从 https://github.com/lepetitprince716-prog/comfyui-workflow-compiler 把 `skills/comfyui-workflow-compiler/SKILL.md` 安装到你当前生效的 skills / rules 目录。
+3. 运行 `cwc presets` 验证环境可用，并读一遍 `cwc guide`。
+以后凡是我让你写 ComfyUI 工作流，一律先写声明式 API JSON，再用 `cwc compile --preset square --portable`（需要宽屏多步对比时用 `--preset gallery`）编译并修到 `ok`，最后用 `cwc render ... --values` 输出预览图给我确认。
+```
+
+#### 方式 B：一行命令永久安装 CLI + Skill（macOS / Linux）
+全局安装一次 `cwc` 命令行，再按你使用的 Agent 把内置 Skill 文件夹复制过去即可：
+
+```bash
+# 1. 全局安装 cwc（二选一：推荐 uv tool，或直接用 pip）
+uv tool install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
+# 若未安装 uv：pip install --user git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
+
+# 2. 自检（能打印出全部 7 套布局预设即说明配置成功）
+cwc presets
+
+# 3. 拉取仓库中的 Skill 目录并复制到对应 Agent
+git clone --depth 1 https://github.com/lepetitprince716-prog/comfyui-workflow-compiler /tmp/cwc-skill
+```
+
+| 你使用的 Coding Agent | 复制 Skill 的一条命令 |
+|---|---|
+| **Claude Code** | `mkdir -p ~/.claude/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.claude/skills/` |
+| **Codex CLI** | `mkdir -p ~/.codex/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.codex/skills/` |
+| **Antigravity (AGY)** | `mkdir -p ~/.gemini/config/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.gemini/config/skills/` |
+| **OpenCode / Pi / 通用 Agent** | `mkdir -p ~/.agents/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.agents/skills/` |
+| **Cursor** | 将 `skills/comfyui-workflow-compiler/SKILL.md` 复制到项目的 `.cursor/rules/cwc.mdc`（或对话时直接 `@SKILL.md`） |
+
+> **Windows / 懒得装环境提示**：甚至不需要 `git` 或 `pip`——从 Releases 下载单文件 `cwc.pyz` 放进目录，直接让 Agent 调 `python dist/cwc.pyz guide` 和 `python dist/cwc.pyz compile ...` 即可开箱即用。
+
+#### 方式 C：配好后怎么使唤 Agent（日常开箱模板）
+配置完成后，以后做任何 ComfyUI 工作流，直接说人话就行：
+
+```text
+帮我做一个 <你的模型/任务> 的两阶段 ComfyUI 工作流，带可选 LoRA 开关、阶段预览和画布内使用指南卡。
+用 cwc 编译（`--preset square --portable`），把所有报错和警告修到 `ok`，并用 `--values` 渲染预览图给我看。
+（如果用到第三方自定义节点，补一句：节点定义取自 `--nodedefs http://127.0.0.1:8188` 或导出的 `object_info.json`。）
+```
+
+### 四步极速离线闭环
 
 本仓库自带即插即用的 Agent 技能包 [`skills/comfyui-workflow-compiler/SKILL.md`](skills/comfyui-workflow-compiler/SKILL.md)。Agent 只需跑通四步极速离线闭环：
 

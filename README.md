@@ -36,7 +36,7 @@ ComfyUI speaks two different JSON dialects:
 Requires **Python 3.10+**; the core compiler uses **nothing outside the Python standard library**.
 
 ### Option 1: Zero-Install Single File (`cwc.pyz`) or Drag-and-Drop Portable Pack
-Download `cwc.pyz` (`~377 KB`) or `cwc-portable.zip` from Releases (or build them locally in one second with `python3 tools/build_pyz.py --portable -o dist`):
+Download `cwc.pyz` (`~395 KB`) or `cwc-portable.zip` from Releases (or build them locally in one second with `python3 tools/build_pyz.py --portable -o dist`):
 
 - **Windows Drag & Drop**: Unzip `cwc-portable.zip` and drag any ComfyUI API `.json` file onto **`compile-drop-here.bat`**. An `out/` folder appears right next to your file with `<name>.ui.json` (ready to drag into ComfyUI) and `<name>.svg` (vector preview).
 - **Single-File CLI (Windows / macOS / Linux)**:
@@ -69,11 +69,60 @@ wrote out/hires.report.json
 
 Drag `out/hires.ui.json` straight onto the ComfyUI browser canvas to open it. `hires.api.json` is the verified prompt the canvas exports (with any optional modules bypassed), and `hires.report.json` records all layout measurements and check findings.
 
-> **New to `cwc`?** Read the **[3-Minute Step-by-Step Tutorial & Workflow Showcase (`showcase/README.md`)](showcase/README.md)**.
+> **New to `cwc`?** Read the **[3-Minute Step-by-Step Tutorial & Workflow Showcase (`showcase/README.md`)](showcase/README.md)**, or jump straight to **[1-Minute Foolproof Agent Setup](#1-minute-foolproof-agent-setup)** below to let Claude Code, Cursor, Codex, or Antigravity set it up for you.
 
 ---
 
 ## Workflow for Coding Agents
+
+### 1-Minute Foolproof Agent Setup
+
+#### Option A: Zero-Config Copy-Paste Prompt (Fastest)
+Copy and paste this prompt directly into **Claude Code, Antigravity, Codex, Cursor, or Gemini CLI**—your agent will install `cwc`, learn the syntax, and start compiling immediately:
+
+```text
+Install and configure comfyui-workflow-compiler (cwc) for this machine:
+1. Make `cwc` runnable via `uv tool install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler` (or `pip install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler`, or zero-install `uvx --from git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler cwc`).
+2. Install the bundled skill from `skills/comfyui-workflow-compiler/SKILL.md` in https://github.com/lepetitprince716-prog/comfyui-workflow-compiler into your active skills/rules directory.
+3. Verify with `cwc presets` and read `cwc guide` once.
+From now on, whenever I ask for a ComfyUI workflow, author the declarative API JSON first, compile it with `cwc compile --preset square --portable` (or `--preset gallery` for widescreen multi-step comparisons), and render a preview with `cwc render ... --values`.
+```
+
+#### Option B: One-Command Permanent CLI + Skill Install (macOS / Linux)
+Install the `cwc` CLI globally once, then copy the bundled skill into whichever coding agent you use:
+
+```bash
+# 1. Install the cwc CLI (pick ONE: uv tool, pipx, or pip)
+uv tool install git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
+# Alternative without uv: pip install --user git+https://github.com/lepetitprince716-prog/comfyui-workflow-compiler
+
+# 2. Verify installation (should print all 7 layout presets)
+cwc presets
+
+# 3. Install the Agent Skill (clone once, then copy to your agent's folder)
+git clone --depth 1 https://github.com/lepetitprince716-prog/comfyui-workflow-compiler /tmp/cwc-skill
+```
+
+| Coding Agent | Copy the skill folder to |
+|---|---|
+| **Claude Code** | `mkdir -p ~/.claude/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.claude/skills/` |
+| **Codex CLI** | `mkdir -p ~/.codex/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.codex/skills/` |
+| **Antigravity (AGY)** | `mkdir -p ~/.gemini/config/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.gemini/config/skills/` |
+| **OpenCode / Pi / Shared Agents** | `mkdir -p ~/.agents/skills && cp -R /tmp/cwc-skill/skills/comfyui-workflow-compiler ~/.agents/skills/` |
+| **Cursor** | Copy `skills/comfyui-workflow-compiler/SKILL.md` into your project's `.cursor/rules/cwc.mdc` (or reference it with `@SKILL.md`) |
+
+> **Windows / No-Clone Tip:** You don't even need `git` or `pip`—drop `cwc.pyz` anywhere on disk and tell your agent to run `python dist/cwc.pyz guide` and `python dist/cwc.pyz compile ...`.
+
+#### Option C: Ready-to-Use Everyday Prompt
+Once set up, just ask your agent in plain English:
+
+```text
+Build a 2-stage ComfyUI workflow for <your model/task> with an optional LoRA toggle and an in-canvas Quick Guide.
+Use cwc (`--preset square --portable`), fix all warnings until `ok`, and render a `--values` SVG preview for me.
+(If using custom nodes, add: `--nodedefs http://127.0.0.1:8188` or `--nodedefs object_info.json`.)
+```
+
+### The 4-Step Offline Agent Loop
 
 Point your coding agent at [`skills/comfyui-workflow-compiler/SKILL.md`](skills/comfyui-workflow-compiler/SKILL.md). The agent loop takes four fast offline commands:
 
