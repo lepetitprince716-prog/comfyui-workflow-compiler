@@ -126,6 +126,7 @@ class Preset:
     cockpit_split: CockpitSplit | None = None
     preview: Preview | None = None
     tray: Tray | None = None
+    wrap_rows: bool = False
 
     def home(self, zone: Zone) -> tuple[int, int]:
         """``(band, slot)`` of ``zone``."""

@@ -185,19 +185,36 @@ def _pack_main(row: list[Item], lower: list[Item], wiring: _Wiring, x0: float, s
         right[j] = x + item.w
 
 
-def _docks(row: list[Item], wiring: _Wiring, x0: float, floor: float | None = None, *, clamp: bool = True) -> dict[Item, float]:
+def _docks(
+    row: list[Item],
+    wiring: _Wiring,
+    x0: float,
+    floor: float | None = None,
+    *,
+    clamp: bool = True,
+    wrap_rows: bool = False,
+) -> dict[Item, float]:
     """Where each lower item of a section wants to start, with the main row placed: at ``x0``
     when nothing places it, and never left of ``floor`` (default ``x0``) unless ``clamp`` is
-    off (to see how far left the docks reach)."""
+    off (to see how far left the docks reach). When ``wrap_rows`` is true, terminal lower items
+    (those that do not feed back into the main row) dock inside the row's horizontal span so a
+    wrapped square section does not bulge past its right edge."""
     low = x0 if floor is None else floor
     left = {j: item.x for j, item in enumerate(row)}
     right = {j: item.x + item.w for j, item in enumerate(row)}
+    feeds_main: dict[Item, bool] = {}
+    for item in reversed(wiring.order):
+        feeds_main[item] = bool(wiring.feeds[item]) or any(feeds_main[s] for s in wiring.succs[item])
     want: dict[Item, float] = {}
     for item in wiring.order:
         reach = [right[j] for j in wiring.fed[item]] + [want[p] + p.w for p in wiring.preds[item] if p in want]
         if not reach:
             continue
-        x = float(snap_up(max(reach) + GAP))
+        if wrap_rows and not feeds_main[item]:
+            pred_reach = [want[p] + p.w for p in wiring.preds[item] if p in want]
+            x = float(snap_up(max(pred_reach) + GAP)) if pred_reach else x0
+        else:
+            x = float(snap_up(max(reach) + GAP))
         if wiring.feeds[item]:
             before = float(snap_down(min(left[j] for j in wiring.feeds[item]) - item.w))
 
@@ -265,7 +282,9 @@ def _spot(placed: list[Item], w: float, h: float, want: float, lo: float, hi: fl
     return None
 
 
-def _pack(bands: list[list[Item]], row: list[Item], wiring: _Wiring, want: Mapping[Item, float]) -> list[list[Item]]:
+def _pack(
+    bands: list[list[Item]], row: list[Item], wiring: _Wiring, want: Mapping[Item, float], *, wrap_rows: bool = False
+) -> list[list[Item]]:
     """Each lower band's items with ``x`` set and ``y`` relative to the band's top, in reading
     order. Each item goes to its dock; when that collides, to the free start nearest its dock
     at the same level, left or right, then one level down (``_spot``), inside the section's
@@ -273,6 +292,10 @@ def _pack(bands: list[list[Item]], row: list[Item], wiring: _Wiring, want: Mappi
     span = [min(i.x for i in row), max(i.x + i.w for i in row)]
     for item in want:
         span = [min(span[0], want[item]), max(span[1], want[item] + item.w)]
+    if wrap_rows:
+        # Allow side-by-side Band-1 preview/compare cards a small right overhang when they
+        # miss fitting inside Band 0's width by a narrow margin (avoids stacking a 3rd shelf).
+        span[1] += 160
     at = dict(want)
     out: list[list[Item]] = []
     for band in bands:
@@ -324,6 +347,7 @@ class _Done:
     skybridges: list[Rect] = field(default_factory=list)
     spine: int | None = None
     spines: list[tuple[int, Rect]] = field(default_factory=list)
+    wrap_rows: bool = False
 
 
 def _lay(done: _Done, row: list[Item], mine: list[list[Item]], links: Links, exempt: frozenset[str], x0: float, guide: float) -> _Done:
@@ -340,18 +364,18 @@ def _lay(done: _Done, row: list[Item], mine: list[list[Item]], links: Links, exe
     top = float(snap_up(bands[-1].bottom + BAND_GAP)) + sky if bands else float(sky)
     floor = 0.0 if snap_up(top + max(i.h for i in row) + BAND_GAP) >= guide else x0
     _pack_main(row, mine_flat, wiring, x0, done.spine)
-    reach = min(_docks(row, wiring, x0, floor, clamp=False).values(), default=x0)
+    reach = min(_docks(row, wiring, x0, floor, clamp=False, wrap_rows=done.wrap_rows).values(), default=x0)
     if reach < floor:  # a lower item ends left of its consumer only if the row starts further right
         start = float(snap_up(x0 + floor - reach))
         if not bands:  # the first group's title band stays on the first screen (G8)
             start = max(x0, min(start, float(snap_down(SCREEN_W - min(_first_width(row[0]), TITLE_REACH)))))
         _pack_main(row, mine_flat, wiring, start, done.spine)
-    want = _docks(row, wiring, x0, floor)
+    want = _docks(row, wiring, x0, floor, wrap_rows=done.wrap_rows)
     first = len(bands)
     rows = list(done.band_rows)
     spine_idx = next((idx for idx in range(len(row) - 1) if _at_spine(row[idx], row[idx + 1], done.spine)), None)
     spine_right = row[spine_idx + 1].x if spine_idx is not None else None
-    for b, members in enumerate([row] + _pack([band for band in mine if band], row, wiring, want)):
+    for b, members in enumerate([row] + _pack([band for band in mine if band], row, wiring, want, wrap_rows=done.wrap_rows)):
         if b == 1 and spine_idx is not None and spine_right is not None and min(m.x for m in members) >= spine_right:
             band_left = min(m.x for m in members)
             above_span = [item for item in row[spine_idx + 1 :] if item.x + item.w > band_left]

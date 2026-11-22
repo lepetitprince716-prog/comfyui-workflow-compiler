@@ -84,7 +84,7 @@ def layout(
         links,
         x0=x0,
         exempt=cockpit,
-        fits=_fits(canvas, graph, top_of, cockpit),
+        fits=_fits(canvas, graph, top_of, cockpit, wrap_rows=preset.wrap_rows),
         guide=guide,
         preview_groups=preview_groups,
     )
@@ -111,13 +111,17 @@ def _unimplemented(preset: Preset) -> list[str]:
     return out
 
 
-def _fits(canvas: Canvas, graph: Graph, top: Mapping[str, str], cockpit: frozenset[str]) -> Callable[[Placed], bool]:
+def _fits(
+    canvas: Canvas, graph: Graph, top: Mapping[str, str], cockpit: frozenset[str], *, wrap_rows: bool = False
+) -> Callable[[Placed], bool]:
     """Whether a placement keeps G5 within its limit, counted as G5 counts it
     (:mod:`cwc.canvas.direction`), the links into the cockpit frames left out: into their own
     members and into the members of groups nested in them, as ``check_geometry`` leaves out the
     links into every group in ``LayoutResult.cockpit`` and the groups nested in them. ``top``:
     each grouped node's placed group (a segment's key for a member of a cut group), which
-    ``cockpit`` names.
+    ``cockpit`` names. When ``wrap_rows`` is true, links descending strictly from an upper
+    top-level group to a lower one (``target.y >= origin.bottom``) are also left out as
+    carriage-return row wraps, matching G5.
 
     A link runs right to left when its output anchor's x exceeds its input anchor's x, and an
     anchor's x is the node's x plus an offset fixed by the node's size and slots. The offsets
@@ -137,15 +141,30 @@ def _fits(canvas: Canvas, graph: Graph, top: Mapping[str, str], cockpit: frozens
 
     def fits(placed: Placed) -> bool:
         x = {key: node.pos[0] for key, node in nodes.items()}
+        span_y: dict[str, tuple[float, float]] = {}
 
-        def walk(part: Part, at: float) -> None:
+        def walk(part: Part, at: float, band_y: tuple[float, float]) -> None:
             for key, (px, _) in part.nodes.items():
                 x[key] = at + px
+                span_y[key] = band_y
             for child, (cx, _) in part.children:
-                walk(child, at + cx)
+                walk(child, at + cx, band_y)
 
-        for part, at, _ in placed.parts:
-            walk(part, at)
+        for part, at, ay in placed.parts:
+            walk(part, at, (ay, ay + part.box.h))
+        if wrap_rows:
+            active = [
+                row
+                for row in counted
+                if not (
+                    row[1] in span_y
+                    and row[3] in span_y
+                    and span_y[row[3]][0] >= span_y[row[1]][1]
+                )
+            ]
+            considered = tuple(row[0] for row in active)
+            backward = tuple(i for i, a, out_dx, b, in_dx in active if x[a] + out_dx > x[b] + in_dx)
+            return not Direction(considered=considered, backward=backward, feedback=base.feedback).over
         backward = tuple(i for i, a, out_dx, b, in_dx in counted if x[a] + out_dx > x[b] + in_dx)
         return not Direction(considered=base.considered, backward=backward, feedback=base.feedback).over
 

@@ -58,7 +58,7 @@ FORMAT = 1
 DEFAULT = "bento"
 
 _PRESET_KEYS = {"axis", "wrap_ratio", "guide_width", "numbering", "palette", "bands", "corridors"}
-_OPTIONAL_KEYS = {"cockpit_split", "preview", "tray"}
+_OPTIONAL_KEYS = {"cockpit_split", "preview", "tray", "wrap_rows"}
 
 
 def load_presets() -> dict[str, Preset]:
@@ -104,6 +104,9 @@ def _preset(name: str, entry: Any) -> Preset:
         raise ValueError(f"{where}: palette must be one of {sorted(palette_names())}")
     preview = _preview(entry.get("preview"), bands, where)
     tray = _tray(entry.get("tray"), bands, preview, where)
+    wrap_rows = entry.get("wrap_rows", False)
+    if not isinstance(wrap_rows, bool):
+        raise ValueError(f"{where}: wrap_rows must be true or false")
     return Preset(
         name=name,
         axis=_enum(Axis, entry["axis"], f"{where} axis"),
@@ -116,6 +119,7 @@ def _preset(name: str, entry: Any) -> Preset:
         cockpit_split=_cockpit_split(entry.get("cockpit_split"), where),
         preview=preview,
         tray=tray,
+        wrap_rows=wrap_rows,
     )
 
 

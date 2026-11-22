@@ -96,6 +96,15 @@ def preset_guide() -> dict[str, tuple[str, str]]:
             f"{presets['gallery'].preview.min_height} px high).",
             "multi-step workflows with intermediate step previews or side-by-side comparisons",
         ),
+        "square": (
+            f"Compact square / 4:3 dashboard layout: folds wide multi-stage pipelines into balanced "
+            f"stacked rows (wrapping past {presets['square'].wrap_ratio:g}x height via clean cross-row "
+            "carriage returns) and docks step previews and optional comparisons inside each row's width "
+            f"with enlarged viewports (at least "
+            f"{snap_up(round(presets['square'].preview.share * SCREEN_W, 6))} px wide and "
+            f"{presets['square'].preview.min_height} px high).",
+            "laptops, 4:3/square showcase screenshots, or multi-stage graphs without wide horizontal scrolling",
+        ),
         AUTO: (
             f"Picks a preset from the graph's counts, the first rule that holds: at most {AUTO_SMALL_NODES} "
             f"nodes and no optional module: tower-preview; {AUTO_PARALLEL_BRANCHES} or more control or mask "

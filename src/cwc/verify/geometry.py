@@ -11,7 +11,7 @@ from typing import Any, Iterable, Mapping
 
 from cwc.canvas.geometry import GRID, Rect, bounding
 from cwc.canvas.model import Canvas
-from cwc.layout.types import Preset
+from cwc.layout.types import Axis, Preset
 from cwc.prompt.slots import DefLookup
 from cwc.report import Code, Finding, Mode, Report, Severity
 from cwc.verify.geometry_clarity import (
@@ -20,8 +20,9 @@ from cwc.verify.geometry_clarity import (
     check_colours,
     check_crowded,
     check_top_level_count,
+    top_level,
 )
-from cwc.verify.geometry_groups import check_ancestry, check_group_overlap, check_membership, links_into
+from cwc.verify.geometry_groups import ancestor_sets, check_ancestry, check_group_overlap, check_membership, links_into
 from cwc.verify.geometry_links import check_crossings, check_direction, mean_length
 from cwc.verify.geometry_screen import check_first_screen, check_guide_height, check_readable_width, guide_nodes
 from cwc.verify.geometry_view import GeometryView
@@ -105,7 +106,8 @@ def check_geometry(
         skipped.append({"code": Code.G3.value, "reason": "no membership or before canvas given"})
     record(Code.G4, check_group_overlap(canvas, policy))
     into_cockpit = links_into(view, cockpit_groups)
-    record(Code.G5, check_direction(view, policy, into_cockpit))
+    row_wraps = _row_wrap_links(view, preset) - into_cockpit if preset is not None and preset.wrap_rows else frozenset()
+    record(Code.G5, check_direction(view, policy, into_cockpit, row_wraps=row_wraps))
     record(Code.G6, check_grid(view, policy))
     record(Code.G9, check_aspect(view))
     report.metrics[Code.G10.value] = _link_length(view, defs, policy, before)
@@ -132,6 +134,30 @@ def check_geometry(
         skipped.append({"code": Code.C6.value, "reason": "colours are kept in beautify without regroup"})
     report.metrics["skipped"] = skipped
     return report
+
+
+def _row_wrap_links(view: GeometryView, preset: Preset) -> frozenset[int]:
+    """Links descending from one top-level group strictly into a lower band (``down.y >= up.bottom``
+    for ``Axis.X``): carriage-return links in a ``wrap_rows`` preset, exempt from G5's intra-row
+    left-to-right check just as C3 treats them as forward reading order."""
+    tops = set(top_level(view))
+    ancestors = ancestor_sets(view)
+    home = {key: min(held & tops) for key, held in ancestors.items() if held & tops}
+    boundings = [group.bounding for group in view.canvas.groups]
+    out: set[int] = set()
+    for link in view.canvas.links:
+        origin, target = str(link.origin_id), str(link.target_id)
+        if origin not in home or target not in home:
+            continue
+        up, down = home[origin], home[target]
+        if up == down:
+            continue
+        if preset.axis is Axis.X:
+            if boundings[down].y >= boundings[up].bottom:
+                out.add(link.id)
+        elif boundings[down].x >= boundings[up].right:
+            out.add(link.id)
+    return frozenset(out)
 
 
 def _link_length(view: GeometryView, defs: DefLookup, policy: Policy, before: Canvas | None) -> dict[str, Any]:

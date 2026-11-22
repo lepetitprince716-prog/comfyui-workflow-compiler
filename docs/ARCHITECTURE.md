@@ -319,10 +319,16 @@ How compile and tidy place nodes and groups, and how the checks read the result.
   requires.
 - One count of backward links (`cwc.canvas.direction`) serves G5 and layout. A section wraps
   when it is wider than `wrap_ratio` times its height, and only by a cut after which G5 stays
-  within its limit; otherwise it stays one section with a G9 warning. Small graphs rarely wrap
-  for this reason: measured with the limit lifted, wrapping put 6 of the 15 links of a
-  two-stage graph backward. A cut is taken only when the part it moves is at least a quarter of
-  the section's width (`WRAP_MIN_MOVED`): moving a short tail, an output group alone, saves
+  within its limit; otherwise it stays one section with a G9 warning. When a preset opts into
+  `wrap_rows: true` (such as `square`), links descending strictly from an upper top-level group
+  to a lower band (`down.y >= up.bottom`, matching C3's `later_band`) are treated as
+  carriage-return row wraps (reported in `G5.row_wrap_links`) rather than intra-row backward
+  links, wrapping evaluates the whole canvas aspect ratio and stops once balanced, wrapped rows
+  below the guide lane start at `x = 0`, and terminal lower-band items dock within each row's
+  width. Small graphs without `wrap_rows` rarely wrap: measured with the limit lifted, wrapping
+  put 6 of the 15 links of a two-stage graph backward. A cut is taken only when the part it
+  moves is at least a quarter of the section's width (`WRAP_MIN_MOVED`): moving a short tail, an
+  output group alone, saves
   little width and costs a link back across the canvas. Among the cuts left, layout prefers one
   whose head is no longer too wide, then the fewest links between sections, then the latest
   cut, and takes the first that keeps G5.

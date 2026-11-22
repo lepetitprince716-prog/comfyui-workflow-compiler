@@ -16,8 +16,8 @@ def band0(name):
 
 
 class BundledPresetsTest(unittest.TestCase):
-    def test_all_six_load(self):
-        self.assertEqual(set(load_presets()), {"bento", "swimlanes", "cockpit-split", "tower-preview", "stepped", "gallery"})
+    def test_all_seven_load(self):
+        self.assertEqual(set(load_presets()), {"bento", "swimlanes", "cockpit-split", "tower-preview", "stepped", "gallery", "square"})
         self.assertEqual(DEFAULT, "bento")
 
     def test_every_zone_has_one_home(self):
@@ -87,6 +87,14 @@ class BundledPresetsTest(unittest.TestCase):
         self.assertIn(Z.OPTIONAL, preset.preview.extra_zones)
         self.assertIsNotNone(preset.cockpit_split)
         self.assertEqual((preset.cockpit_split.axis, preset.cockpit_split.min_nodes), (Axis.X, 5))
+
+    def test_square(self):
+        preset = get_preset("square")
+        self.assertTrue(preset.wrap_rows)
+        self.assertLessEqual(preset.wrap_ratio, 2.0)
+        self.assertIsNotNone(preset.preview)
+        self.assertTrue(preset.preview.dock_steps)
+        self.assertEqual([(c.kind, c.after_slot) for c in preset.corridors], [(CorridorKind.BUS, None), (CorridorKind.SPINE, 0)])
 
 
 class RejectedPresetsTest(unittest.TestCase):
