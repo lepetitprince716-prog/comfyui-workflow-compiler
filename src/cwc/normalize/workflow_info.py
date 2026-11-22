@@ -61,9 +61,8 @@ def parse_workflow(raw: Any, out: Findings) -> WorkflowInfo:
         read.fail(f"{WORKFLOW_INFO_KEY}.format", f"must be {FORMAT}, got {fmt!r}")
     title = read.string(f"{WORKFLOW_INFO_KEY}.title", top["title"]) if "title" in top else None
     locale = read.string(f"{WORKFLOW_INFO_KEY}.locale", top["locale"]) if "locale" in top else None
-    for key, value in (("title", title), ("locale", locale)):
-        if value is not None:
-            no_effect(out, f"{WORKFLOW_INFO_KEY}.{key}")
+    if locale is not None:
+        no_effect(out, f"{WORKFLOW_INFO_KEY}.locale")
     preset = None
     if "layout" in top:
         layout = read.object(f"{WORKFLOW_INFO_KEY}.layout", top["layout"], LAYOUT_KEYS)
@@ -93,8 +92,6 @@ def _groups(read: _Reader, raw: Any) -> dict[str, GroupInfo]:
             continue
         title = read.string(f"{path}.{group_id}.title", entry["title"]) if "title" in entry else None
         note = read.string(f"{path}.{group_id}.note", entry["note"]) if "note" in entry else None
-        if note is not None:
-            no_effect(read.out, f"{path}.{group_id}.note")
         groups[group_id] = GroupInfo(title=title, note=note)
     return groups
 

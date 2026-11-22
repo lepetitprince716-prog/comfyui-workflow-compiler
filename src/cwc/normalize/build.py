@@ -37,7 +37,13 @@ class NodeDefSource(Protocol):
     def closest(self, type: str, n: int = 3) -> Sequence[str]: ...
 
 
-def normalize(doc: dict[str, Any], defs: NodeDefSource, *, allow_unknown: bool = False) -> tuple[Authoring, list[Finding]]:
+def normalize(
+    doc: dict[str, Any],
+    defs: NodeDefSource,
+    *,
+    allow_unknown: bool = False,
+    portable: bool = False,
+) -> tuple[Authoring, list[Finding]]:
     """Check an authoring document (E1 to E8) and build its strict prompts.
 
     Raises ``CwcError(INPUT_ERROR, findings)`` when any finding is an error; otherwise
@@ -64,7 +70,7 @@ def normalize(doc: dict[str, Any], defs: NodeDefSource, *, allow_unknown: bool =
         if nodedef is None:
             outputs[node.author_id] = check_unknown_node(node, sources, out)
         else:
-            outputs[node.author_id] = check_node(node, nodedef, intents[node.author_id], sources, out)
+            outputs[node.author_id] = check_node(node, nodedef, intents[node.author_id], sources, out, portable=portable)
 
     for cycle in find_cycles({aid: result.sources for aid, result in outputs.items()}):
         out.error(

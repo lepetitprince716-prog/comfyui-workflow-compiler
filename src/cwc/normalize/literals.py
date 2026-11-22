@@ -24,13 +24,44 @@ from cwc.report import Code
 INVALID = object()  # returned for a value that failed a blocking check
 
 INT, FLOAT, BOOLEAN, STRING, COMBO = "INT", "FLOAT", "BOOLEAN", "STRING", "COMBO"
+_FILE_SUFFIXES = (
+    ".safetensors",
+    ".ckpt",
+    ".pt",
+    ".pth",
+    ".bin",
+    ".gguf",
+    ".onnx",
+    ".sft",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".webp",
+    ".gif",
+    ".mp4",
+    ".webm",
+    ".wav",
+    ".mp3",
+    ".flac",
+    ".ogg",
+)
+
+
+def _looks_like_file_list(options: list[Any]) -> bool:
+    for item in options:
+        if not isinstance(item, str):
+            continue
+        low = item.lower()
+        if "/" in low or "\\" in low or low.endswith(_FILE_SUFFIXES):
+            return True
+    return False
 
 
 def _number(value: Any) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool)
 
 
-def check_literal(spec: InputSpec, value: Any, author_id: str, out: Findings) -> Any:
+def check_literal(spec: InputSpec, value: Any, author_id: str, out: Findings, *, portable: bool = False) -> Any:
     """The value to keep (integral floats become ints for INT), or :data:`INVALID`."""
     where = f"node {author_id!r} input {spec.name!r}"
 
@@ -62,7 +93,7 @@ def check_literal(spec: InputSpec, value: Any, author_id: str, out: Findings) ->
             return INVALID
         return value
     if kind == COMBO:
-        return _combo(spec, value, where, author_id, out, bad)
+        return _combo(spec, value, where, author_id, out, bad, portable=portable)
     return value  # custom widget types carry their own value shapes
 
 
@@ -101,7 +132,7 @@ def _range(spec: InputSpec, value: int | float, where: str, author_id: str, out:
     return value
 
 
-def _combo(spec: InputSpec, value: Any, where: str, author_id: str, out: Findings, bad: Any) -> Any:
+def _combo(spec: InputSpec, value: Any, where: str, author_id: str, out: Findings, bad: Any, *, portable: bool = False) -> Any:
     options = list(spec.combo_values or ())
     flag = spec.options.get("multi_select")
     multi = flag is not None and flag is not False and flag != 0 and flag != ""  # JavaScript truthiness
@@ -114,7 +145,7 @@ def _combo(spec: InputSpec, value: Any, where: str, author_id: str, out: Finding
     else:
         picked = [value]
     missing = [v for v in picked if options and not any(values_equal(v, o) for o in options)]
-    if missing:
+    if missing and not (portable and _looks_like_file_list(options)):
         out.warning(
             Code.E5,
             f"{where}: {', '.join(repr(v) for v in missing)} is not in the current option list",

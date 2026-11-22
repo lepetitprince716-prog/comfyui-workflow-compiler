@@ -64,6 +64,11 @@ def _parser() -> argparse.ArgumentParser:
     )
     build.add_argument("--all-enabled", action="store_true", help="also write <name>.full.api.json")
     build.add_argument("--allow-unknown", action="store_true", help="accept node types with no definition")
+    build.add_argument(
+        "--portable",
+        action="store_true",
+        help="suppress file-picker dropdown warnings when compiling portable workflows against a live server's /object_info",
+    )
     build.add_argument("--json", action="store_true", help="print a JSON summary")
     build.set_defaults(run=_compile)
 
@@ -85,6 +90,7 @@ def _parser() -> argparse.ArgumentParser:
     render.add_argument("graph", metavar="GRAPH.ui.json", help="canvas workflow (UI JSON, or a PNG carrying one)")
     render.add_argument("-o", "--output", required=True, metavar="OUT.svg", help="SVG file to write")
     render.add_argument("--nodedefs", metavar="FILE|URL", help="/object_info export or ComfyUI server URL")
+    render.add_argument("--values", action="store_true", help="draw concise literal widget values inside nodes")
     render.add_argument("--json", action="store_true", help="print the summary as JSON")
     render.set_defaults(run=render_command)
     return parser
@@ -253,7 +259,9 @@ def _compile(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
     try:
         doc = load_authoring(read_file(source, "authoring file"))
         defs = NodeDefs.load(object_info=read_source(args.nodedefs) if args.nodedefs else None)
-        compiled = compile_document(doc, defs, allow_unknown=args.allow_unknown, preset=args.preset)
+        compiled = compile_document(
+            doc, defs, allow_unknown=args.allow_unknown, preset=args.preset, portable=args.portable
+        )
         report = compiled.report
         exit_code = ExitCode.OK if report.ok else ExitCode.CHECK_FAILED
         if report.ok:

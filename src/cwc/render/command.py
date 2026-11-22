@@ -20,7 +20,7 @@ def command(args: argparse.Namespace, out: TextIO, err: TextIO) -> ExitCode:
         defs = NodeDefs.load(object_info=read_source(args.nodedefs) if args.nodedefs else None)
     except CwcError as exc:
         return _fail(args, out, err, exc.exit_code, "; ".join(finding.message for finding in exc.findings))
-    rendering = render(canvas, defs)
+    rendering = render(canvas, defs, show_values=bool(getattr(args, "values", False)))
     target = Path(args.output)
     try:
         write_atomic(target, rendering.svg.encode("utf-8"))

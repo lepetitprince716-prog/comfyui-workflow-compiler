@@ -23,6 +23,7 @@ from cwc.layout.types import LayoutResult
 from cwc.nodedefs.registry import NodeDefs
 from cwc.normalize import normalize
 from cwc.normalize.types import Authoring
+from cwc.notes import place_guide
 from cwc.report import Code, CwcError, ExitCode, Finding, Mode, Report, Severity
 from cwc.route import RouteResult, route
 from cwc.verify import verify_compile
@@ -113,7 +114,12 @@ class Compiled:
 
 
 def compile_document(
-    doc: dict[str, Any], defs: NodeDefs, *, allow_unknown: bool = False, preset: str | None = None
+    doc: dict[str, Any],
+    defs: NodeDefs,
+    *,
+    allow_unknown: bool = False,
+    preset: str | None = None,
+    portable: bool = False,
 ) -> Compiled:
     """Compile a parsed authoring document.
 
@@ -125,7 +131,7 @@ def compile_document(
     and geometry failures do not raise: they are errors in the returned report, and
     ``report.ok`` is false.
     """
-    authoring, warnings = normalize(doc, defs, allow_unknown=allow_unknown)
+    authoring, warnings = normalize(doc, defs, allow_unknown=allow_unknown, portable=portable)
     name = _choose(preset, authoring.workflow.preset)
     canvas = instantiate(authoring)
     plan = annotate(canvas, defs, authoring)
@@ -143,6 +149,7 @@ def compile_document(
                 f"({auto.rule}; {_counts_text(plan.counts)}), and {exc}"
             )
         raise CwcError(ExitCode.INPUT_ERROR, [_preset_error(message)]) from None
+    _, laid = place_guide(canvas, authoring, plan, laid, chosen, defs)
     routes = route(canvas, laid, defs)
     report = verify_compile(canvas, authoring, defs)
     geometry = check_geometry(

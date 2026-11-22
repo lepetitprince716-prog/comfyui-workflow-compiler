@@ -33,7 +33,7 @@ is. This guide lists what cwc accepts beyond that.
 | `ui_order` | integer | Orders the Controls group's members of one kind, lower first, members without it last. The kinds keep their own order (positive prompt, negative prompt, reference image, size and batch, seed, other), and a member fed by another member stays after it, so `ui_order` decides only among, say, two `other` controls side by side. Elsewhere it matters only when more than 12 nodes of one group sit at the same step of the data flow and are cut into chunks. |
 | `ui_locked` | `true` or a list of widget names | Checked (the names must be widgets of the node), no effect on the canvas yet. |
 | `ui_expose` | list of widget names | Checked (the names must be widgets of the node), no effect on the canvas yet. |
-| `ui_note` | string | Accepted, no effect on the canvas yet. |
+| `ui_note` | string | Included in the in-canvas Quick Guide note card placed on the first screen. |
 
 The keys marked "no effect yet" are listed, with the nodes that set them, in one `E8 info` line
 on stderr and in the report when any is set. It does not change the exit code or `ok`.
@@ -60,9 +60,9 @@ example the sampler, and `ui_role: "pipeline"` to keep a prompt out of it.
 |---|---|---|
 | `format` | `1` | Required when `_workflow` is present. |
 | `layout` | `{"preset": NAME}` | The layout preset; `--preset` overrides it. `cwc presets` lists the names. |
-| `groups` | `{GROUP_ID: {"title": string, "note": string}}` | `title` names the group made by `ui_group`. `note` is accepted, no effect yet. |
+| `groups` | `{GROUP_ID: {"title": string, "note": string}}` | `title` names the group made by `ui_group`. `note` is written into the in-canvas Quick Guide note card. |
 | `models` | list of `{"name", "url", "directory"}`, all strings | Written to the canvas's `models` list, which ComfyUI reads to offer missing model downloads. |
-| `title` | string | Accepted, no effect yet. |
+| `title` | string | Heading of the in-canvas Quick Guide note card placed in the top-left guide lane. |
 | `locale` | string | Accepted, no effect yet. |
 
 Any other key in `_workflow`, `_workflow.layout` or a `groups` entry is an error.
