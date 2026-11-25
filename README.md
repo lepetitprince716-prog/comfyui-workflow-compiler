@@ -70,6 +70,8 @@ wrote out/hires.report.json
 Drag `out/hires.ui.json` straight onto the ComfyUI browser canvas to open it. `hires.api.json` is the verified prompt the canvas exports (with any optional modules bypassed), and `hires.report.json` records all layout measurements and check findings.
 
 > **New to `cwc`?** Read the **[3-Minute Step-by-Step Tutorial & Workflow Showcase (`showcase/README.md`)](showcase/README.md)**, or jump straight to **[1-Minute Foolproof Agent Setup](#1-minute-foolproof-agent-setup)** below to let Claude Code, Cursor, Codex, or Antigravity set it up for you.
+>
+> **Want Ready-to-Run Zero-Custom-Node Workflows + Sweep CLI?** Grab the companion **[Agent × ComfyUI Starter Pack (`agent-comfyui-starter-v0.1.0.zip`)](https://github.com/lepetitprince716-prog/agent-genops/releases/download/v0.1.0/agent-comfyui-starter-v0.1.0.zip)** from **[`agent-genops` Releases (`v0.1.0`)](https://github.com/lepetitprince716-prog/agent-genops/releases/tag/v0.1.0)**—includes `cwc`-compiled `.ui.json` / `.api.json` canvases (`Fast-12 OPD + 20s 1.5x HiRes` and `Optional Style LoRA A/B`), a stdlib-only `comfy_sweep.py` benchmark runner, and free SFW companion weights on **[Civitai (`lepetitprince716355`)](https://civitai.com/user/lepetitprince716355)**.
 
 ---
 
