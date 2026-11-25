@@ -70,6 +70,8 @@ wrote out/hires.report.json
 直接把生成的 `out/hires.ui.json` 拖进 ComfyUI 画布即可打开。`hires.api.json` 是该画布导出的等价 API Prompt（可选模块默认旁路），`hires.report.json` 记录了所有几何测量值与检查结论。
 
 > **想看手把手图文教程？** 请打开 **[3 分钟手把手教程与工作流样板间 (`showcase/README.zh-CN.md`)](showcase/README.zh-CN.md)**；如果你平时用 Claude Code / Cursor / Codex / Antigravity 写工作流，直接看下方 **[1 分钟防呆快速配置（Agent 一键上手）](#1-分钟防呆快速配置agent-一键上手)**。
+>
+> **想直接下载免插件成品画布 + 自动扫参脚本？** 前往配套主仓 **[`agent-genops` Releases (`v0.1.0`)](https://github.com/lepetitprince716-prog/agent-genops/releases/tag/v0.1.0)** 一键下载 **[`agent-comfyui-starter-v0.1.0.zip`](https://github.com/lepetitprince716-prog/agent-genops/releases/download/v0.1.0/agent-comfyui-starter-v0.1.0.zip)**：内含 `cwc` 编译好的零自定义节点 `.ui.json` 画布（`Fast-12 OPD + 20 秒高清修复` 与 `可选画风 LoRA 旁路对比`）、纯标准库 `comfy_sweep.py` 测速/锐度脚本，以及配套免费 SFW 开源权重 **[civitai.com/user/lepetitprince716355](https://civitai.com/user/lepetitprince716355)**。
 
 ---
 
